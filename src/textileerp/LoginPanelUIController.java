@@ -5,6 +5,7 @@
  */
 package textileerp;
 
+import md5.HashMD5;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -104,6 +105,14 @@ public class LoginPanelUIController implements Initializable {
             Scene scene = new Scene(root);
             
             TextileERP.getMainStage().setScene(scene);
+            if(userType.equals("Admin")){
+                AdminPanelUIController adminPanel = loader.getController();
+                adminPanel.setEmployeeId(username);
+            }
+            else if(userType.equals("HR")){
+                HRPanelUIController hrPanel = loader.getController();
+                hrPanel.setEmployeeId(username);
+            }
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
             Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);

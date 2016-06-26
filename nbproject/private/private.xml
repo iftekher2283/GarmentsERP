@@ -3,9 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/Religion.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/MaritalStatus.java</file>
             <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/textileerp/LoginPanelUIController.java</file>
-            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/textileerp/HomePageUIController.java</file>
-            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/textileerp/TextileERP.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/textileerp/HRPanelUIController.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/model/Employee.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/model/PersonalInformation.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/Designation.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/BankCode.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/hibernatesingleton/HibernateSingleton.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/model/Salary.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/textileerp/AdminPanelUIController.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/BranchID.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/BloodGroup.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/hibernatesingleton/hibernate.cfg.xml</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/Gender.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/TextileERP/src/enums/DepartmentCode.java</file>
         </group>
     </open-files>
 </project-private>
