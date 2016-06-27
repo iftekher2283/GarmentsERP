@@ -32,11 +32,11 @@
                           </columnConstraints>
                           <rowConstraints>
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="451.0" minHeight="10.0" prefHeight="451.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="272.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="272.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <GridPane GridPane.rowIndex="1">
@@ -45,16 +45,16 @@
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="238.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.0" minWidth="10.0" prefWidth="143.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="192.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="122.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="182.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="122.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="182.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
-                                 <children>
+                                <children>
                                     <Label text="Compnay No" GridPane.rowIndex="1" />
                                     <Label text="Employee Name" GridPane.rowIndex="2" />
                                     <Label text="Designation" GridPane.rowIndex="3" />
@@ -586,6 +586,71 @@
                   </AnchorPane>
                </content>
             </Tab>
+	    <Tab text="Salary Details">
+		<content>
+		    <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1050.0">
+		       <children>
+		           <GridPane layoutX="200.0" layoutY="141.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+			   <columnConstraints>
+			       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+			   </columnConstraints>
+			   <rowConstraints>
+			       <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+			       <RowConstraints maxHeight="877.0" minHeight="10.0" prefHeight="877.0" vgrow="SOMETIMES" />
+			   </rowConstraints>
+			   <children>
+			       <TableView fx:id="salaryDetailsTable" onMouseClicked="#handleUpdateSalaryAction" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+
+			           <columns>
+				       <TableColumn fx:id="employeeIdSalaryDetailsColumn" prefWidth="120.0" text="Employee ID" />
+				       <TableColumn fx:id="basicSalaryColumn" prefWidth="108.0" text="Basic Salary" />
+				       <TableColumn fx:id="runningBasicColumn" prefWidth="120.0" text="Runnic Basic" />
+				       <TableColumn fx:id="houseRentColumn" prefWidth="105.0" text="House Rent" />
+				       <TableColumn fx:id="medicalColumn" prefWidth="83.0" text="Medical" />
+				       <TableColumn fx:id="otherColumn" prefWidth="83.0" text="Other" />
+				       <TableColumn fx:id="conveyanceColumn" prefWidth="105.0" text="Conveyance" />
+				       <TableColumn fx:id="carAllowColumn" prefWidth="117.0" text="Car Allowance" />
+				       <TableColumn fx:id="grossSalaryColumn" prefWidth="101.0" text="Gross Salary" />
+				       <TableColumn fx:id="bankCodeColumn" maxWidth="112.0" prefWidth="91.0" text="Bank Code" />
+				       <TableColumn fx:id="acNoColumn" prefWidth="182.0" text="A/C No" />
+			           </columns>
+			       </TableView>
+			 </children>
+		      </GridPane>
+                        <GridPane layoutX="10.0" layoutY="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Text fx:id="hrmIdText1" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" />
+                                 </GridPane.margin>
+                                 <font>
+                                    <Font name="Abyssinica SIL" size="15.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Employees' Salary Details">
+                                 <font>
+                                    <Font name="Abyssinica SIL" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </GridPane>
+		   </children>
+		</AnchorPane>
+		</content>
+	    </Tab>
          </tabs>
       </TabPane>
    </content>

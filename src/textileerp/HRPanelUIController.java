@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -44,6 +45,7 @@ import model.Address;
 import model.Employee;
 import model.PersonalInformation;
 import model.Salary;
+import model.SalaryDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -198,6 +200,35 @@ public class HRPanelUIController implements Initializable {
     List<Employee> employees;
     ObservableList<Employee> employeesTable;
     
+    //Salary Details Tab
+    @FXML
+    private TableView<SalaryDetails> salaryDetailsTable;
+    @FXML
+    private TableColumn<SalaryDetails, Number> employeeIdSalaryDetailsColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> basicSalaryColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> runningBasicColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> houseRentColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> medicalColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> otherColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> conveyanceColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> carAllowColumn;
+    @FXML
+    private TableColumn<SalaryDetails, Number> grossSalaryColumn;
+    @FXML
+    private TableColumn<SalaryDetails, String> bankCodeColumn;
+    @FXML
+    private TableColumn<SalaryDetails, String> acNoColumn;
+    @FXML
+    private Text hrmIdText1;
+    private ObservableList<SalaryDetails> salaries;
+    
     /**
      * Initializes the controller class.
      */
@@ -250,6 +281,26 @@ public class HRPanelUIController implements Initializable {
         branchIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBranchId()));
         joiningDateColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getJoiningDate()));
         employeeDesignationColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDesignation()));
+        
+        //Display Employees' Salary Information on the Table View
+        salaries = FXCollections.observableArrayList();
+        salaries.remove(0, (salaries.size() - 1));
+        for (int i = 0; i < employees.size(); i++){
+            SalaryDetails salaryDetails = new SalaryDetails(employees.get(i).getId(), employees.get(i).getSalaryInfo().getBasic_salary(), employees.get(i).getJoiningDate(), employees.get(i).getSalaryInfo().getBank_code());
+            salaries.add(salaryDetails);
+        }
+        salaryDetailsTable.setItems(salaries);
+        employeeIdSalaryDetailsColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        basicSalaryColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getBasicSalary()));
+        runningBasicColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRunningBasic()));
+        houseRentColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHouseRent()));
+        medicalColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMedical()));
+        otherColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getOthers()));
+        conveyanceColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getConveyance()));
+        carAllowColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getCarAllow()));
+        grossSalaryColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getGrossSalary()));
+        bankCodeColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBankCode()));
+    //    acNoColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().));
     }    
 
     @FXML
@@ -264,7 +315,7 @@ public class HRPanelUIController implements Initializable {
         }
         if(!employee.getName().equals("")){
             employeeNameField.setText(employee.getName());
-            companyNoBox.getSelectionModel().select(employee.getCompanyNo());
+            companyNoBox.getSelectionModel().select(employee.getCompanyNo() - 1);
             designationBox.getSelectionModel().select(Designation.valueOf(employee.getDesignation()));
             confirmationDatePicker.getEditor().setText(employee.getConfirmationDate());
             deptCodeBox.getSelectionModel().select(DepartmentCode.valueOf(employee.getDepartmentCode()));
@@ -975,7 +1026,7 @@ public class HRPanelUIController implements Initializable {
         if(!employee.getName().equals("")){
             idNoField.setText("" + employee.getId());
             employeeNameField.setText(employee.getName());
-            companyNoBox.getSelectionModel().select(employee.getCompanyNo());
+            companyNoBox.getSelectionModel().select(employee.getCompanyNo() - 1);
             designationBox.getSelectionModel().select(Designation.valueOf(employee.getDesignation()));
             confirmationDatePicker.getEditor().setText(employee.getConfirmationDate());
             deptCodeBox.getSelectionModel().select(DepartmentCode.valueOf(employee.getDepartmentCode()));
@@ -1099,5 +1150,10 @@ public class HRPanelUIController implements Initializable {
     public void setEmployeeId(String employeeId){
         this.employeeId = employeeId;
         hrmIdText.setText("HRM ID: " + employeeId);
+        hrmIdText1.setText("HRM ID: " + employeeId);
+    }
+
+    @FXML
+    private void handleUpdateSalaryAction(MouseEvent event) {
     }
 }
