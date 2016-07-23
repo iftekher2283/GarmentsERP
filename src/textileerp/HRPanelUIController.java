@@ -193,8 +193,8 @@ public class HRPanelUIController implements Initializable {
     private ObservableList<Integer> companyNo;
     
     //Session Variables to Access Hibernate
-    private SessionFactory factory;
-    private Session session;
+    private static SessionFactory factory;
+    private static Session session;
     
     //List of All Employess
     List<Employee> employees;
@@ -286,7 +286,7 @@ public class HRPanelUIController implements Initializable {
         salaries = FXCollections.observableArrayList();
         salaries.remove(0, (salaries.size() - 1));
         for (int i = 0; i < employees.size(); i++){
-            SalaryDetails salaryDetails = new SalaryDetails(employees.get(i).getId(), employees.get(i).getSalaryInfo().getBasic_salary(), employees.get(i).getJoiningDate(), employees.get(i).getSalaryInfo().getBank_code());
+            SalaryDetails salaryDetails = new SalaryDetails(employees.get(i).getId(), employees.get(i).getSalaryInfo().getBasic_salary(), employees.get(i).getJoiningDate(), employees.get(i).getSalaryInfo().getBank_code(), employees.get(i).getSalaryInfo().getAc_no());
             salaries.add(salaryDetails);
         }
         salaryDetailsTable.setItems(salaries);
@@ -300,7 +300,7 @@ public class HRPanelUIController implements Initializable {
         carAllowColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getCarAllow()));
         grossSalaryColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getGrossSalary()));
         bankCodeColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBankCode()));
-    //    acNoColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().));
+        acNoColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAcNo()));
     }    
 
     @FXML
@@ -559,8 +559,7 @@ public class HRPanelUIController implements Initializable {
             session.save(employee);
             for (int i = 0; i < employees.size(); i++){
             employees.remove(i);
-        }
-            employeesTable.remove(0, employeesTable.size());
+            }
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
         } catch (Exception e) {
@@ -1125,7 +1124,7 @@ public class HRPanelUIController implements Initializable {
             permVillageField.setText(employee.getAddress().getPermVillage());
             permPOField.setText(employee.getAddress().getPermPO());
             permPSField.setText(employee.getAddress().getPermPS());
-            permDistField.setText(employee.getAddress().getPresDist());
+            permDistField.setText(employee.getAddress().getPermDist());
             permPhnField.setText(employee.getAddress().getPermPhn());
         }
     }

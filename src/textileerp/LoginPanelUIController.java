@@ -5,6 +5,8 @@
  */
 package textileerp;
 
+import model.User;
+import hibernatesingleton.HibernateSingleton;
 import md5.HashMD5;
 import java.io.IOException;
 import java.net.URL;
@@ -13,11 +15,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * FXML Controller class
@@ -46,10 +53,13 @@ public class LoginPanelUIController implements Initializable {
     private String userType;
     private int userTypeCode;
     private int loginConf = 0;
-    
+   
     private String DB_URL = "jdbc:mysql://127.0.0.1/textileerpdb";
     private String DB_USER = "root";
     private String DB_PASS = "123";
+  /*  private static SessionFactory factory;
+    private static Session session;
+    private List<User> users;*/
     /**
      * Initializes the controller class.
      */
@@ -65,21 +75,54 @@ public class LoginPanelUIController implements Initializable {
         String password = passwordField.getText();
         
         HashMD5 encPass = new HashMD5(password);
+      /*  factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        users = new ArrayList<>();
         
+        Transaction transaction = session.beginTransaction();
+        try{
+//            Criteria criteria = session.createCriteria(User.class);
+//            criteria.add(Restrictions.eq("user_id", username));
+//            
+//            User user = (User) criteria.uniqueResult();
+            users = session.createCriteria(User.class).list();
+            transaction.commit();
+            
+            for (int i = 0; i < users.size(); i++){
+                User user = users.get(i);
+                if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
+                    if(userTypeCode == user.getUserType()){
+                        loginConf = 1;
+                        loginFailMessage.setText("Login Successful");
+                    }
+                    else{
+                        loginFailMessage.setText("Sorry! You don't have access to this");
+                    }
+                }
+                else{
+                    loginFailMessage.setText("Sorry! Username or Password didn't match");
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e);
+//            transaction.rollback();
+        }
+        session.close();*/
+       
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             Statement statement = connection.createStatement();
             
             String query = "SELECT * FROM tbl_users;";
-            ResultSet user = statement.executeQuery(query);
+            ResultSet users = statement.executeQuery(query);
             
-            while(user.next()){
-                String get_user = user.getString("user_id");
-                String get_pass = user.getString("password");
-                int get_user_type = user.getInt("user_type");
-
-                if(username.equals(get_user) && encPass.getHash().equals(get_pass)){
-                    if(userTypeCode == get_user_type){
+            while(users.next()){
+                String get_user = users.getString("user_id");
+                String get_pass = users.getString("password");
+                int get_user_type = users.getInt("user_type");
+                User user = new User(get_user, get_pass, get_user_type);
+                if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
+                    if(userTypeCode == user.getUserType()){
                         loginConf = 1;
                         loginFailMessage.setText("Login Successful");
                         break;
@@ -92,7 +135,6 @@ public class LoginPanelUIController implements Initializable {
                     loginFailMessage.setText("Sorry! Username or Password didn't match");
                 }
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(LoginPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,6 +154,10 @@ public class LoginPanelUIController implements Initializable {
             else if(userType.equals("HR")){
                 HRPanelUIController hrPanel = loader.getController();
                 hrPanel.setEmployeeId(username);
+            }
+            else if(userType.equals("Merchandizer")){
+                MerchandizerPanelUIController merchandizerPanel = loader.getController();
+                merchandizerPanel.setMerchandizerId(username);
             }
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
@@ -139,7 +185,7 @@ public class LoginPanelUIController implements Initializable {
     public void setUserType(String userType){
         this.userType = userType;
         loginAsText.setText(userType);
-        if(userType.equals("Merchandising")){
+        if(userType.equals("Merchandizer")){
             this.userTypeCode = 1;
         }
         else if(userType.equals("Planning")){

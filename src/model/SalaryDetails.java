@@ -23,11 +23,12 @@ public class SalaryDetails {
     private double carAllow;
     private double grossSalary;
     private String bankCode;
+    private String acNo;
 
     public SalaryDetails() {
     }
 
-    public SalaryDetails(int id, double basicSalary, String joiningDate, String bankCode) {
+    public SalaryDetails(int id, double basicSalary, String joiningDate, String bankCode, String acNo) {
         this.id = id;
         this.basicSalary = basicSalary;
         String join_date = joiningDate;
@@ -62,12 +63,14 @@ public class SalaryDetails {
         double car_allow = (running_basic * 10) / 100;
         double gross_salary = running_basic + house_rent + medical + others + conveyance + car_allow;
         this.runningBasic = running_basic;
+        this.houseRent = house_rent;
         this.medical = medical_allow;
         this.others = others_allow;
         this.conveyance = salary_conveyance;
         this.carAllow = car_allow;
         this.grossSalary = gross_salary;
         this.bankCode = bankCode;
+        this.acNo = acNo;
     }
 
     public int getId() {
@@ -108,5 +111,9 @@ public class SalaryDetails {
 
     public String getBankCode() {
         return bankCode;
+    }
+
+    public String getAcNo() {
+        return acNo;
     }
 }
