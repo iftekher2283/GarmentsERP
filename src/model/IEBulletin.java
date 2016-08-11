@@ -6,44 +6,41 @@
 package model;
 
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author iftekher
  */
+@Entity
 public class IEBulletin {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int sl;
     private int orderId;
-    private String buyerName;
-    private String orderDescription;
-    private int orderQuantity;
-    private int allocatedQuantity;
-    private String floorNo;
-    private String lineNo;
-    private List<OperationDetails> operationDetails;
-    private List<OperationSummary> operationSummaries;
+    @OneToMany
+    private List<BulletinOperation> bulletinOperations;
     private double planMP;
     private double pitchTime;
     private double ucl;
     private double lcl;
-    private double targetEFF;
-    private double indTargetEFF;
-    private double workHours;
-    private double workMinutes;
-    private double planTagHr;
+    private int targetEFF;
+    private int indTargetEFF;
+    private int workHours;
+    private int workMinutes;
+    private int planTagHr;
 
     public IEBulletin() {
     }
 
-    public IEBulletin(int orderId, String buyerName, String orderDescription, int orderQuantity, int allocatedQuantity, String floorNo, String lineNo, List<OperationDetails> operationDetails, List<OperationSummary> operationSummaries, double planMP, double pitchTime, double ucl, double lcl, double targetEFF, double indTargetEFF, double workHours, double workMinutes, double planTagHr) {
+    public IEBulletin(int sl, int orderId, List<BulletinOperation> operationDetails, double planMP, double pitchTime, double ucl, double lcl, int targetEFF, int indTargetEFF, int workHours, int workMinutes, int planTagHr) {
+        this.sl = sl;
         this.orderId = orderId;
-        this.buyerName = buyerName;
-        this.orderDescription = orderDescription;
-        this.orderQuantity = orderQuantity;
-        this.allocatedQuantity = allocatedQuantity;
-        this.floorNo = floorNo;
-        this.lineNo = lineNo;
-        this.operationDetails = operationDetails;
-        this.operationSummaries = operationSummaries;
+        this.bulletinOperations = operationDetails;
         this.planMP = planMP;
         this.pitchTime = pitchTime;
         this.ucl = ucl;
@@ -55,79 +52,112 @@ public class IEBulletin {
         this.planTagHr = planTagHr;
     }
 
+    public int getSl() {
+        return sl;
+    }
+
+    public void setSl(int sl) {
+        this.sl = sl;
+    }
+
     public int getOrderId() {
         return orderId;
     }
 
-    public String getBuyerName() {
-        return buyerName;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
-    public String getOrderDescription() {
-        return orderDescription;
+    public List<BulletinOperation> getOperationDetails() {
+        return bulletinOperations;
     }
 
-    public int getOrderQuantity() {
-        return orderQuantity;
-    }
-
-    public int getAllocatedQuantity() {
-        return allocatedQuantity;
-    }
-
-    public String getFloorNo() {
-        return floorNo;
-    }
-
-    public String getLineNo() {
-        return lineNo;
-    }
-
-    public List<OperationDetails> getOperationDetails() {
-        return operationDetails;
-    }
-
-    public List<OperationSummary> getOperationSummaries() {
-        return operationSummaries;
+    public void setOperationDetails(List<BulletinOperation> operationDetails) {
+        this.bulletinOperations = operationDetails;
     }
 
     public double getPlanMP() {
         return planMP;
     }
 
+    public void setPlanMP(double planMP) {
+        this.planMP = planMP;
+    }
+
     public double getPitchTime() {
         return pitchTime;
+    }
+
+    public void setPitchTime(double pitchTime) {
+        this.pitchTime = pitchTime;
     }
 
     public double getUcl() {
         return ucl;
     }
 
+    public void setUcl(double ucl) {
+        this.ucl = ucl;
+    }
+
     public double getLcl() {
         return lcl;
     }
 
-    public double getTargetEFF() {
+    public void setLcl(double lcl) {
+        this.lcl = lcl;
+    }
+
+    public int getTargetEFF() {
         return targetEFF;
     }
 
-    public double getIndTargetEFF() {
+    public void setTargetEFF(int targetEFF) {
+        this.targetEFF = targetEFF;
+    }
+
+    public int getIndTargetEFF() {
         return indTargetEFF;
     }
 
-    public double getWorkHours() {
+    public void setIndTargetEFF(int indTargetEFF) {
+        this.indTargetEFF = indTargetEFF;
+    }
+
+    public int getWorkHours() {
         return workHours;
     }
 
-    public double getWorkMinutes() {
+    public void setWorkHours(int workHours) {
+        this.workHours = workHours;
+    }
+
+    public int getWorkMinutes() {
         return workMinutes;
     }
 
-    public double getPlanTagHr() {
+    public void setWorkMinutes(int workMinutes) {
+        this.workMinutes = workMinutes;
+    }
+
+    public int getPlanTagHr() {
         return planTagHr;
     }
+
+    public void setPlanTagHr(int planTagHr) {
+        this.planTagHr = planTagHr;
+    }
     
-    private void addOperationDetils(OperationDetails operationDetail){
-        operationDetails.add(operationDetail);
+    public void addBulletinOperation(BulletinOperation operation){
+        bulletinOperations.add(operation);
+    }
+    
+    public void removeBulletinOperation(BulletinOperation operation){
+        bulletinOperations.remove(operation);
+    }
+    
+    @Override
+    public String toString() {
+        return "IEBulletin{" + "sl=" + sl + ", orderId=" + orderId + ", operationDetails=" + bulletinOperations + ", planMP=" + planMP + ", pitchTime=" + pitchTime + ", ucl=" + ucl + ", lcl=" + lcl + ", targetEFF=" + targetEFF + ", indTargetEFF=" + indTargetEFF + ", workHours=" + workHours + ", workMinutes=" + workMinutes + ", planTagHr=" + planTagHr + '}';
     }
 }

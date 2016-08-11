@@ -11,5 +11,6 @@
     <mapping class="model.Employee"/>
     <mapping class="model.Buyer"/>
     <mapping class="model.Order"/>
+    <mapping class="model.User"/>
   </session-factory>
 </hibernate-configuration>

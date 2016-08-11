@@ -1,0 +1,1150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="textileerp.QMPanelUIController">
+   <content>
+      <TabPane>
+         <tabs>
+            <Tab text="Cutting DHU">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="166.0" layoutY="154.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="385.0" minHeight="10.0" prefHeight="385.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Line No" GridPane.rowIndex="1" />
+                                    <ComboBox prefHeight="26.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Check Missing" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Hole" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Shade Bar" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Weft Bar" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Naps" GridPane.rowIndex="10" />
+                                    <Label text="Foreign Yarn" GridPane.rowIndex="9" />
+                                    <Label text="Fabric Unfreshing" GridPane.rowIndex="8" />
+                                    <Label text="Knot" GridPane.rowIndex="7" />
+                                    <Label text="Crease Mark" GridPane.rowIndex="6" />
+                                    <Label text="Spot" GridPane.rowIndex="5" />
+                                    <Label text="Slub" GridPane.rowIndex="4" />
+                                    <Label text="Order No" GridPane.rowIndex="3" />
+                                    <Label text="Date" GridPane.rowIndex="2" />
+                                    <Label text="Total Defectives" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Inspections" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Defects" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Broken Yarn" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Dirty Mark" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Printing Mark" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Joint" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Oil Mark" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Thik Yarn" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Missing Yarn" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Remarks" GridPane.columnIndex="4" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Defects (%)" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="DHU" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Passed Pcs" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All DHU">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <columns>
+                                          <TableColumn prefWidth="117.0" text="Date" />
+                                          <TableColumn prefWidth="174.0" text="Order No" />
+                                          <TableColumn prefWidth="142.0" text="Total Inspected" />
+                                          <TableColumn prefWidth="143.0" text="Total Defectives" />
+                                          <TableColumn prefWidth="149.0" text="Total Passed Pcs" />
+                                          <TableColumn prefWidth="90.0" text="DHU" />
+                                          <TableColumn minWidth="0.0" prefWidth="132.0" text="Defects (%)" />
+                                          <TableColumn prefWidth="232.0" text="Remarks" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font></Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Remove" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCuttingSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Text fx:id="qmIdCuttingText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Cutting DHU">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Sewing DHU">
+               <content>
+                  <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0">
+                     <children>
+                        <GridPane layoutX="187.0" layoutY="155.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="424.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Line No" GridPane.rowIndex="1" />
+                                    <ComboBox prefHeight="26.0" prefWidth="340.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Remarks" GridPane.columnIndex="4" GridPane.rowIndex="12">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Defects (%)" GridPane.columnIndex="4" GridPane.rowIndex="11">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="DHU" GridPane.columnIndex="4" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Passed Pcs" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Defectives" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Inspected" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Defect" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Others" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Check Unmatch" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Tention Loos" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Hi-King" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Width Up-Even" GridPane.columnIndex="2" GridPane.rowIndex="12">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Point Up-Down" GridPane.columnIndex="2" GridPane.rowIndex="11">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Shade" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Iron Defect" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Button Hole Missing" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Button Missing" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Pleat" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="2 Fit High-Low" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Join Out" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Uncut Thread" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Stain" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Fabric Fault" GridPane.rowIndex="12" />
+                                    <Label text="Wrong Label Attached" GridPane.rowIndex="11" />
+                                    <Label text="Raw Edge" GridPane.rowIndex="10" />
+                                    <Label text="Rejection" GridPane.rowIndex="9" />
+                                    <Label text="Puckering" GridPane.rowIndex="8" />
+                                    <Label text="Broken Stitch" GridPane.rowIndex="7" />
+                                    <Label text="Roping" GridPane.rowIndex="6" />
+                                    <Label text="Ship Stitch" GridPane.rowIndex="5" />
+                                    <Label text="Slip Stitch" GridPane.rowIndex="4" />
+                                    <Label text="Order No" GridPane.rowIndex="3" />
+                                    <Label text="Date" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="12" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All DHU">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <columns>
+                                          <TableColumn prefWidth="117.0" text="Date" />
+                                          <TableColumn prefWidth="174.0" text="Order No" />
+                                          <TableColumn prefWidth="142.0" text="Total Inspected" />
+                                          <TableColumn prefWidth="143.0" text="Total Defectives" />
+                                          <TableColumn prefWidth="149.0" text="Total Passed Pcs" />
+                                          <TableColumn prefWidth="90.0" text="DHU" />
+                                          <TableColumn minWidth="0.0" prefWidth="132.0" text="Defects (%)" />
+                                          <TableColumn prefWidth="232.0" text="Remarks" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Remove" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSewingSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Text fx:id="qmIdSewingText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Sewing DHU">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Finishing DHU">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="190.0" layoutY="210.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="453.0" minHeight="10.0" prefHeight="453.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Line No" GridPane.rowIndex="1" />
+                                    <ComboBox prefHeight="26.0" prefWidth="251.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Fabric Fault" GridPane.rowIndex="12" />
+                                    <Label text="Wrong Label Attached" GridPane.rowIndex="11" />
+                                    <Label text="Raw Edge" GridPane.rowIndex="10" />
+                                    <Label text="Rejection" GridPane.rowIndex="7" />
+                                    <Label text="Puckering" GridPane.rowIndex="6" />
+                                    <Label text="Broken Stitch" GridPane.rowIndex="9" />
+                                    <Label text="Roping" GridPane.rowIndex="8" />
+                                    <Label text="Ship Stitch" GridPane.rowIndex="5" />
+                                    <Label text="Slip Stitch" GridPane.rowIndex="4" />
+                                    <Label text="Order No" GridPane.rowIndex="3" />
+                                    <Label text="Date" GridPane.rowIndex="2" />
+                                    <Label text="Width Up-Even" GridPane.columnIndex="2" GridPane.rowIndex="12">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Point Up-Down" GridPane.columnIndex="2" GridPane.rowIndex="11">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Shade" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Iron Defect" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Button Hole Missing" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Button Missing" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Pleat" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="2 Fit High-Low" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Join Out" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Uncut Thread" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Stain" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Remarks" GridPane.columnIndex="4" GridPane.rowIndex="12">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Defects (%)" GridPane.columnIndex="4" GridPane.rowIndex="11">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="DHU" GridPane.columnIndex="4" GridPane.rowIndex="10">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Passed Pcs" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Defectives" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Inspected" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Defects" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Others" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Check Unmatch" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Tention Loos" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Hi-King" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="12" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="11" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="10" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="12" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All DHU">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <columns>
+                                          <TableColumn prefWidth="117.0" text="Date" />
+                                          <TableColumn prefWidth="174.0" text="Order No" />
+                                          <TableColumn prefWidth="142.0" text="Total Inspected" />
+                                          <TableColumn prefWidth="143.0" text="Total Defectives" />
+                                          <TableColumn prefWidth="149.0" text="Total Passed Pcs" />
+                                          <TableColumn prefWidth="90.0" text="DHU" />
+                                          <TableColumn minWidth="0.0" prefWidth="132.0" text="Defects (%)" />
+                                          <TableColumn prefWidth="232.0" text="Remarks" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Remove" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleFinishingSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Text fx:id="qmIdFinishingText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Finishing DHU">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Fabric Store DHU">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="260.0" layoutY="241.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="433.0" minHeight="10.0" prefHeight="336.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="350.0" minHeight="10.0" prefHeight="258.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Date" GridPane.rowIndex="1" />
+                                    <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Result" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Calculation Point" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Penalty" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Thik Yarn" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Missing Yarn" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Check Missing " GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Hole" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Shade Bar" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Weft Bar" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Printing Problem" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Dying Problem" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Naps" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Foreign Yarn" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Knot" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Weaving Fault" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Spot" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Slub" GridPane.rowIndex="9" />
+                                    <Label text="Fabric Construction" GridPane.rowIndex="8" />
+                                    <Label text="Total Inspected Rolls" GridPane.rowIndex="7" />
+                                    <Label text="Total Inspected Yards" GridPane.rowIndex="6" />
+                                    <Label text="Total Store Rolls" GridPane.rowIndex="5" />
+                                    <Label text="Total Stored Yards" GridPane.rowIndex="4" />
+                                    <Label text="Fabric Supplier" GridPane.rowIndex="3" />
+                                    <Label text="Buyer Name" GridPane.rowIndex="2" />
+                                    <Label text="Order No" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <ComboBox prefHeight="26.0" prefWidth="340.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Add" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Remove" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All DHU">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <columns>
+                                          <TableColumn prefWidth="117.0" text="Date" />
+                                          <TableColumn prefWidth="174.0" text="Order No" />
+                                          <TableColumn prefWidth="288.0" text="Fabric Supplier" />
+                                          <TableColumn prefWidth="136.0" text="Inspected Yards" />
+                                          <TableColumn prefWidth="138.0" text="Inspected Rolls" />
+                                          <TableColumn prefWidth="103.0" text="Penalty" />
+                                          <TableColumn minWidth="0.0" prefWidth="136.0" text="Calculation Point" />
+                                          <TableColumn prefWidth="87.0" text="Result" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleStoreSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Text fx:id="qmIdStoreText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Fabric Store DHU">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </content>
+</ScrollPane>

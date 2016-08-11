@@ -13,7 +13,7 @@ import java.util.Date;
  * @author iftekher
  */
 public class SalaryDetails {
-    private int id;
+    private String id;
     private double basicSalary;
     private double runningBasic;
     private double houseRent;
@@ -28,7 +28,7 @@ public class SalaryDetails {
     public SalaryDetails() {
     }
 
-    public SalaryDetails(int id, double basicSalary, String joiningDate, String bankCode, String acNo) {
+    public SalaryDetails(String id, double basicSalary, String joiningDate, String bankCode, String acNo) {
         this.id = id;
         this.basicSalary = basicSalary;
         String join_date = joiningDate;
@@ -73,7 +73,7 @@ public class SalaryDetails {
         this.acNo = acNo;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

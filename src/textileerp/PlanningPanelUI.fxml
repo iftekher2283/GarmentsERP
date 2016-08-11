@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="textileerp.PlanningPanelUIController">
+   <content>
+      <TabPane>
+         <tabs>
+            <Tab text="Production Plan">
+               <content>
+                  <AnchorPane id="AnchorPane" prefHeight="1000.0" prefWidth="1200.0">
+                     <children>
+                        <GridPane layoutX="177.0" layoutY="143.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="155.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="464.0" minHeight="10.0" prefHeight="425.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="394.0" minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.0" minWidth="10.0" prefWidth="227.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="158.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="471.0" minWidth="10.0" prefWidth="240.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="348.0" minWidth="10.0" prefWidth="166.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="262.0" minWidth="10.0" prefWidth="238.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="151.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Plan">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Plan ID" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="planningIdBox" onAction="#handlePlanningSearchPlanIdAction" prefHeight="26.0" prefWidth="268.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <DatePicker fx:id="planningDatePicker" prefHeight="26.0" prefWidth="378.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Label text="Total Next Month Allocation" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Current Month Allocation" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Total Previous Month Allocation" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Planning Date" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Working Hour" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin></Label>
+                                    <Label text="Planning Month" GridPane.rowIndex="2" />
+                                    <TextField fx:id="planningWorkingHourField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField fx:id="planningTotalNextMonthAllField" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <TextField fx:id="planningTotalCurrMonthAllField" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField fx:id="planningTotalPrevMonthAllField" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <Label text="Next Month" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Current Month" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Previous Month" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningCurrMonth" prefHeight="26.0" prefWidth="268.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningNextMonthBox" prefHeight="26.0" prefWidth="268.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningPrevMonthBox" prefHeight="26.0" prefWidth="268.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningMonthBox" onAction="#handlePlanningMonthBoxAction" prefHeight="26.0" prefWidth="268.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Planned By" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Last Updated By" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="planningPlannedByField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField fx:id="planningLastUpdatedByField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Plan Details">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <TableView fx:id="planningDetailsTableView" onMouseClicked="#handlePlanningSelectPlanAction" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                      <columns>
+                                        <TableColumn fx:id="planningOrderIdTableColumn" prefWidth="118.00003051757812" text="Order ID" />
+                                        <TableColumn fx:id="planningBuyerNameTableColumn" prefWidth="163.0" text="Buyer Name" />
+                                          <TableColumn fx:id="planningOrderQuantityTableColumn" prefWidth="149.0" text="Order Quantity" />
+                                          <TableColumn fx:id="planningAllocatedQuantityTableColumn" prefWidth="150.0" text="AllocatedQuantity" />
+                                          <TableColumn fx:id="planningExportStartDateTableColumn" prefWidth="155.0" text="Export Start Date" />
+                                          <TableColumn maxWidth="-Infinity" minWidth="-Infinity" prefWidth="600.0" text="Monthly Allocation">
+                                             <columns>
+                                                <TableColumn fx:id="planningPrevMonthAllTableColumn" prefWidth="74.0" text="Previous" />
+                                                <TableColumn fx:id="planningCurrMonthAllTableColumn" prefWidth="75.0" text="Current" />
+                                                <TableColumn fx:id="planningNextMonthAllTableColumn" prefWidth="76.0" text="Next" />
+                                             </columns>
+                                          </TableColumn>
+                                          <TableColumn fx:id="planningTargetTableColumn" minWidth="0.0" prefWidth="91.0" text="Target" />
+                                          <TableColumn fx:id="planningDaysRequiredTableColumn" prefWidth="128.0" text="Days Required" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="137.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="253.0" minWidth="10.0" prefWidth="211.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="226.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="379.0" minWidth="10.0" prefWidth="221.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.0" minWidth="10.0" prefWidth="163.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.0" minWidth="10.0" prefWidth="206.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Text>
+                                    <Label text="Order ID" GridPane.rowIndex="1" />
+                                    <TextField fx:id="planningOrderIdField" onAction="#handlePlanningSearchOrderIdAction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="planningBuyerNameBox" prefHeight="26.0" prefWidth="314.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label text="Days Required" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Export Starting Date" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Output End Date" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Output End Day" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Output Start Date" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Output Start Day" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Input Date" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Input Day" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Final Audit Date" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Next Month Allocation" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Current Month Allocation" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Previous Month Allocation" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Buyer Name" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Allocated Quantity" GridPane.rowIndex="7" />
+                                    <Label text="Order Quantity" GridPane.rowIndex="6" />
+                                    <Label text="Style" GridPane.rowIndex="5" />
+                                    <Label text="Color" GridPane.rowIndex="4" />
+                                    <Label text="Line Number" GridPane.rowIndex="3" />
+                                    <Label text="Factory Name" GridPane.rowIndex="2" />
+                                    <Label text="Target" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="planningTargetField" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                    <TextField fx:id="planningAllocatedQuantityField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField fx:id="planningOrderQuantityField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <TextField fx:id="planningStyleField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <TextField fx:id="planningColorField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField fx:id="planningDaysRequiredField" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <TextField fx:id="planningNextMonthAllField" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <TextField fx:id="planningCurrMonthAllField" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <TextField fx:id="planningPrevMonthAllField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningOutputEndDay" prefHeight="26.0" prefWidth="417.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <ComboBox fx:id="planningOutputDayBox" prefHeight="26.0" prefWidth="358.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningLineNumberBox" prefHeight="26.0" prefWidth="310.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox fx:id="planningInputDayBox" prefHeight="26.0" prefWidth="290.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <DatePicker fx:id="planningExportStartingDatePicker" prefHeight="26.0" prefWidth="329.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <DatePicker fx:id="planningFinalAuditDatePicker" prefHeight="26.0" prefWidth="329.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                                    <DatePicker fx:id="planningOutputEndPicker" prefHeight="26.0" prefWidth="329.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                    <DatePicker fx:id="planningOutputDatePicker" prefHeight="26.0" prefWidth="329.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <DatePicker fx:id="planningInputDatePicker" prefHeight="26.0" prefWidth="329.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <TextField fx:id="planningFactoryNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="4">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#handlePlanningSaveAction" prefHeight="40.0" prefWidth="120.0" text="Save" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handlePlanningRemoveAction" prefHeight="40.0" prefWidth="120.0" text="Remove" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handlePlanningRefreshAction" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="358.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleProductionPlanSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <Text fx:id="productionPlanningIdText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="15.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Production Plan">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </content>
+</ScrollPane>

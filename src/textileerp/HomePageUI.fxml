@@ -52,7 +52,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginSelectionAction" prefHeight="100.0" prefWidth="160.0" text="QC" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginSelectionAction" prefHeight="100.0" prefWidth="160.0" text="QM" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

@@ -171,7 +171,7 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private TableView<Employee> employeeViewTable;
     @FXML
-    private TableColumn<Employee, Number> employeeIdColumn;
+    private TableColumn<Employee, String> employeeIdColumn;
     @FXML
     private TableColumn<Employee, String> employeeNameColumn;
     @FXML
@@ -204,7 +204,7 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private TableView<SalaryDetails> salaryDetailsTable;
     @FXML
-    private TableColumn<SalaryDetails, Number> employeeIdSalaryDetailsColumn;
+    private TableColumn<SalaryDetails, String> employeeIdSalaryDetailsColumn;
     @FXML
     private TableColumn<SalaryDetails, Number> basicSalaryColumn;
     @FXML
@@ -226,7 +226,8 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private TableColumn<SalaryDetails, String> acNoColumn;
     @FXML
-    private Text hrmIdText1;
+    private Text hrmSalariesIdText;
+    
     private ObservableList<SalaryDetails> salaries;
     
     /**
@@ -273,7 +274,7 @@ public class HRPanelUIController implements Initializable {
             employeesTable.add(employees.get(i));
         }
         employeeViewTable.setItems(employeesTable);
-        employeeIdColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         employeeNameColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
         employeeSexColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSex()));
         employeeCompanyNoColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getCompanyNo()));
@@ -290,7 +291,7 @@ public class HRPanelUIController implements Initializable {
             salaries.add(salaryDetails);
         }
         salaryDetailsTable.setItems(salaries);
-        employeeIdSalaryDetailsColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        employeeIdSalaryDetailsColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         basicSalaryColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getBasicSalary()));
         runningBasicColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRunningBasic()));
         houseRentColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHouseRent()));
@@ -305,7 +306,7 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleIDAction(ActionEvent event) {
-        int id = Integer.parseInt(idNoField.getText());
+        String id = idNoField.getText();
         Employee employee = null;
         for (int i = 0; i < employees.size(); i++){
             if(employees.get(i).getId() == id){
@@ -493,7 +494,7 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private void handleAddAction(ActionEvent event) {
         //Collect Necessary Data for Employee
-        int id = Integer.parseInt(idNoField.getText());
+        String id = idNoField.getText();
         String name = employeeNameField.getText();
         int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
         String designation = designationBox.getSelectionModel().getSelectedItem() + "";
@@ -574,7 +575,7 @@ public class HRPanelUIController implements Initializable {
             employeesTable.add(employees.get(i));
         }
         employeeViewTable.setItems(employeesTable);
-        employeeIdColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         employeeNameColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
         employeeSexColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSex()));
         employeeCompanyNoColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getCompanyNo()));
@@ -648,7 +649,7 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private void handleUpdateAction(ActionEvent event) {
         //Collect Necessary Data for Employee
-        int id = Integer.parseInt(idNoField.getText());
+        String id = idNoField.getText();
         String name = employeeNameField.getText();
         int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
         String designation = designationBox.getSelectionModel().getSelectedItem() + "";
@@ -730,7 +731,7 @@ public class HRPanelUIController implements Initializable {
             employeesTable.add(employees.get(i));
         }
         employeeViewTable.setItems(employeesTable);
-        employeeIdColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         employeeNameColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
         employeeSexColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSex()));
         employeeCompanyNoColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getCompanyNo()));
@@ -803,7 +804,7 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleRemoveAction(ActionEvent event) {
-        int id = Integer.parseInt(idNoField.getText());
+        String id = idNoField.getText();
         String name = employeeNameField.getText();
         int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
         String designation = designationBox.getSelectionModel().getSelectedItem() + "";
@@ -885,7 +886,7 @@ public class HRPanelUIController implements Initializable {
             employeesTable.add(employees.get(i));
         }
         employeeViewTable.setItems(employeesTable);
-        employeeIdColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
+        employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         employeeNameColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
         employeeSexColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSex()));
         employeeCompanyNoColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getCompanyNo()));
@@ -1023,7 +1024,7 @@ public class HRPanelUIController implements Initializable {
     private void handleSelectEmployeeAction(MouseEvent event) {
         Employee employee = employeeViewTable.getSelectionModel().getSelectedItem();
         if(!employee.getName().equals("")){
-            idNoField.setText("" + employee.getId());
+            idNoField.setText(employee.getId());
             employeeNameField.setText(employee.getName());
             companyNoBox.getSelectionModel().select(employee.getCompanyNo() - 1);
             designationBox.getSelectionModel().select(Designation.valueOf(employee.getDesignation()));
@@ -1149,10 +1150,27 @@ public class HRPanelUIController implements Initializable {
     public void setEmployeeId(String employeeId){
         this.employeeId = employeeId;
         hrmIdText.setText("HRM ID: " + employeeId);
-        hrmIdText1.setText("HRM ID: " + employeeId);
+        hrmSalariesIdText.setText("HRM ID: " + employeeId);
     }
 
     @FXML
     private void handleUpdateSalaryAction(MouseEvent event) {
+    }
+
+    @FXML
+    private void handleSalariesSignOutAction(ActionEvent event) {
+        try {
+            employeeId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

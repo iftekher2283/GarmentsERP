@@ -117,15 +117,20 @@ public class LoginPanelUIController implements Initializable {
             ResultSet users = statement.executeQuery(query);
             
             while(users.next()){
+                int get_sl = users.getInt("sl");
                 String get_user = users.getString("user_id");
                 String get_pass = users.getString("password");
                 int get_user_type = users.getInt("user_type");
-                User user = new User(get_user, get_pass, get_user_type);
+                int get_is_blocked = users.getInt("isBlocked");
+                User user = new User(get_sl, get_user, get_pass, get_user_type, get_is_blocked);
                 if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
-                    if(userTypeCode == user.getUserType()){
+                    if(userTypeCode == user.getUserType() && user.getIsBlocked() == 0){
                         loginConf = 1;
                         loginFailMessage.setText("Login Successful");
                         break;
+                    }
+                    else if(userTypeCode == user.getUserType() && user.getIsBlocked() == 1){
+                        loginFailMessage.setText("Sorry! You are currently blocked by an Admin");
                     }
                     else{
                         loginFailMessage.setText("Sorry! You don't have access to this");
@@ -141,6 +146,7 @@ public class LoginPanelUIController implements Initializable {
         if(loginConf == 1){
             try {
             FXMLLoader loader = new FXMLLoader();
+          //  System.out.println(userType);
             loader.setLocation(getClass().getResource(userType + "PanelUI.fxml"));
             loader.load();
             Parent root = loader.getRoot();
@@ -158,6 +164,26 @@ public class LoginPanelUIController implements Initializable {
             else if(userType.equals("Merchandizer")){
                 MerchandizerPanelUIController merchandizerPanel = loader.getController();
                 merchandizerPanel.setMerchandizerId(username);
+            }
+            else if(userType.equals("IE")){
+                IEPanelUIController iePanel = loader.getController();
+                iePanel.setIeId(username);
+            }
+            else if(userType.equals("QM")){
+                QMPanelUIController qmPanel = loader.getController();
+                qmPanel.setQmId(username);
+            }
+            else if(userType.equals("Planning")){
+                PlanningPanelUIController planningPanel = loader.getController();
+                planningPanel.setPlannerId(username);
+            }
+            else if(userType.equals("Production")){
+                ProductionPanelUIController productionPanel = loader.getController();
+                productionPanel.setProductionId(username);
+            }
+            else if(userType.equals("Store")){
+                StorePanelUIController storePanel = loader.getController();
+                storePanel.setStoreManagerId(username);
             }
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
@@ -197,7 +223,7 @@ public class LoginPanelUIController implements Initializable {
         else if(userType.equals("Production")){
             this.userTypeCode = 4;
         }
-        else if(userType.equals("QC")){
+        else if(userType.equals("QM")){
             this.userTypeCode = 5;
         }
         else if(userType.equals("Store")){

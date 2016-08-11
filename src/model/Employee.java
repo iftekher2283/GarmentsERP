@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name="tbl_employee")
 public class Employee implements Serializable {
     @Id
-    private int id;
+    private String id;
     private String name;
     private String sex;
     private int companyNo;
@@ -38,7 +38,7 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(int id, String name, String sex, int companyNo, String branchId, String departmentCode, String designation, String confirmationDate, String JoiningDate, Salary salaryInfo, PersonalInformation personalInfo, Address address) {
+    public Employee(String id, String name, String sex, int companyNo, String branchId, String departmentCode, String designation, String confirmationDate, String JoiningDate, Salary salaryInfo, PersonalInformation personalInfo, Address address) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -53,7 +53,7 @@ public class Employee implements Serializable {
         this.address = address;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -101,7 +101,7 @@ public class Employee implements Serializable {
         return address;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -153,6 +153,4 @@ public class Employee implements Serializable {
     public String toString() {
         return "Employee{" + "id=" + id + ", name=" + name + ", sex=" + sex + ", companyNo=" + companyNo + ", branchId=" + branchId + ", departmentCode=" + departmentCode + ", designation=" + designation + ", confirmationDate=" + confirmationDate + ", JoiningDate=" + joiningDate + ", salaryInfo=" + salaryInfo + ", personalInfo=" + personalInfo + ", address=" + address + '}';
     }
-    
-    
 }

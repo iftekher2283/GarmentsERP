@@ -2,9 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,50 +18,199 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <ScrollPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="textileerp.AdminPanelUIController">
    <content>
       <TabPane>
          <tabs>
-            <Tab text="Menu1">
+            <Tab text="Users">
                <content>
                   <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1000.0">
                      <children>
-                        <GridPane layoutX="50.0" layoutY="48.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <GridPane layoutX="50.0" layoutY="48.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="132.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="578.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="324.0" minHeight="10.0" prefHeight="319.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <GridPane prefHeight="50.0" prefWidth="798.0">
+                              <GridPane GridPane.rowIndex="1">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="859.0" minWidth="10.0" prefWidth="859.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="0.0" prefWidth="121.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="124.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="173.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="175.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="178.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="138.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="178.0" minWidth="10.0" prefWidth="168.0" />
                                 </columnConstraints>
                                 <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#e80000" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Label text="Employee ID" GridPane.rowIndex="1" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="adminUsersEmployeeIdField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <ComboBox fx:id="adminUsersSectionBox" prefHeight="26.0" prefWidth="286.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Label text="Section" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                        <GridPane.margin>
-                                          <Insets left="5.0" />
+                                          <Insets left="20.0" />
                                        </GridPane.margin>
+                                    </Label>
+                                    <Label text="Is Blocked" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Re-type Password" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Username" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Password" GridPane.rowIndex="2" />
+                                    <ComboBox fx:id="adminUsersIsBlockedBox" prefHeight="26.0" prefWidth="305.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <TextField fx:id="adminUsersUsernameField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <PasswordField fx:id="adminUsersPasswordField" onKeyReleased="#handleAdminUserPasswordMatchAction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <PasswordField fx:id="adminUsersReTypePasswordField" onKeyReleased="#handleAdminUserReTypePasswordMatchAction" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Text fx:id="adminUsersActionMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="5">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TableView fx:id="adminUsersAllUsersTableView" onMouseClicked="#handleAdminManageUsersSelectUserAction" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                      <columns>
+                                        <TableColumn fx:id="adminUsersAllUsersSlTableColumn" prefWidth="120.0" text="Sl" />
+                                        <TableColumn fx:id="adminUsersAllUsersUsernameTableColumn" prefWidth="295.0" text="Username" />
+                                          <TableColumn fx:id="adminUsersAllUsersSectionTableColumn" prefWidth="287.0" text="Section" />
+                                          <TableColumn fx:id="adminUsersAllUsersIsBlockedTableColumn" prefWidth="263.0" text="Is Blocked" />
+                                      </columns>
+                                    </TableView>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Users">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="4">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <TableView fx:id="adminUsersAllEmployeesTableView" onMouseClicked="#handleAdminManageUsersSelectEmployeeAction" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <columns>
+                                          <TableColumn fx:id="adminUsersAllEmployeesEmployeeIdTableColumn" prefWidth="114.0" text="Employee ID" />
+                                          <TableColumn fx:id="adminUsersAllEmployeesNameTableColumn" prefWidth="263.99998474121094" text="Name" />
+                                          <TableColumn fx:id="adminUsersAllEmployeesGenderTableColumn" text="Gender" />
+                                          <TableColumn fx:id="adminUsersAllEmployeesCompanyNoTableColumn" prefWidth="103.0" text="Company No" />
+                                          <TableColumn fx:id="adminUsersAllEmployeesDepartmentTableColumn" prefWidth="131.0" text="Department " />
+                                          <TableColumn fx:id="adminUsersAllEmployeesBranchIdTableColumn" prefWidth="119.0" text="Branch ID" />
+                                          <TableColumn fx:id="adminUsersAllEmployeesDesignationTableColumn" prefWidth="153.0" text="Designation" />
+                                       </columns>
+                                    </TableView>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="All Employess">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane prefHeight="30.0" prefWidth="1180.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="633.0" minWidth="10.0" prefWidth="552.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.0" minWidth="10.0" prefWidth="319.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="126.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAdminManageUsersSignOutAction" prefHeight="40.0" prefWidth="100.0" text="Sign Out" textFill="#ff0202" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font>
                                     </Button>
-                                    <Text fx:id="adminIdText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.halignment="RIGHT">
+                                    <Text fx:id="adminManageUsersIdText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets right="5.0" />
+                                          <Insets right="10.0" />
                                        </GridPane.margin>
                                        <font>
                                           <Font name="Abyssinica SIL" size="15.0" />
                                        </font>
                                     </Text>
+                                    <Text fill="#082c99" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Users">
+                                       <font>
+                                          <Font name="Abyssinica SIL" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="2">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#handleManageUsersGiveAccessAction" prefHeight="50.0" prefWidth="150.0" text="Give Access" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleManageUsersBlockAction" prefHeight="50.0" prefWidth="150.0" text="Block" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleManageUsersUnblockAction" prefHeight="50.0" prefWidth="150.0" text="Unblock" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleManageUsersRefreshAction" prefHeight="50.0" prefWidth="150.0" text="Refresh" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleManageUsersUpdateAction" prefHeight="50.0" prefWidth="150.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
                                  </children>
                               </GridPane>
                            </children>
