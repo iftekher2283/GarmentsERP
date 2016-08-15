@@ -36,16 +36,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import md5.HashMD5;
 import model.Address;
 import model.Employee;
 import model.PersonalInformation;
 import model.Salary;
 import model.SalaryDetails;
+import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -189,16 +193,7 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private Text hrmIdText;
     
-    private String employeeId;
-    private ObservableList<Integer> companyNo;
     
-    //Session Variables to Access Hibernate
-    private static SessionFactory factory;
-    private static Session session;
-    
-    //List of All Employess
-    List<Employee> employees;
-    ObservableList<Employee> employeesTable;
     
     //Salary Details Tab
     @FXML
@@ -226,9 +221,79 @@ public class HRPanelUIController implements Initializable {
     @FXML
     private TableColumn<SalaryDetails, String> acNoColumn;
     @FXML
-    private Text hrmSalariesIdText;
+    private Text hrmSalariesIdText;    
     
+    // Profile FXML
+    @FXML
+    private Text profileDesignationText;
+    @FXML
+    private Text profileJoiningDateText;
+    @FXML
+    private Text profileConfirmationDateText;
+    @FXML
+    private Text profileBranchText;
+    @FXML
+    private Text profileDepartmentText;
+    @FXML
+    private Text profileCompanyNoText;
+    @FXML
+    private Text profileNameText;
+    @FXML
+    private Text profileEmployeeIdText;
+    @FXML
+    private Text profileNidNoText;
+    @FXML
+    private Text profileEmailText;
+    @FXML
+    private Text profilePhoneText;
+    @FXML
+    private Text profileEduQualiText;
+    @FXML
+    private Text profilePassportNoText;
+    @FXML
+    private Text profileReligionText;
+    @FXML
+    private Text profileGenderText;
+    @FXML
+    private Text profileDateOfBirthText;
+    @FXML
+    private Text profileMotherNameText;
+    @FXML
+    private Text profileFatherNameText;
+    @FXML
+    private Text profileBloodGroupText;
+    @FXML
+    private Text profileNationalityText;
+    @FXML
+    private PasswordField profileOldPasswordField;
+    @FXML
+    private PasswordField profileRetypeNewPasswordField;
+    @FXML
+    private PasswordField profileNewPasswordField;
+    @FXML
+    private Text profileUsernameText;
+    @FXML
+    private Text hrmChangePasswordMessageText;
+    @FXML
+    private Text hrmProfileIdText;
+    
+    //Session Variables to Access Hibernate
+    private static SessionFactory factory;
+    private static Session session;
+    
+    //Required Lists
+    private List<Employee> employees;
+    private List<User> users;
+    
+    //Required ObservableLists
+    private ObservableList<Employee> employeesTable;
+    private ObservableList<Integer> companyNo;
     private ObservableList<SalaryDetails> salaries;
+    
+    //Required Global Variables
+    private String employeeId;
+    private Employee employee;
+    private User user;
     
     /**
      * Initializes the controller class.
@@ -257,9 +322,11 @@ public class HRPanelUIController implements Initializable {
         
         //Initialize Employees' List and Get Stored Information of All Employees
         employees = new ArrayList<>();
+        users = new ArrayList<>();
         Transaction transaction = session.beginTransaction();
         try {
             employees = session.createCriteria(Employee.class).list();
+            users = session.createCriteria(User.class).list();
             transaction.commit();
         } catch (Exception e) {
             System.err.println(e);
@@ -1151,6 +1218,54 @@ public class HRPanelUIController implements Initializable {
         this.employeeId = employeeId;
         hrmIdText.setText("HRM ID: " + employeeId);
         hrmSalariesIdText.setText("HRM ID: " + employeeId);
+        hrmProfileIdText.setText("HRM ID: " + employeeId);
+        
+        employees = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        Transaction transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            employees = session.createCriteria(Employee.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.out.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Get Employee Information Using ID
+        for(int i = 0; i < employees.size(); i++){
+            if(employeeId.equals(employees.get(i).getId())){
+                employee = employees.get(i);
+            }
+        }
+        
+        // Set Profile Information To FXML
+        profileEmployeeIdText.setText(employee.getId());
+        profileDesignationText.setText(employee.getDesignation());
+        profileJoiningDateText.setText(employee.getJoiningDate());
+        profileConfirmationDateText.setText(employee.getConfirmationDate());
+        profileDepartmentText.setText(employee.getDepartmentCode());
+        profileCompanyNoText.setText(employee.getCompanyNo() + "");
+        profileNameText.setText(employee.getName());
+        profileNidNoText.setText(employee.getPersonalInfo().getNidNo());
+        profileEmailText.setText(employee.getPersonalInfo().getEmail());
+        profilePhoneText.setText(employee.getPersonalInfo().getMobileNo());
+        profileEduQualiText.setText(employee.getPersonalInfo().getEduQuali());
+        profilePassportNoText.setText(employee.getPersonalInfo().getPassportNo());
+        profileReligionText.setText(employee.getPersonalInfo().getReligion());
+        profileGenderText.setText(employee.getSex());
+        profileDateOfBirthText.setText(employee.getPersonalInfo().getDateOfBirth());
+        profileMotherNameText.setText(employee.getPersonalInfo().getMothersName());
+        profileFatherNameText.setText(employee.getPersonalInfo().getFathersName());
+        profileBloodGroupText.setText(employee.getPersonalInfo().getBloodGroup());
+        profileNationalityText.setText(employee.getPersonalInfo().getNationality());
+        profileUsernameText.setText(employee.getId());
+        profileBranchText.setText(employee.getBranchId());
     }
 
     @FXML
@@ -1159,6 +1274,103 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleSalariesSignOutAction(ActionEvent event) {
+        try {
+            employeeId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordReMatchAction(KeyEvent event) {
+        hrmChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            hrmChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordMatchAction(KeyEvent event) {
+        hrmChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            hrmChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleHrmChangePasswordAction(ActionEvent event) {
+        // Get Values From FXML
+        String username = profileUsernameText.getText();
+        String getPass = profileOldPasswordField.getText();
+        
+        String getNewPass = profileNewPasswordField.getText();
+        String getNewRePass = profileRetypeNewPasswordField.getText();
+        
+        // Encrypt Passwords
+        HashMD5 encPass = new HashMD5(getPass);
+        String password = encPass.getHash();
+        
+        HashMD5 encNewPass = new HashMD5(getNewPass);
+        String newPassword = encNewPass.getHash();
+        
+        // Get The User
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)){
+                user = users.get(i);
+                break;
+            }
+        }
+        
+        // Set User's New Password
+        if(getNewPass.equals(getNewRePass)){
+            user.setPassword(newPassword);
+        }
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        Transaction transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(user);
+            transaction.commit();
+        }catch(Exception e){
+            hrmChangePasswordMessageText.setText(e + "");
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh FXML
+        profileOldPasswordField.setText("");
+        profileNewPasswordField.setText("");
+        profileRetypeNewPasswordField.setText("");
+    }
+
+    @FXML
+    private void handleHrmProfileSignOutAction(ActionEvent event) {
         try {
             employeeId = "";
             FXMLLoader loader = new FXMLLoader();

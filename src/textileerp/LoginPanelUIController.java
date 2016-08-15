@@ -161,9 +161,9 @@ public class LoginPanelUIController implements Initializable {
                 HRPanelUIController hrPanel = loader.getController();
                 hrPanel.setEmployeeId(username);
             }
-            else if(userType.equals("Merchandizer")){
-                MerchandizerPanelUIController merchandizerPanel = loader.getController();
-                merchandizerPanel.setMerchandizerId(username);
+            else if(userType.equals("Merchandiser")){
+                MerchandiserPanelUIController merchandiserPanel = loader.getController();
+                merchandiserPanel.setMerchandiserId(username);
             }
             else if(userType.equals("IE")){
                 IEPanelUIController iePanel = loader.getController();
@@ -211,7 +211,7 @@ public class LoginPanelUIController implements Initializable {
     public void setUserType(String userType){
         this.userType = userType;
         loginAsText.setText(userType);
-        if(userType.equals("Merchandizer")){
+        if(userType.equals("Merchandiser")){
             this.userTypeCode = 1;
         }
         else if(userType.equals("Planning")){

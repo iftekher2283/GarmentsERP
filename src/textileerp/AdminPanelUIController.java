@@ -52,7 +52,7 @@ public class AdminPanelUIController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    private String employeeId;
+    // Manage User FXML
     @FXML
     private TextField adminUsersEmployeeIdField;
     @FXML
@@ -96,32 +96,101 @@ public class AdminPanelUIController implements Initializable {
     @FXML
     private Text adminUsersActionMessageText;
     
+    // Profile FXML
+    @FXML
+    private Text profileDesignationText;
+    @FXML
+    private Text profileJoiningDateText;
+    @FXML
+    private Text profileConfirmationDateText;
+    @FXML
+    private Text profileBranchText;
+    @FXML
+    private Text profileDepartmentText;
+    @FXML
+    private Text profileCompanyNoText;
+    @FXML
+    private Text profileNameText;
+    @FXML
+    private Text profileEmployeeIdText;
+    @FXML
+    private Text profileNidNoText;
+    @FXML
+    private Text profileEmailText;
+    @FXML
+    private Text profilePhoneText;
+    @FXML
+    private Text profileEduQualiText;
+    @FXML
+    private Text profilePassportNoText;
+    @FXML
+    private Text profileReligionText;
+    @FXML
+    private Text profileGenderText;
+    @FXML
+    private Text profileDateOfBirthText;
+    @FXML
+    private Text profileMotherNameText;
+    @FXML
+    private Text profileFatherNameText;
+    @FXML
+    private Text profileBloodGroupText;
+    @FXML
+    private Text profileNationalityText;
+    @FXML
+    private PasswordField profileOldPasswordField;
+    @FXML
+    private PasswordField profileRetypeNewPasswordField;
+    @FXML
+    private PasswordField profileNewPasswordField;
+    @FXML
+    private Text profileUsernameText;
+    @FXML
+    private Text adminChangePasswordMessageText;
+    @FXML
+    private Text adminProfileIdText;
+    
+    // Required Lists
     private List<User> users;
     private List<Employee> employees;
+    
+    // Required ObservableLists
     private ObservableList<User> usersView;
     private ObservableList<Employee> employeesView;
     
+    // Hibernate Variables
     private SessionFactory factory;
     private Session session;
     private Transaction transaction;
     
+    // Required Gloal Variables
     private Employee employee;
     private User user;
     
+    private String employeeId;
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Set Message Texts Empty
         adminUsersActionMessageText.setText("");
+        adminChangePasswordMessageText.setText("");
+        
+        // Set ComboBox Values
+        /* Manage Users */
         adminUsersSectionBox.getItems().addAll(Section.values());
         adminUsersIsBlockedBox.getItems().addAll(IsBlocked.values());
         
+        // Instantiate Lists
         users = new ArrayList<>();
         employees = new ArrayList<>();
         
+        // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
         
+        // Database Actions
         try{
             users = session.createCriteria(User.class).list();
             employees = session.createCriteria(Employee.class).list();
@@ -132,6 +201,7 @@ public class AdminPanelUIController implements Initializable {
         }
         session.close();
         
+        // Set User ObservableList Values
         usersView = FXCollections.observableArrayList();
         for(int i = 0; i < users.size(); i++){
             int sl = users.get(i).getSl();
@@ -142,16 +212,21 @@ public class AdminPanelUIController implements Initializable {
             User user = new User(sl, username, password, userType, isBlocked);
             usersView.add(user);
         }
+        
+        // Set User To TableView
         adminUsersAllUsersTableView.setItems(usersView);
         adminUsersAllUsersSlTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getSl()));
         adminUsersAllUsersUsernameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmployeeId()));
         adminUsersAllUsersSectionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUserTypeSt()));
         adminUsersAllUsersIsBlockedTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getIsBlockedSt()));
         
+        // Set Employee ObservableLists
         employeesView = FXCollections.observableArrayList();
         for(int i = 0; i < employees.size(); i++){
             employeesView.add(employees.get(i));
         }
+        
+        // Set Employee To TableView
         adminUsersAllEmployeesTableView.setItems(employeesView);
         adminUsersAllEmployeesEmployeeIdTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
         adminUsersAllEmployeesNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
@@ -160,11 +235,96 @@ public class AdminPanelUIController implements Initializable {
         adminUsersAllEmployeesDepartmentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDepartmentCode()));
         adminUsersAllEmployeesBranchIdTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBranchId()));
         adminUsersAllEmployeesDesignationTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDesignation()));
+        
+   /*     // Retrieve Username Or Employee ID From ID Text
+        String idText = adminProfileIdText.getText();
+        String tokens[] = idText.split(" ");
+        for(int i = 0; i < tokens.length; i++){
+            System.out.println("tokens[" + i + "]: " + tokens[i]);
+        }
+        String id = employeeId;
+        
+        // Get Employee Information Using ID
+        for(int i = 0; i < employees.size(); i++){
+            if(id.equals(employees.get(i).getId())){
+                employee = employees.get(i);
+            }
+        }
+        
+        // Set Profile Information To FXML
+        profileEmployeeIdText.setText(employee.getId());
+        profileDesignationText.setText(employee.getDesignation());
+        profileJoiningDateText.setText(employee.getJoiningDate());
+        profileConfirmationDateText.setText(employee.getConfirmationDate());
+        profileDepartmentText.setText(employee.getDepartmentCode());
+        profileCompanyNoText.setText(employee.getCompanyNo() + "");
+        profileNameText.setText(employee.getName());
+        profileNidNoText.setText(employee.getPersonalInfo().getNidNo());
+        profileEmailText.setText(employee.getPersonalInfo().getEmail());
+        profilePhoneText.setText(employee.getPersonalInfo().getMobileNo());
+        profileEduQualiText.setText(employee.getPersonalInfo().getEduQuali());
+        profilePassportNoText.setText(employee.getPersonalInfo().getPassportNo());
+        profileReligionText.setText(employee.getPersonalInfo().getReligion());
+        profileGenderText.setText(employee.getSex());
+        profileDateOfBirthText.setText(employee.getPersonalInfo().getDateOfBirth());
+        profileMotherNameText.setText(employee.getPersonalInfo().getMothersName());
+        profileFatherNameText.setText(employee.getPersonalInfo().getFathersName());
+        profileBloodGroupText.setText(employee.getPersonalInfo().getBloodGroup());
+        profileNationalityText.setText(employee.getPersonalInfo().getNationality());
+        profileUsernameText.setText(employee.getId()); */
     }   
     
     public void setEmployeeId(String employeeId){
         this.employeeId = employeeId;
         adminManageUsersIdText.setText("Admin ID: " + employeeId);
+        adminProfileIdText.setText("Admin ID: " + employeeId);
+        
+        employees = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            employees = session.createCriteria(Employee.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.out.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Get Employee Information Using ID
+        for(int i = 0; i < employees.size(); i++){
+            if(employeeId.equals(employees.get(i).getId())){
+                employee = employees.get(i);
+            }
+        }
+        
+        // Set Profile Information To FXML
+        profileEmployeeIdText.setText(employee.getId());
+        profileDesignationText.setText(employee.getDesignation());
+        profileJoiningDateText.setText(employee.getJoiningDate());
+        profileConfirmationDateText.setText(employee.getConfirmationDate());
+        profileDepartmentText.setText(employee.getDepartmentCode());
+        profileCompanyNoText.setText(employee.getCompanyNo() + "");
+        profileNameText.setText(employee.getName());
+        profileNidNoText.setText(employee.getPersonalInfo().getNidNo());
+        profileEmailText.setText(employee.getPersonalInfo().getEmail());
+        profilePhoneText.setText(employee.getPersonalInfo().getMobileNo());
+        profileEduQualiText.setText(employee.getPersonalInfo().getEduQuali());
+        profilePassportNoText.setText(employee.getPersonalInfo().getPassportNo());
+        profileReligionText.setText(employee.getPersonalInfo().getReligion());
+        profileGenderText.setText(employee.getSex());
+        profileDateOfBirthText.setText(employee.getPersonalInfo().getDateOfBirth());
+        profileMotherNameText.setText(employee.getPersonalInfo().getMothersName());
+        profileFatherNameText.setText(employee.getPersonalInfo().getFathersName());
+        profileBloodGroupText.setText(employee.getPersonalInfo().getBloodGroup());
+        profileNationalityText.setText(employee.getPersonalInfo().getNationality());
+        profileUsernameText.setText(employee.getId());
+        profileBranchText.setText(employee.getBranchId());
     }
 
     @FXML
@@ -569,7 +729,7 @@ public class AdminPanelUIController implements Initializable {
         if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
             isMatched = 1;
         }
-        else{
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
             adminUsersActionMessageText.setText("Please Enter Same Password in Both Fields");
         }
     }
@@ -584,8 +744,106 @@ public class AdminPanelUIController implements Initializable {
         if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
             isMatched = 1;
         }
-        else{
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
             adminUsersActionMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleAdminChangePasswordAction(ActionEvent event) {
+        // Get Values From FXML
+        String username = profileUsernameText.getText();
+        String getPass = profileOldPasswordField.getText();
+        
+        String getNewPass = profileNewPasswordField.getText();
+        String getNewRePass = profileRetypeNewPasswordField.getText();
+        
+        // Encrypt Passwords
+        HashMD5 encPass = new HashMD5(getPass);
+        String password = encPass.getHash();
+        
+        HashMD5 encNewPass = new HashMD5(getNewPass);
+        String newPassword = encNewPass.getHash();
+        
+        // Get The User
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)){
+                user = users.get(i);
+                break;
+            }
+        }
+        
+        // Set User's New Password
+        if(getNewPass.equals(getNewRePass)){
+            user.setPassword(newPassword);
+        }
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(user);
+            transaction.commit();
+        }catch(Exception e){
+            adminChangePasswordMessageText.setText(e + "");
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh FXML
+        profileOldPasswordField.setText("");
+        profileNewPasswordField.setText("");
+        profileRetypeNewPasswordField.setText("");
+    }
+
+    @FXML
+    private void handleAdminProfileSignOutAction(ActionEvent event) {
+        adminUsersActionMessageText.setText("");
+        try {
+            employeeId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordReMatchAction(KeyEvent event) {
+        adminChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            adminChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordMatchAction(KeyEvent event) {
+        adminChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            adminChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
         }
     }
     

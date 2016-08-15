@@ -1,0 +1,1108 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package textileerp;
+
+import enums.Currency;
+import enums.Floors;
+import enums.Lines;
+import enums.OrderCategory;
+import hibernatesingleton.HibernateSingleton;
+import java.io.IOException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
+import md5.HashMD5;
+import model.Buyer;
+import model.Employee;
+import model.Order;
+import model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+/**
+ * FXML Controller class
+ *
+ * @author iftekher
+ */
+public class MerchandiserPanelUIController implements Initializable {
+    // Buyer FXML
+    @FXML
+    private TextField buyerNameField;
+    @FXML
+    private TextField buyerOfficeSiteNameField;
+    @FXML
+    private TextField buyerCompanyBrandNameField;
+    @FXML
+    private TextField buyerCityField;
+    @FXML
+    private TextField buyerPhoneField;
+    @FXML
+    private TextField buyerEmailField;
+    @FXML
+    private TextField buyerStateField;
+    @FXML
+    private TextField buyerZipCodeField;
+    @FXML
+    private TextField buyerAreaCodeField;
+    @FXML
+    private TextArea buyerAddressArea;
+    @FXML
+    private TableView<Buyer> buyersTableView;
+    @FXML
+    private TableColumn<Buyer, String> buyerNameTableColumn;
+    @FXML
+    private TableColumn<Buyer, String> buyerSiteNameTableColumn;
+    @FXML
+    private TableColumn<Buyer, String> buyerBrandNameTableColummn;
+    @FXML
+    private TableColumn<Buyer, String> buyerPhoneTableColumn;
+    @FXML
+    private TableColumn<Buyer, String> buyerEmailTableColumn;
+    @FXML
+    private TableColumn<Buyer, String> buyerAddedByTableColumn;
+    @FXML
+    private TableColumn<Buyer, String> buyerLastUpdatedByTableColumn;
+    @FXML
+    private Text buyerNameMatchingText;
+    @FXML
+    private Text merchandiserBuyerIdText;
+    
+    // Order FXML
+    @FXML
+    private Text orderIdSearchMessageText;
+    @FXML
+    private Text manageOrderActionMessageText;
+    @FXML
+    private TextField orderIdField;
+    @FXML
+    private TextField orderNameField;
+    @FXML
+    private TextField orderBuyerReqirementsField;
+    @FXML
+    private TextField orderPriorityField;
+    @FXML
+    private ComboBox<Lines> orderLineNoBox;
+    @FXML
+    private ComboBox<Floors> orderFloorNoBox;
+    @FXML
+    private TextField orderQuantityField;
+    @FXML
+    private TextField orderSmvField;
+    @FXML
+    private TextField orderCostField;
+    @FXML
+    private TextField orderInternalCommentsField;
+    @FXML
+    private TextArea orderDescriptionArea;
+    @FXML
+    private ComboBox<String> orderBuyerNameBox;
+    @FXML
+    private ComboBox<OrderCategory> orderCategoryBox;
+    @FXML
+    private ComboBox<Currency> orderCurrencyBox;
+    @FXML
+    private DatePicker orderDeliveryDatePicker;
+    @FXML
+    private TableView<Order> ordersTableView;
+    @FXML
+    private TableColumn<Order, Number> orderIdTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderNameTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderBuyerNameTableColumn;
+    @FXML
+    private TableColumn<Order, Number> orderQuantityTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderCategoryTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderDateTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderDeliveryDateTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderAddedByTableColumn;
+    @FXML
+    private TableColumn<Order, String> orderLastUpdatedByTableColumn;
+    @FXML
+    private Text merchandiserOrderIdText;
+    
+    // Profile FXML
+    @FXML
+    private Text profileDesignationText;
+    @FXML
+    private Text profileJoiningDateText;
+    @FXML
+    private Text profileConfirmationDateText;
+    @FXML
+    private Text profileBranchText;
+    @FXML
+    private Text profileDepartmentText;
+    @FXML
+    private Text profileCompanyNoText;
+    @FXML
+    private Text profileNameText;
+    @FXML
+    private Text profileEmployeeIdText;
+    @FXML
+    private Text profileNidNoText;
+    @FXML
+    private Text profileEmailText;
+    @FXML
+    private Text profilePhoneText;
+    @FXML
+    private Text profileEduQualiText;
+    @FXML
+    private Text profilePassportNoText;
+    @FXML
+    private Text profileReligionText;
+    @FXML
+    private Text profileGenderText;
+    @FXML
+    private Text profileDateOfBirthText;
+    @FXML
+    private Text profileMotherNameText;
+    @FXML
+    private Text profileFatherNameText;
+    @FXML
+    private Text profileBloodGroupText;
+    @FXML
+    private Text profileNationalityText;
+    @FXML
+    private PasswordField profileOldPasswordField;
+    @FXML
+    private PasswordField profileRetypeNewPasswordField;
+    @FXML
+    private PasswordField profileNewPasswordField;
+    @FXML
+    private Text profileUsernameText;
+    @FXML
+    private Text merchandiserChangePasswordMessageText;
+    @FXML
+    private Text merchandiserProfileIdText;
+    
+    // Required Lists
+    private List<Buyer> buyers;
+    private List<Order> orders;
+    private List<Employee> employees;
+    private List<User> users;
+    
+    // Required ObservableLists
+    private ObservableList<Buyer> buyersView;
+    private ObservableList<String> buyerNames;
+    private ObservableList<Order> ordersView;
+    
+    // Required Global Variables
+    private String merchandizerId;
+    private Buyer buyer;
+    private Order order;
+    private Employee employee;
+    private User user;
+    
+    // Required Variable Handle Batabase Actions
+    private SessionFactory factory;
+    private Session session;
+    private Transaction transaction;
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Set ComboBox Values
+        /* Order Information */
+        orderCategoryBox.getItems().addAll(OrderCategory.values());
+        orderFloorNoBox.getItems().addAll(Floors.values());
+        orderLineNoBox.getItems().addAll(Lines.values());
+        orderCurrencyBox.getItems().addAll(Currency.values());
+        
+        // Instantiate Lists
+        buyers = new ArrayList<>();
+        orders = new ArrayList<>();
+        users = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            buyers = session.createCriteria(Buyer.class).list();
+            orders = session.createCriteria(Order.class).list();
+            users = session.createCriteria(User.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Instantiate Observable Lists
+        buyersView = FXCollections.observableArrayList();
+        buyerNames = FXCollections.observableArrayList();
+        
+        // Set ObservableLists Values Related To Buyer
+        for (int i = 0; i < buyers.size(); i++){
+            buyerNames.add(buyers.get(i).getBuyerName());
+            buyersView.add(buyers.get(i));
+        }
+        orderBuyerNameBox.setItems(buyerNames);
+        
+        // Set Buyers To Table View
+        buyersTableView.setItems(buyersView);
+        buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        buyerSiteNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOfficeSiteName()));
+        buyerBrandNameTableColummn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCompanyBrandName()));
+        buyerPhoneTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPhone()));
+        buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
+        buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
+        
+        // Set ObservableLists Values Related To Order
+        ordersView = FXCollections.observableArrayList();
+        for (int i = 0; i < orders.size(); i++){
+            ordersView.add(orders.get(i));
+        }
+        
+        // Set Orders To Table View
+        ordersTableView.setItems(ordersView);
+        orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
+        orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
+        orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        
+        buyerNameMatchingText.setText("");
+        orderIdSearchMessageText.setText("");
+    }    
+
+    @FXML
+    private void handleSearchBuyerNameAction(ActionEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        String buyerName = buyerNameField.getText();
+        for (int i = 0; i < buyers.size(); i++){
+            if(buyers.get(i).getBuyerName().equals(buyerName)){
+                buyer = buyers.get(i);
+                
+                buyerNameField.setText(buyer.getBuyerName());
+                buyerOfficeSiteNameField.setText(buyer.getOfficeSiteName());
+                buyerCompanyBrandNameField.setText(buyer.getCompanyBrandName());
+                buyerPhoneField.setText(buyer.getPhone());
+                buyerEmailField.setText(buyer.getEmail());
+                buyerAddressArea.setText(buyer.getAddress());
+                buyerCityField.setText(buyer.getCity());
+                buyerStateField.setText(buyer.getState());
+                buyerZipCodeField.setText(buyer.getZipCode());
+                buyerAreaCodeField.setText(buyer.getAreaCode());
+                break;
+            }
+            else{
+                buyerNameMatchingText.setText("Buyer Not Found. You Can Add This As New Buyer Name.");
+            }
+        }
+    }
+
+    @FXML
+    private void handleAddBuyerAction(ActionEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        // Get Data From FXML
+        String buyerName = buyerNameField.getText();
+        String officeSiteName = buyerOfficeSiteNameField.getText();
+        String companyBrandName = buyerCompanyBrandNameField.getText();
+        String phone = buyerPhoneField.getText();
+        String email = buyerEmailField.getText();
+        String address = buyerAddressArea.getText();
+        String city = buyerCityField.getText();
+        String state = buyerStateField.getText();
+        String zipCode = buyerZipCodeField.getText();
+        String areaCode = buyerAreaCodeField.getText();
+        String addedBy = merchandiserBuyerIdText.getText();
+        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Instantiate Buyer Object
+        Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
+        buyers.removeAll(buyers);
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.save(buyer);
+            buyers = session.createCriteria(Buyer.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh Buyers Observable List
+        buyersView.remove(0, buyersView.size());
+        buyerNames.remove(0, buyerNames.size());
+        for (int i = 0; i < buyers.size(); i++){
+            buyersView.add(buyers.get(i));
+            buyerNames.add(buyers.get(i).getBuyerName());
+        }
+        
+        // Set Buyers To Table View
+        buyersTableView.setItems(buyersView);
+        buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        buyerSiteNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOfficeSiteName()));
+        buyerBrandNameTableColummn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCompanyBrandName()));
+        buyerPhoneTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPhone()));
+        buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
+        buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
+        
+        // Refresh FXML
+        buyerNameField.setText("");
+        buyerOfficeSiteNameField.setText("");
+        buyerCompanyBrandNameField.setText("");
+        buyerPhoneField.setText("");
+        buyerEmailField.setText("");
+        buyerAddressArea.setText("");
+        buyerCityField.setText("");
+        buyerStateField.setText("");
+        buyerZipCodeField.setText("");
+        buyerAreaCodeField.setText("");
+    }
+
+    @FXML
+    private void handleUpdateBuyerAction(ActionEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        // Get Data From FXML
+        String buyerName = "";
+        String officeSiteName = buyerOfficeSiteNameField.getText();
+        String companyBrandName = buyerCompanyBrandNameField.getText();
+        String phone = buyerPhoneField.getText();
+        String email = buyerEmailField.getText();
+        String address = buyerAddressArea.getText();
+        String city = buyerCityField.getText();
+        String state = buyerStateField.getText();
+        String zipCode = buyerZipCodeField.getText();
+        String areaCode = buyerAreaCodeField.getText();
+        String addedBy = "";
+        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Instantiate Buyer
+        Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
+        buyer.setBuyerName(this.buyer.getBuyerName());
+        buyer.setAddedBy(this.buyer.getAddedBy());
+        buyers.removeAll(buyers);
+        
+        //Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(buyer);
+            buyers = session.createCriteria(Buyer.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh Buyer ObservableLists
+        buyersView.remove(0, buyersView.size());
+        buyerNames.remove(0, buyerNames.size());
+        for (int i = 0; i < buyers.size(); i++){
+            buyersView.add(buyers.get(i));
+            buyerNames.add(buyers.get(i).getBuyerName());
+        }
+        
+        // Set Buyer To Table View
+        buyersTableView.setItems(buyersView);
+        buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        buyerSiteNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOfficeSiteName()));
+        buyerBrandNameTableColummn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCompanyBrandName()));
+        buyerPhoneTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPhone()));
+        buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
+        buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
+        
+        // Refresh FXML
+        buyerNameField.setText("");
+        buyerOfficeSiteNameField.setText("");
+        buyerCompanyBrandNameField.setText("");
+        buyerPhoneField.setText("");
+        buyerEmailField.setText("");
+        buyerAddressArea.setText("");
+        buyerCityField.setText("");
+        buyerStateField.setText("");
+        buyerZipCodeField.setText("");
+        buyerAreaCodeField.setText("");
+    }
+
+    @FXML
+    private void handleRemoveBuyerAction(ActionEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        // Get Data From FXML
+        String buyerName = "";
+        String officeSiteName = buyerOfficeSiteNameField.getText();
+        String companyBrandName = buyerCompanyBrandNameField.getText();
+        String phone = buyerPhoneField.getText();
+        String email = buyerEmailField.getText();
+        String address = buyerAddressArea.getText();
+        String city = buyerCityField.getText();
+        String state = buyerStateField.getText();
+        String zipCode = buyerZipCodeField.getText();
+        String areaCode = buyerAreaCodeField.getText();
+        String addedBy = "";
+        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Instantiate Buyer
+        Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
+        buyer.setBuyerName(this.buyer.getBuyerName());
+        buyer.setAddedBy(this.buyer.getAddedBy());
+        buyers.removeAll(buyers);
+        
+        // Prepare Hibernate 
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.delete(buyer);
+            buyers = session.createCriteria(Buyer.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh Buyer ObservableLists
+        buyersView.remove(0, buyersView.size());
+        buyerNames.remove(0, buyerNames.size());
+        for (int i = 0; i < buyers.size(); i++){
+            buyersView.add(buyers.get(i));
+            buyerNames.add(buyers.get(i).getBuyerName());
+        }
+        
+        // Set Buyers To Table View
+        buyersTableView.setItems(buyersView);
+        buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        buyerSiteNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOfficeSiteName()));
+        buyerBrandNameTableColummn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCompanyBrandName()));
+        buyerPhoneTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPhone()));
+        buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
+        buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
+        
+        // Refresh FXML
+        buyerNameField.setText("");
+        buyerOfficeSiteNameField.setText("");
+        buyerCompanyBrandNameField.setText("");
+        buyerPhoneField.setText("");
+        buyerEmailField.setText("");
+        buyerAddressArea.setText("");
+        buyerCityField.setText("");
+        buyerStateField.setText("");
+        buyerZipCodeField.setText("");
+        buyerAreaCodeField.setText("");
+    }
+
+    @FXML
+    private void handleRefreshBuyerAction(ActionEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        buyerNameField.setText("");
+        buyerOfficeSiteNameField.setText("");
+        buyerCompanyBrandNameField.setText("");
+        buyerPhoneField.setText("");
+        buyerEmailField.setText("");
+        buyerAddressArea.setText("");
+        buyerCityField.setText("");
+        buyerStateField.setText("");
+        buyerZipCodeField.setText("");
+        buyerAreaCodeField.setText("");
+    }
+
+    @FXML
+    private void handleSelectBuyerAcion(MouseEvent event) {
+        buyerNameMatchingText.setText("");
+        
+        // Get Selected Buyer
+        buyer = buyersTableView.getSelectionModel().getSelectedItem();
+        
+        // Set Buyer Information To FXML
+        buyerNameField.setText(buyer.getBuyerName());
+        buyerOfficeSiteNameField.setText(buyer.getOfficeSiteName());
+        buyerCompanyBrandNameField.setText(buyer.getCompanyBrandName());
+        buyerPhoneField.setText(buyer.getPhone());
+        buyerEmailField.setText(buyer.getEmail());
+        buyerAddressArea.setText(buyer.getAddress());
+        buyerCityField.setText(buyer.getCity());
+        buyerStateField.setText(buyer.getState());
+        buyerZipCodeField.setText(buyer.getZipCode());
+        buyerAreaCodeField.setText(buyer.getAreaCode());
+    }
+
+    @FXML
+    private void handleBuyerNameMathcingAction(KeyEvent event) {
+        if(event.getCode() != KeyCode.ENTER){
+            buyerNameMatchingText.setText("");
+
+            String buyerName = buyerNameField.getText();
+
+            for (int i = 0; i < buyers.size(); i++){
+                if(buyers.get(i).getBuyerName().equals(buyerName)){
+                    buyerNameMatchingText.setText("Buyer Name Already Taken. Press Enter to View Information.");
+                    break;
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void handleSignOutBuyerAction(ActionEvent event) {
+        try {
+            merchandizerId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleSignOutOrderAction(ActionEvent event) {
+        try {
+            merchandizerId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleSearchOrderIdAction(ActionEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        // Get Order ID From FXML
+        int orderId = Integer.parseInt(orderIdField.getText());
+        
+        // Match Order ID And Perform Actions
+        for (int i = 0; i < orders.size(); i++){
+            if (orders.get(i).getOrderId() == orderId){
+                order = orders.get(i);
+                
+                orderIdField.setText(order.getOrderId() + "");
+                orderNameField.setText(order.getOrderName());
+                orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
+                orderBuyerReqirementsField.setText(order.getBuyerRequirements());
+                orderDescriptionArea.setText(order.getDescription());
+                orderPriorityField.setText(order.getPriority());
+                orderQuantityField.setText(order.getQuantity() + "");
+                orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getCategory()));
+                orderSmvField.setText(order.getSmv() + "");
+                orderDeliveryDatePicker.getEditor().setText(order.getDeliveryDate());
+                orderCostField.setText(order.getCost() + "");
+                orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getCurrency()));
+                orderInternalCommentsField.setText(order.getInternalComments());
+                break;
+            }
+            else{
+                orderIdSearchMessageText.setText("Order Not Found. Please Try With Different ID");
+            }
+        }
+    }
+
+    @FXML
+    private void handleSelectOrderAction(MouseEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        // Get Selected Order
+        order = ordersTableView.getSelectionModel().getSelectedItem();
+        
+        // Set Order Information To FXML
+        orderIdField.setText(order.getOrderId() + "");
+        orderNameField.setText(order.getOrderName());
+        orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
+        orderBuyerReqirementsField.setText(order.getBuyerRequirements());
+        orderDescriptionArea.setText(order.getDescription());
+        orderPriorityField.setText(order.getPriority());
+        orderQuantityField.setText(order.getQuantity() + "");
+        orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getCategory()));
+        orderSmvField.setText(order.getSmv() + "");
+        orderDeliveryDatePicker.getEditor().setText(order.getDeliveryDate());
+        orderCostField.setText(order.getCost() + "");
+        orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getCurrency()));
+        orderInternalCommentsField.setText(order.getInternalComments());
+    }
+
+    @FXML
+    private void handleOrderAddAction(ActionEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        // Get Data From FXML
+        int orderId = 0;
+        String orderName = orderNameField.getText();
+        String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
+        String buyerRequirements = orderBuyerReqirementsField.getText();
+        String description = orderDescriptionArea.getText();
+        String priority = orderPriorityField.getText();
+        int quantity = Integer.parseInt(orderQuantityField.getText());
+        String floorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
+        String lineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
+        String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
+        double smv = Double.parseDouble(orderSmvField.getText());
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date currentDate= new Date();
+        String orderDate = format.format(currentDate);
+        System.out.println(orderDate);
+        String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
+        double cost = Double.parseDouble(orderCostField.getText());
+        String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
+        String internalComments = orderInternalCommentsField.getText();
+        String addedBy = merchandiserOrderIdText.getText();
+        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        
+        // Instantiate Order
+        Order addOrder = new Order( orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        orders.removeAll(orders);
+        System.out.println(addOrder);
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            System.out.println("Hibernate Prepared");
+            session.save(addOrder);
+            System.out.println("Order Saved");
+            orders = session.createCriteria(Order.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+            System.out.println("Transaction Roll Backed");
+        }
+        session.close();
+        
+        // Refresh Order ObservableLists
+        ordersView.remove(0, ordersView.size());
+        for (int i = 0; i < orders.size(); i++){
+            ordersView.add(orders.get(i));
+        }
+        
+        // Set Order To TableView
+        ordersTableView.setItems(ordersView);
+        orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
+        orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
+        orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        
+        // Refresh FXML
+        orderIdField.setText("");
+        orderNameField.setText("");
+        orderBuyerNameBox.getSelectionModel().clearSelection();
+        orderBuyerReqirementsField.setText("");
+        orderDescriptionArea.setText("");
+        orderPriorityField.setText("");
+        orderFloorNoBox.getSelectionModel().clearSelection();
+        orderLineNoBox.getSelectionModel().clearSelection();
+        orderQuantityField.setText("");
+        orderCategoryBox.getSelectionModel().clearSelection();
+        orderSmvField.setText("");
+        orderDeliveryDatePicker.getEditor().setText("");
+        orderCostField.setText("");
+        orderCurrencyBox.getSelectionModel().clearSelection();
+        orderInternalCommentsField.setText("");
+    }
+
+    @FXML
+    private void handleUpdateOrderAction(ActionEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        // Get Data From FXML
+        int orderId = 0; 
+        String orderName = orderNameField.getText();
+        String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
+        String buyerRequirements = orderBuyerReqirementsField.getText();
+        String description = orderDescriptionArea.getText();
+        String priority = orderPriorityField.getText();
+        int quantity = Integer.parseInt(orderQuantityField.getText());
+        String floorNo = "";
+        String lineNo = "";
+        String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
+        double smv = Double.parseDouble(orderSmvField.getText());
+        String orderDate = new SimpleDateFormat("dd-mm-yyyy") + "";
+        String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
+        double cost = Double.parseDouble(orderCostField.getText());
+        String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
+        String internalComments = orderInternalCommentsField.getText();
+        String addedBy = "";
+        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        
+        // Instantiate Order
+        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        order.setOrderId(this.order.getOrderId());
+        order.setAddedBy(this.order.getAddedBy());
+        orders.removeAll(orders);
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(order);
+            orders = session.createCriteria(Order.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh Order ObservableLists
+        ordersView.remove(0, ordersView.size());
+        for (int i = 0; i < orders.size(); i++){
+            ordersView.add(orders.get(i));
+        }
+        
+        // Set Order To TableView
+        ordersTableView.setItems(ordersView);
+        orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
+        orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
+        orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        
+        // Refresh FXML
+        orderIdField.setText("");
+        orderNameField.setText("");
+        orderBuyerNameBox.getSelectionModel().clearSelection();
+        orderBuyerReqirementsField.setText("");
+        orderDescriptionArea.setText("");
+        orderPriorityField.setText("");
+        orderQuantityField.setText("");
+        orderCategoryBox.getSelectionModel().clearSelection();
+        orderSmvField.setText("");
+        orderDeliveryDatePicker.getEditor().setText("");
+        orderCostField.setText("");
+        orderCurrencyBox.getSelectionModel().clearSelection();
+        orderInternalCommentsField.setText("");
+    }
+
+    @FXML
+    private void handleRemoveOrderAction(ActionEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        // Get Data From FXML
+        int orderId = Integer.parseInt(orderIdField.getText());
+        String orderName = orderNameField.getText();
+        String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
+        String buyerRequirements = orderBuyerReqirementsField.getText();
+        String description = orderDescriptionArea.getText();
+        String priority = orderPriorityField.getText();
+        int quantity = Integer.parseInt(orderQuantityField.getText());
+        String floorNo = "";
+        String lineNo = "";
+        String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
+        double smv = Double.parseDouble(orderSmvField.getText());
+        String orderDate = new SimpleDateFormat("dd-mm-yyyy") + "";
+        String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
+        double cost = Double.parseDouble(orderCostField.getText());
+        String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
+        String internalComments = orderInternalCommentsField.getText();
+        String addedBy = "";
+        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        
+        // Instantiate Order
+        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        order.setOrderId(this.order.getOrderId());
+        order.setAddedBy(this.order.getAddedBy());
+        orders.removeAll(orders);
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.delete(order);
+            orders = session.createCriteria(Order.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.err.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh Order ObservableLists
+        ordersView.remove(0, ordersView.size());
+        for (int i = 0; i < orders.size(); i++){
+            ordersView.add(orders.get(i));
+        }
+        
+        // Set Order To TableView
+        ordersTableView.setItems(ordersView);
+        orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
+        orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
+        orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        
+        // Refresh FXML
+        orderIdField.setText("");
+        orderNameField.setText("");
+        orderBuyerNameBox.getSelectionModel().clearSelection();
+        orderBuyerReqirementsField.setText("");
+        orderDescriptionArea.setText("");
+        orderPriorityField.setText("");
+        orderQuantityField.setText("");
+        orderCategoryBox.getSelectionModel().clearSelection();
+        orderSmvField.setText("");
+        orderDeliveryDatePicker.getEditor().setText("");
+        orderCostField.setText("");
+        orderCurrencyBox.getSelectionModel().clearSelection();
+        orderInternalCommentsField.setText("");
+    }
+
+    @FXML
+    private void handleRefreshOrderAction(ActionEvent event) {
+        orderIdSearchMessageText.setText("");
+        
+        orderIdField.setText("");
+        orderNameField.setText("");
+        orderBuyerNameBox.getSelectionModel().clearSelection();
+        orderBuyerReqirementsField.setText("");
+        orderDescriptionArea.setText("");
+        orderPriorityField.setText("");
+        orderQuantityField.setText("");
+        orderCategoryBox.getSelectionModel().clearSelection();
+        orderSmvField.setText("");
+        orderDeliveryDatePicker.getEditor().setText("");
+        orderCostField.setText("");
+        orderCurrencyBox.getSelectionModel().clearSelection();
+        orderInternalCommentsField.setText("");
+    }
+    
+    public void setMerchandiserId(String username){
+        this.merchandizerId = username;
+        merchandiserBuyerIdText.setText("Merchandizer ID: " + username);
+        merchandiserOrderIdText.setText("Merchandizer ID: " + username);
+        merchandiserProfileIdText.setText("Merchandizer ID: " + username);
+        
+        employees = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            employees = session.createCriteria(Employee.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.out.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Get Employee Information Using ID
+        for(int i = 0; i < employees.size(); i++){
+            if(username.equals(employees.get(i).getId())){
+                employee = employees.get(i);
+            }
+        }
+        
+        // Set Profile Information To FXML
+        profileEmployeeIdText.setText(employee.getId());
+        profileDesignationText.setText(employee.getDesignation());
+        profileJoiningDateText.setText(employee.getJoiningDate());
+        profileConfirmationDateText.setText(employee.getConfirmationDate());
+        profileDepartmentText.setText(employee.getDepartmentCode());
+        profileCompanyNoText.setText(employee.getCompanyNo() + "");
+        profileNameText.setText(employee.getName());
+        profileNidNoText.setText(employee.getPersonalInfo().getNidNo());
+        profileEmailText.setText(employee.getPersonalInfo().getEmail());
+        profilePhoneText.setText(employee.getPersonalInfo().getMobileNo());
+        profileEduQualiText.setText(employee.getPersonalInfo().getEduQuali());
+        profilePassportNoText.setText(employee.getPersonalInfo().getPassportNo());
+        profileReligionText.setText(employee.getPersonalInfo().getReligion());
+        profileGenderText.setText(employee.getSex());
+        profileDateOfBirthText.setText(employee.getPersonalInfo().getDateOfBirth());
+        profileMotherNameText.setText(employee.getPersonalInfo().getMothersName());
+        profileFatherNameText.setText(employee.getPersonalInfo().getFathersName());
+        profileBloodGroupText.setText(employee.getPersonalInfo().getBloodGroup());
+        profileNationalityText.setText(employee.getPersonalInfo().getNationality());
+        profileUsernameText.setText(employee.getId());
+        profileBranchText.setText(employee.getBranchId());
+    }
+
+    @FXML
+    private void handleChangePasswordReMatchAction(KeyEvent event) {
+        merchandiserChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            merchandiserChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordMatchAction(KeyEvent event) {
+        merchandiserChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            merchandiserChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleMerchandiserChangePasswordAction(ActionEvent event) {
+        // Get Values From FXML
+        String username = profileUsernameText.getText();
+        String getPass = profileOldPasswordField.getText();
+        
+        String getNewPass = profileNewPasswordField.getText();
+        String getNewRePass = profileRetypeNewPasswordField.getText();
+        
+        // Encrypt Passwords
+        HashMD5 encPass = new HashMD5(getPass);
+        String password = encPass.getHash();
+        
+        HashMD5 encNewPass = new HashMD5(getNewPass);
+        String newPassword = encNewPass.getHash();
+        
+        // Get The User
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)){
+                user = users.get(i);
+                break;
+            }
+        }
+        
+        // Set User's New Password
+        if(getNewPass.equals(getNewRePass)){
+            user.setPassword(newPassword);
+        }
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(user);
+            transaction.commit();
+        }catch(Exception e){
+            merchandiserChangePasswordMessageText.setText(e + "");
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh FXML
+        profileOldPasswordField.setText("");
+        profileNewPasswordField.setText("");
+        profileRetypeNewPasswordField.setText("");
+    }
+
+    @FXML
+    private void handleMerchandiserProfileSignOutAction(ActionEvent event) {
+        try {
+            merchandizerId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

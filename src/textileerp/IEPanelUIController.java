@@ -14,6 +14,11 @@ import enums.McHelp;
 import hibernatesingleton.HibernateSingleton;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,6 +37,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -39,11 +45,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import md5.HashMD5;
 import model.BulletinOperation;
 import model.BulletinOperationDetails;
 import model.BulletinOperationSummary;
+import model.Employee;
 import model.IEBulletin;
 import model.Order;
+import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -199,7 +208,7 @@ public class IEPanelUIController implements Initializable {
     @FXML
     private TableColumn<BulletinOperationDetails, Number> targetBulletinSummaryTableColumn;
     
-    //Capacity Study FXML
+    // Capacity Study FXML
     @FXML
     private TextField buyerNameCapacityField;
     @FXML
@@ -288,7 +297,7 @@ public class IEPanelUIController implements Initializable {
     private TextField secondsCount2op2CapacityField;
     @FXML
     private TextField secondsCount1op2CapacityField;
-    //Capacity Study Table View
+    // Capacity Study Table View
     @FXML
     private TableView<?> capacityStudyDetailsCapacityTableView;
     @FXML
@@ -314,11 +323,10 @@ public class IEPanelUIController implements Initializable {
     @FXML
     private TableColumn<?, ?> capacityPerHr3CapacityTableColumn;
     
-    //Production Study FXML
+    // Production Study FXML
     @FXML
     private TextField buyerNameProductionField;
     
-    private String ieId;
     @FXML
     private ComboBox<?> orderIdBulletinBox1;
     @FXML
@@ -326,10 +334,66 @@ public class IEPanelUIController implements Initializable {
     @FXML
     private ComboBox<?> orderIdBulletinBox3;
     
+    // Profile FXML
+    @FXML
+    private Text profileDesignationText;
+    @FXML
+    private Text profileJoiningDateText;
+    @FXML
+    private Text profileConfirmationDateText;
+    @FXML
+    private Text profileBranchText;
+    @FXML
+    private Text profileDepartmentText;
+    @FXML
+    private Text profileCompanyNoText;
+    @FXML
+    private Text profileNameText;
+    @FXML
+    private Text profileEmployeeIdText;
+    @FXML
+    private Text profileNidNoText;
+    @FXML
+    private Text profileEmailText;
+    @FXML
+    private Text profilePhoneText;
+    @FXML
+    private Text profileEduQualiText;
+    @FXML
+    private Text profilePassportNoText;
+    @FXML
+    private Text profileReligionText;
+    @FXML
+    private Text profileGenderText;
+    @FXML
+    private Text profileDateOfBirthText;
+    @FXML
+    private Text profileMotherNameText;
+    @FXML
+    private Text profileFatherNameText;
+    @FXML
+    private Text profileBloodGroupText;
+    @FXML
+    private Text profileNationalityText;
+    @FXML
+    private PasswordField profileOldPasswordField;
+    @FXML
+    private PasswordField profileRetypeNewPasswordField;
+    @FXML
+    private PasswordField profileNewPasswordField;
+    @FXML
+    private Text profileUsernameText;
+    @FXML
+    private Text ieChangePasswordMessageText;
+    @FXML
+    private Text ieProfileIdText;
+    
     // Required Lists
     private List<Order> orders;
     private List<IEBulletin> ieBulletins;
     private List<BulletinOperation> bulletinOperations;
+    private List<Employee> employees;
+    private List<User> users;
     
     // Required ObservableLists
     private ObservableList<String> orderIds;
@@ -342,9 +406,18 @@ public class IEPanelUIController implements Initializable {
     private Transaction transaction;
     
     // Required Global Variables
+    private String ieId;
     private Order order;
     private IEBulletin ieBulletin;
     private BulletinOperation bulletinOperation;
+    private Employee employee;
+    private User user;
+    
+    // MySQL Connecting Variables
+    private String DB_URL = "jdbc:mysql://127.0.0.1/textileerpdb";
+    private String DB_USER = "root";
+    private String DB_PASS = "123";
+    
     
     /**
      * Initializes the controller class.
@@ -362,9 +435,11 @@ public class IEPanelUIController implements Initializable {
         // Initialize ArrayLists 
         orders = new ArrayList<>();
         ieBulletins = new ArrayList<>();
+        users = new ArrayList<>();
         
         // Initialize ObservableLists
         orderIds = FXCollections.observableArrayList();
+        
         
         // Prepare Hibernate to Work
         factory = HibernateSingleton.getSessionFactory();
@@ -373,14 +448,53 @@ public class IEPanelUIController implements Initializable {
         
         // Handle Actions in Database
         try{
-            orders = session.createCriteria(Order.class).list();
+          //  orders = session.createCriteria(Order.class).list();
             ieBulletins = session.createCriteria(IEBulletin.class).list();
+            users = session.createCriteria(User.class).list();
             transaction.commit();
         }catch(Exception e){
             System.err.println(e);
             transaction.rollback();
+            System.out.println("RollBacked");
         }
         session.close();
+        
+        
+        // Connect To Database And Retrieve Orders
+        try{
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement statement = connection.createStatement();
+            
+            String query = "select * from Order;";
+            
+            ResultSet getOrders = statement.executeQuery(query);
+            while(getOrders.next()){
+                int orderId = getOrders.getInt("orderId");
+                String orderName = getOrders.getString("orderName");
+                String buyerName = getOrders.getString("buyerName");
+                String buyerRequirements = getOrders.getString("buyerRequirements");
+                String description = getOrders.getString("description");
+                String priority = getOrders.getString("priority");
+                int quantity = getOrders.getInt("quantity");
+                String floorNo = getOrders.getString("floorNo");
+                String lineNo = getOrders.getString("lineNo");
+                String category = getOrders.getString("category");
+                double smv = getOrders.getDouble("smv");
+                String orderDate = getOrders.getString("orderDate");
+                String deliveryDate = getOrders.getString("deliveryDate");
+                double cost = getOrders.getDouble("cost");
+                String currency = getOrders.getString("currency");
+                String internalComments = getOrders.getString("internalComments");
+                String addedBy = getOrders.getString("addedBy");
+                String lastUpdatedBy = getOrders.getString("lastUpdatedBy");
+                
+                Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+                
+                orders.add(order);
+            }
+        }catch (SQLException ex) {
+            Logger.getLogger(IEPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         // Add Order Ids to ObservableList and Set it To ComboBox
         for(int i = 0; i < orders.size(); i++){
@@ -481,6 +595,12 @@ public class IEPanelUIController implements Initializable {
 
     @FXML
     private void handleCalculateSmvBulletinAction(KeyEvent event) {
+        String getText = secondsCountBulletinField.getText();
+        if(getText != null && !getText.equals("")){
+            double seconds = Double.parseDouble(getText);
+            double smv = seconds / 60;
+            smvBulletinField.setText(smv + "");
+        }
     }
 
     @FXML
@@ -900,9 +1020,155 @@ public class IEPanelUIController implements Initializable {
         ieIdProductionText.setText("IE ID: " + username);
         ieIdManpowerText.setText("IE ID: " + username);
         ieIdMonitorText.setText("IE ID: " + username);
+        ieProfileIdText.setText("IE ID: " + username);
+        
+        employees = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            employees = session.createCriteria(Employee.class).list();
+            transaction.commit();
+        }catch(Exception e){
+            System.out.println(e);
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Get Employee Information Using ID
+        for(int i = 0; i < employees.size(); i++){
+            if(username.equals(employees.get(i).getId())){
+                employee = employees.get(i);
+            }
+        }
+        
+        // Set Profile Information To FXML
+        profileEmployeeIdText.setText(employee.getId());
+        profileDesignationText.setText(employee.getDesignation());
+        profileJoiningDateText.setText(employee.getJoiningDate());
+        profileConfirmationDateText.setText(employee.getConfirmationDate());
+        profileDepartmentText.setText(employee.getDepartmentCode());
+        profileCompanyNoText.setText(employee.getCompanyNo() + "");
+        profileNameText.setText(employee.getName());
+        profileNidNoText.setText(employee.getPersonalInfo().getNidNo());
+        profileEmailText.setText(employee.getPersonalInfo().getEmail());
+        profilePhoneText.setText(employee.getPersonalInfo().getMobileNo());
+        profileEduQualiText.setText(employee.getPersonalInfo().getEduQuali());
+        profilePassportNoText.setText(employee.getPersonalInfo().getPassportNo());
+        profileReligionText.setText(employee.getPersonalInfo().getReligion());
+        profileGenderText.setText(employee.getSex());
+        profileDateOfBirthText.setText(employee.getPersonalInfo().getDateOfBirth());
+        profileMotherNameText.setText(employee.getPersonalInfo().getMothersName());
+        profileFatherNameText.setText(employee.getPersonalInfo().getFathersName());
+        profileBloodGroupText.setText(employee.getPersonalInfo().getBloodGroup());
+        profileNationalityText.setText(employee.getPersonalInfo().getNationality());
+        profileUsernameText.setText(employee.getId());
+        profileBranchText.setText(employee.getBranchId());
     }
 
     @FXML
     private void handleOrderIdCapacityAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleChangePasswordReMatchAction(KeyEvent event) {
+        ieChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            ieChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleChangePasswordMatchAction(KeyEvent event) {
+        ieChangePasswordMessageText.setText("");
+        String password = profileNewPasswordField.getText();
+        String reTypePassword = profileRetypeNewPasswordField.getText();
+        
+        int isMatched = 0;
+        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+            isMatched = 1;
+        }
+        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+            ieChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
+        }
+    }
+
+    @FXML
+    private void handleIeChangePasswordAction(ActionEvent event) {
+        // Get Values From FXML
+        String username = profileUsernameText.getText();
+        String getPass = profileOldPasswordField.getText();
+        
+        String getNewPass = profileNewPasswordField.getText();
+        String getNewRePass = profileRetypeNewPasswordField.getText();
+        
+        // Encrypt Passwords
+        HashMD5 encPass = new HashMD5(getPass);
+        String password = encPass.getHash();
+        
+        HashMD5 encNewPass = new HashMD5(getNewPass);
+        String newPassword = encNewPass.getHash();
+        
+        // Get The User
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)){
+                user = users.get(i);
+                break;
+            }
+        }
+        
+        // Set User's New Password
+        if(getNewPass.equals(getNewRePass)){
+            user.setPassword(newPassword);
+        }
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            session.update(user);
+            transaction.commit();
+        }catch(Exception e){
+            ieChangePasswordMessageText.setText(e + "");
+            transaction.rollback();
+        }
+        session.close();
+        
+        // Refresh FXML
+        profileOldPasswordField.setText("");
+        profileNewPasswordField.setText("");
+        profileRetypeNewPasswordField.setText("");
+    }
+
+    @FXML
+    private void handleIeProfileSignOutAction(ActionEvent event) {
+        ieChangePasswordMessageText.setText("");
+        try {
+            ieId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
