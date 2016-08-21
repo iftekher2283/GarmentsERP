@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  *
@@ -24,6 +25,8 @@ public class BulletinOperation {
     private String mcOrHelper;
     private String machineCode;
     private int secondsCount;
+    @Transient
+    private double smv;
     private double requiredManpower;
     private double manpowerAllocation;
     private int hundredTarget;
@@ -45,6 +48,7 @@ public class BulletinOperation {
         this.mcOrHelper = mcOrHelper;
         this.machineCode = machineCode;
         this.secondsCount = secondsCount;
+        this.smv = secondsCount / 60;
         this.requiredManpower = requiredManpower;
         this.manpowerAllocation = manpowerAllocation;
         this.hundredTarget = hundredTarget;
@@ -105,6 +109,14 @@ public class BulletinOperation {
         this.secondsCount = secondsCount;
     }
 
+    public double getSmv() {
+        return smv;
+    }
+
+    public void setSmv(double smv) {
+        this.smv = smv;
+    }
+    
     public double getRequiredManpower() {
         return requiredManpower;
     }

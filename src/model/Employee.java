@@ -34,11 +34,14 @@ public class Employee implements Serializable {
     private PersonalInformation personalInfo;
     @Embedded
     private Address address;
+    private String addedBy;
+    private String lastUpdatedBy;
+    private int isDeleted;
 
     public Employee() {
     }
 
-    public Employee(String id, String name, String sex, int companyNo, String branchId, String departmentCode, String designation, String confirmationDate, String JoiningDate, Salary salaryInfo, PersonalInformation personalInfo, Address address) {
+    public Employee(String id, String name, String sex, int companyNo, String branchId, String departmentCode, String designation, String confirmationDate, String JoiningDate, Salary salaryInfo, PersonalInformation personalInfo, Address address, String addedBy, String lastUpdatedBy) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -51,6 +54,9 @@ public class Employee implements Serializable {
         this.salaryInfo = salaryInfo;
         this.personalInfo = personalInfo;
         this.address = address;
+        this.addedBy = addedBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.isDeleted = 0;
     }
 
     public String getId() {
@@ -149,6 +155,30 @@ public class Employee implements Serializable {
         this.address = address;
     }
 
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
     @Override
     public String toString() {
         return "Employee{" + "id=" + id + ", name=" + name + ", sex=" + sex + ", companyNo=" + companyNo + ", branchId=" + branchId + ", departmentCode=" + departmentCode + ", designation=" + designation + ", confirmationDate=" + confirmationDate + ", JoiningDate=" + joiningDate + ", salaryInfo=" + salaryInfo + ", personalInfo=" + personalInfo + ", address=" + address + '}';

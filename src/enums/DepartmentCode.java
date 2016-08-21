@@ -13,5 +13,6 @@ public enum DepartmentCode {
     MRK,
     COM,
     FnAC,
-    RSnDEV;
+    RSnDEV,
+    HRM;
 }

@@ -10,7 +10,7 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     <mapping class="model.Employee"/>
     <mapping class="model.Buyer"/>
-    <mapping class="model.Order"/>
     <mapping class="model.User"/>
+    <mapping class="model.Order"/>
   </session-factory>
 </hibernate-configuration>

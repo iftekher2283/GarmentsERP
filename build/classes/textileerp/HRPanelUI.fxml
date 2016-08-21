@@ -509,30 +509,30 @@
                               <GridPane GridPane.rowIndex="4">
                                 <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleAddAction" prefHeight="40.0" prefWidth="100.0" text="Add" textFill="#056814" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handlePrintAction" prefHeight="40.0" prefWidth="100.0" text="Print" textFill="#3904bf" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="Courier New Bold" size="18.0" />
                                        </font>
                                     </Button>
-                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleUpdateAction" prefHeight="40.0" prefWidth="100.0" text="Update" textFill="#3904bf" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleRemoveAction" prefHeight="40.0" prefWidth="100.0" text="Remove" textFill="#ff0101" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="Courier New Bold" size="18.0" />
                                        </font>
                                     </Button>
-                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleRemoveAction" prefHeight="40.0" prefWidth="100.0" text="Remove" textFill="#ff0101" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleNewAction" prefHeight="40.0" prefWidth="100.0" text="Refresh" textFill="#3904bf" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="Courier New Bold" size="18.0" />
                                        </font>
                                     </Button>
-                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleNewAction" prefHeight="40.0" prefWidth="100.0" text="New" textFill="#3904bf" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Button maxHeight="40.0" maxWidth="100.0" mnemonicParsing="false" onAction="#handleSaveAction" prefHeight="40.0" prefWidth="100.0" text="Save" textFill="#056814" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="Courier New Bold" size="18.0" />
                                        </font>

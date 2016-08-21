@@ -5,6 +5,7 @@
  */
 package textileerp;
 
+import com.itextpdf.text.Document;
 import enums.BankCode;
 import enums.BloodGroup;
 import enums.BranchID;
@@ -14,6 +15,8 @@ import enums.Gender;
 import enums.MaritalStatus;
 import enums.Religion;
 import hibernatesingleton.HibernateSingleton;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -53,6 +56,7 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import printpdfs.PdfEmployee;
 
 /**
  * FXML Controller class
@@ -338,7 +342,9 @@ public class HRPanelUIController implements Initializable {
         employeesTable = FXCollections.observableArrayList();
         employeesTable.remove(0, (employeesTable.size() - 1));
         for (int i = 0; i < employees.size(); i++){
-            employeesTable.add(employees.get(i));
+            if(employees.get(i).getIsDeleted() == 0){
+                employeesTable.add(employees.get(i));
+            }
         }
         employeeViewTable.setItems(employeesTable);
         employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
@@ -557,9 +563,9 @@ public class HRPanelUIController implements Initializable {
         }
         ageField.setText("" + age);
     }
-
+    
     @FXML
-    private void handleAddAction(ActionEvent event) {
+    private void handleSaveAction(ActionEvent event) {
         //Collect Necessary Data for Employee
         String id = idNoField.getText();
         String name = employeeNameField.getText();
@@ -615,18 +621,42 @@ public class HRPanelUIController implements Initializable {
         String perm_ps = permPSField.getText();
         String perm_dist = permDistField.getText();
         String perm_phn = permPhnField.getText();
+        
         Address address = new Address(pres_house_no, pres_road_no, pres_village, pres_po, pres_ps, pres_dist, pres_phn, perm_house_no, perm_road_no, perm_village, perm_po, perm_ps, perm_dist, perm_phn);
         
-        // Instantiate Employee
-        Employee employee = new Employee(id, name, sex, company_no, branch_id, dept_code, designation, confirmation_date, joining_date, salary, personal_info, address);
+        // Get User ID
+        String getIdText = hrmIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String addedBy = user;
+        String lastUpdatedBy = user;
         
+        // Instantiate Employee
+        Employee employee = new Employee(id, name, sex, company_no, branch_id, dept_code, designation, confirmation_date, joining_date, salary, personal_info, address, addedBy, lastUpdatedBy);
+        
+        // Check if employee is already in database
+        int isAddedBefore = 0;
+        for (int i = 0; i < employees.size(); i++){
+            if(employees.get(i).getId().equals(employee.getId())){
+                isAddedBefore = 1;
+                break;
+            }
+        }
+        employees.removeAll(employees);
+        
+        // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         Transaction transaction = session.beginTransaction();
+        
+        // Database Action
         try {
-            session.save(employee);
-            for (int i = 0; i < employees.size(); i++){
-            employees.remove(i);
+            if(isAddedBefore == 0){
+                session.save(employee);
+            }else if(isAddedBefore == 1){
+                employee.setId(this.employee.getId());
+                employee.setAddedBy(this.employee.getAddedBy());
+                session.update(employee);
             }
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
@@ -637,165 +667,11 @@ public class HRPanelUIController implements Initializable {
         session.close();
         
         //Display Employees' Information on the Table View
-        employeesTable.remove(0, (employeesTable.size() - 1));
+        employeesTable.remove(0, (employeesTable.size()));
         for (int i = 0; i < employees.size(); i++){
-            employeesTable.add(employees.get(i));
-        }
-        employeeViewTable.setItems(employeesTable);
-        employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
-        employeeNameColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getName()));
-        employeeSexColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSex()));
-        employeeCompanyNoColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getCompanyNo()));
-        deptCodeColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDepartmentCode()));
-        branchIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBranchId()));
-        joiningDateColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getJoiningDate()));
-        employeeDesignationColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDesignation()));
-        
-        // Make All the Fields Blank for Further Use
-        idNoField.setText("");
-        employeeNameField.setText("");
-        companyNoBox.getSelectionModel().clearSelection();
-        designationBox.getSelectionModel().clearSelection();
-        confirmationDatePicker.getEditor().setText("");
-        deptCodeBox.getSelectionModel().clearSelection();
-        joiningDatePicker.getEditor().setText("");
-        genderBox.getSelectionModel().clearSelection();
-        branchIDBox.getSelectionModel().clearSelection();
-        
-        basicSalaryField.setText("");
-        runningBasicField.setText("");
-        houseRentField.setText("");
-        medicalAllowField.setText("");
-        othersAllowField.setText("");
-        conveyanceField.setText("");
-        carAllowField.setText("");
-        grossSalaryField.setText("");
-        bankCodeBox.getSelectionModel().clearSelection();
-        accountNoField.setText("");
-       
-        fathersNameField.setText("");
-        mothersNameField.setText("");
-        religionBox.getSelectionModel().clearSelection();
-        maritalStatusBox.getSelectionModel().clearSelection();
-        birthDateField.setText("");
-        birthMonthField.setText("");
-        birthYearField.setText("");
-        ageField.setText("");
-        spouseField.setText("");
-        bloodGroupBox.getSelectionModel().clearSelection();
-        nationalityField.setText("");
-        heightField.setText("");
-        weightField.setText("");
-        childrenField.setText("");
-        educationalQualificationField.setText("");
-        technicalQualificationField.setText("");
-        nationalIdNoField.setText("");
-        mobileNoField.setText("");
-        birthPlaceField.setText("");
-        tinNoField.setText("");
-        emailAddressField.setText("");
-        passportNoField.setText("");
-        emergencyContNo.setText("");
-               
-        presHouseNoField.setText("");
-        presRoadNoField.setText("");
-        presVillageField.setText("");
-        presPOField.setText("");
-        presPSField.setText("");
-        presDistField.setText("");
-        presPhnField.setText("");
-        permHouseNoField.setText("");
-        permRoadNoField.setText("");
-        permVillageField.setText("");
-        permPOField.setText("");
-        permPSField.setText("");
-        permDistField.setText("");
-        permPhnField.setText("");
-    }
-
-    @FXML
-    private void handleUpdateAction(ActionEvent event) {
-        //Collect Necessary Data for Employee
-        String id = idNoField.getText();
-        String name = employeeNameField.getText();
-        int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
-        String designation = designationBox.getSelectionModel().getSelectedItem() + "";
-        String confirmation_date = confirmationDatePicker.getEditor().getText();
-        String dept_code = deptCodeBox.getSelectionModel().getSelectedItem() + "";
-        String joining_date = joiningDatePicker.getEditor().getText();
-        String sex = genderBox.getSelectionModel().getSelectedItem() + "";
-        String branch_id = branchIDBox.getSelectionModel().getSelectedItem() + "";
-        
-        //Collect Necessary Data and Instantiate Salary
-        double basic_salary = Double.parseDouble(basicSalaryField.getText());
-        String bank_code = bankCodeBox.getSelectionModel().getSelectedItem() + "";
-        String ac_no = accountNoField.getText();
-        Salary salary = new Salary(basic_salary, bank_code, ac_no);
-        
-        //Collect Necessary Data and Instantiate PersonalInformation
-        String fathers_name = fathersNameField.getText();
-        String mothers_name = mothersNameField.getText();
-        String religion = religionBox.getSelectionModel().getSelectedItem() + "";
-        String marital_status = maritalStatusBox.getSelectionModel().getSelectedItem() + "";
-        String date_of_birth = birthDateField.getText() + "-" + birthMonthField.getText() + "-" + birthYearField.getText();
-        String spouse = spouseField.getText();
-        String blood_group = bloodGroupBox.getSelectionModel().getSelectedItem() + "";
-        String nationality = nationalityField.getText();
-        double height = Double.parseDouble(heightField.getText());
-        double weight = Double.parseDouble(weightField.getText());
-        int children = Integer.parseInt(childrenField.getText());
-        String edu_quali = educationalQualificationField.getText();
-        String tech_quali = technicalQualificationField.getText();
-        String nid_no = nationalIdNoField.getText();
-        String mobile_no = mobileNoField.getText();
-        String birth_place = birthPlaceField.getText();
-        String tin_no = tinNoField.getText();
-        String email = emailAddressField.getText();
-        String passport_no = passportNoField.getText();
-        String emer_cont_no = emergencyContNo.getText();
-        PersonalInformation personal_info = new PersonalInformation(fathers_name, mothers_name, date_of_birth, nationality, birth_place, blood_group, religion, marital_status, spouse, children, height, weight, edu_quali, tech_quali, nid_no, passport_no, tin_no, email, mobile_no, emer_cont_no);
-        
-        //Collect Necessary Data and Instantiate Address
-        String pres_house_no = presHouseNoField.getText();
-        String pres_road_no = presRoadNoField.getText();
-        String pres_village = presVillageField.getText();
-        String pres_po = presPOField.getText();
-        String pres_ps = presPSField.getText();
-        String pres_dist = presDistField.getText();
-        String pres_phn = presPhnField.getText();
-        String perm_house_no = permHouseNoField.getText();
-        String perm_road_no = permRoadNoField.getText();
-        String perm_village = permVillageField.getText();
-        String perm_po = permPOField.getText();
-        String perm_ps = permPSField.getText();
-        String perm_dist = permDistField.getText();
-        String perm_phn = permPhnField.getText();
-        Address address = new Address(pres_house_no, pres_road_no, pres_village, pres_po, pres_ps, pres_dist, pres_phn, perm_house_no, perm_road_no, perm_village, perm_po, perm_ps, perm_dist, perm_phn);
-        
-        // Instantiate Employee
-        Employee employee = new Employee(id, name, sex, company_no, branch_id, dept_code, designation, confirmation_date, joining_date, salary, personal_info, address);
-        
-        factory = HibernateSingleton.getSessionFactory();
-        session = factory.openSession();
-        Transaction transaction = session.beginTransaction();
-        try {
-            session.update(employee);
-            for (int i = 0; i < employees.size(); i++){
-            employees.remove(i);
-        }
-            employeesTable.remove(0, employeesTable.size());
-            employees = session.createCriteria(Employee.class).list();
-            transaction.commit();
-        } catch (Exception e) {
-            System.err.println(e);
-            transaction.rollback();
-        }
-        session.close();
-        
-        //Display Employees' Information on the Table View
-        employeesTable.remove(0, (employeesTable.size() - 1));
-        for (int i = 0; i < employees.size(); i++){
-            employeesTable.add(employees.get(i));
+            if(employees.get(i).getIsDeleted() == 0){
+                employeesTable.add(employees.get(i));
+            }
         }
         employeeViewTable.setItems(employeesTable);
         employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
@@ -871,7 +747,7 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleRemoveAction(ActionEvent event) {
-        String id = idNoField.getText();
+        String id = "";
         String name = employeeNameField.getText();
         int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
         String designation = designationBox.getSelectionModel().getSelectedItem() + "";
@@ -927,18 +803,25 @@ public class HRPanelUIController implements Initializable {
         String perm_phn = permPhnField.getText();
         Address address = new Address(pres_house_no, pres_road_no, pres_village, pres_po, pres_ps, pres_dist, pres_phn, perm_house_no, perm_road_no, perm_village, perm_po, perm_ps, perm_dist, perm_phn);
         
+        // Get User ID
+        String getIdText = hrmIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String addedBy = "";
+        String lastUpdatedBy = user;
+        
         // Instantiate Employee
-        Employee employee = new Employee(id, name, sex, company_no, branch_id, dept_code, designation, confirmation_date, joining_date, salary, personal_info, address);
+        Employee employee = new Employee(id, name, sex, company_no, branch_id, dept_code, designation, confirmation_date, joining_date, salary, personal_info, address, addedBy, lastUpdatedBy);
+        employee.setId(this.employee.getId());
+        employee.setAddedBy(this.employee.getAddedBy());
+        employee.setIsDeleted(1);
+        employees.removeAll(employees);
         
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.delete(employee);
-            for (int i = 0; i < employees.size(); i++){
-            employees.remove(i);
-        }
-            employeesTable.remove(0, employeesTable.size());
+            session.update(employee);
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
         } catch (Exception e) {
@@ -948,9 +831,11 @@ public class HRPanelUIController implements Initializable {
         session.close();
         
         //Display Employees' Information on the Table View
-        employeesTable.remove(0, (employeesTable.size() - 1));
+        employeesTable.remove(0, (employeesTable.size()));
         for (int i = 0; i < employees.size(); i++){
-            employeesTable.add(employees.get(i));
+            if(employees.get(i).getIsDeleted() == 0){
+                employeesTable.add(employees.get(i));
+            }
         }
         employeeViewTable.setItems(employeesTable);
         employeeIdColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getId()));
@@ -1089,7 +974,7 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleSelectEmployeeAction(MouseEvent event) {
-        Employee employee = employeeViewTable.getSelectionModel().getSelectedItem();
+        employee = employeeViewTable.getSelectionModel().getSelectedItem();
         if(!employee.getName().equals("")){
             idNoField.setText(employee.getId());
             employeeNameField.setText(employee.getName());
@@ -1214,11 +1099,11 @@ public class HRPanelUIController implements Initializable {
         }
     }
     
-    public void setEmployeeId(String employeeId){
-        this.employeeId = employeeId;
-        hrmIdText.setText("HRM ID: " + employeeId);
-        hrmSalariesIdText.setText("HRM ID: " + employeeId);
-        hrmProfileIdText.setText("HRM ID: " + employeeId);
+    public void setEmployeeId(String username){
+        this.employeeId = username;
+        hrmIdText.setText("HRM ID: " + username);
+        hrmSalariesIdText.setText("HRM ID: " + username);
+        hrmProfileIdText.setText("HRM ID: " + username);
         
         employees = new ArrayList<>();
         
@@ -1239,7 +1124,7 @@ public class HRPanelUIController implements Initializable {
         
         // Get Employee Information Using ID
         for(int i = 0; i < employees.size(); i++){
-            if(employeeId.equals(employees.get(i).getId())){
+            if(username.equals(employees.get(i).getId())){
                 employee = employees.get(i);
             }
         }
@@ -1383,6 +1268,20 @@ public class HRPanelUIController implements Initializable {
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
             Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handlePrintAction(ActionEvent event) {
+        PdfEmployee pdfEmployee = new PdfEmployee(this.employee);
+        Document employeePdfDoc = new Document();
+        employeePdfDoc = pdfEmployee.getPdfDocumet();
+        System.out.println("Generated");
+        File file = new File("generatedPdfs/Employee.pdf");
+        try {
+            Desktop.getDesktop().print(file);
+        } catch (IOException ex) {
+            Logger.getLogger(HRPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

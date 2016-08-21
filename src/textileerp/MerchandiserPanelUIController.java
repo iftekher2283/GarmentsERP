@@ -273,8 +273,10 @@ public class MerchandiserPanelUIController implements Initializable {
         
         // Set ObservableLists Values Related To Buyer
         for (int i = 0; i < buyers.size(); i++){
-            buyerNames.add(buyers.get(i).getBuyerName());
-            buyersView.add(buyers.get(i));
+            if(buyers.get(i).getIsDeleted() == 0){
+                buyersView.add(buyers.get(i));
+                buyerNames.add(buyers.get(i).getBuyerName());
+            }
         }
         orderBuyerNameBox.setItems(buyerNames);
         
@@ -291,7 +293,9 @@ public class MerchandiserPanelUIController implements Initializable {
         // Set ObservableLists Values Related To Order
         ordersView = FXCollections.observableArrayList();
         for (int i = 0; i < orders.size(); i++){
-            ordersView.add(orders.get(i));
+            if(orders.get(i).getOrderIsDeleted() == 0){
+                ordersView.add(orders.get(i));
+            }
         }
         
         // Set Orders To Table View
@@ -299,12 +303,12 @@ public class MerchandiserPanelUIController implements Initializable {
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
         orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
         orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
-        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderCategory()));
         orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
-        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
-        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
-        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
         
         buyerNameMatchingText.setText("");
         orderIdSearchMessageText.setText("");
@@ -352,8 +356,13 @@ public class MerchandiserPanelUIController implements Initializable {
         String state = buyerStateField.getText();
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
-        String addedBy = merchandiserBuyerIdText.getText();
-        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String addedBy = user;
+        String lastUpdatedBy = user;
         
         // Instantiate Buyer Object
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
@@ -379,9 +388,12 @@ public class MerchandiserPanelUIController implements Initializable {
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
         for (int i = 0; i < buyers.size(); i++){
-            buyersView.add(buyers.get(i));
-            buyerNames.add(buyers.get(i).getBuyerName());
+            if(buyers.get(i).getIsDeleted() == 0){
+                buyersView.add(buyers.get(i));
+                buyerNames.add(buyers.get(i).getBuyerName());
+            }
         }
+        orderBuyerNameBox.setItems(buyerNames);
         
         // Set Buyers To Table View
         buyersTableView.setItems(buyersView);
@@ -422,7 +434,12 @@ public class MerchandiserPanelUIController implements Initializable {
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
         String addedBy = "";
-        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String lastUpdatedBy = user;
         
         // Instantiate Buyer
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
@@ -450,9 +467,12 @@ public class MerchandiserPanelUIController implements Initializable {
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
         for (int i = 0; i < buyers.size(); i++){
-            buyersView.add(buyers.get(i));
-            buyerNames.add(buyers.get(i).getBuyerName());
+            if(buyers.get(i).getIsDeleted() == 0){
+                buyersView.add(buyers.get(i));
+                buyerNames.add(buyers.get(i).getBuyerName());
+            }
         }
+        orderBuyerNameBox.setItems(buyerNames);
         
         // Set Buyer To Table View
         buyersTableView.setItems(buyersView);
@@ -493,12 +513,18 @@ public class MerchandiserPanelUIController implements Initializable {
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
         String addedBy = "";
-        String lastUpdatedBy = merchandiserBuyerIdText.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String lastUpdatedBy = user;
         
         // Instantiate Buyer
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
         buyer.setBuyerName(this.buyer.getBuyerName());
         buyer.setAddedBy(this.buyer.getAddedBy());
+        buyer.setIsDeleted(1);
         buyers.removeAll(buyers);
         
         // Prepare Hibernate 
@@ -508,7 +534,7 @@ public class MerchandiserPanelUIController implements Initializable {
         
         // Database Actions
         try{
-            session.delete(buyer);
+            session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
         }catch(Exception e){
@@ -521,9 +547,12 @@ public class MerchandiserPanelUIController implements Initializable {
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
         for (int i = 0; i < buyers.size(); i++){
-            buyersView.add(buyers.get(i));
-            buyerNames.add(buyers.get(i).getBuyerName());
+            if(buyers.get(i).getIsDeleted() == 0){
+                buyersView.add(buyers.get(i));
+                buyerNames.add(buyers.get(i).getBuyerName());
+            }
         }
+        orderBuyerNameBox.setItems(buyerNames);
         
         // Set Buyers To Table View
         buyersTableView.setItems(buyersView);
@@ -650,15 +679,15 @@ public class MerchandiserPanelUIController implements Initializable {
                 orderNameField.setText(order.getOrderName());
                 orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
                 orderBuyerReqirementsField.setText(order.getBuyerRequirements());
-                orderDescriptionArea.setText(order.getDescription());
-                orderPriorityField.setText(order.getPriority());
-                orderQuantityField.setText(order.getQuantity() + "");
-                orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getCategory()));
-                orderSmvField.setText(order.getSmv() + "");
-                orderDeliveryDatePicker.getEditor().setText(order.getDeliveryDate());
-                orderCostField.setText(order.getCost() + "");
-                orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getCurrency()));
-                orderInternalCommentsField.setText(order.getInternalComments());
+                orderDescriptionArea.setText(order.getOrderDescription());
+                orderPriorityField.setText(order.getOrderPriority());
+                orderQuantityField.setText(order.getOrderQuantity() + "");
+                orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
+                orderSmvField.setText(order.getOrderSmv() + "");
+                orderDeliveryDatePicker.getEditor().setText(order.getOrderDeliveryDate());
+                orderCostField.setText(order.getOrderCost() + "");
+                orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getOrderCurrency()));
+                orderInternalCommentsField.setText(order.getOrderInternalComments());
                 break;
             }
             else{
@@ -679,15 +708,17 @@ public class MerchandiserPanelUIController implements Initializable {
         orderNameField.setText(order.getOrderName());
         orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
         orderBuyerReqirementsField.setText(order.getBuyerRequirements());
-        orderDescriptionArea.setText(order.getDescription());
-        orderPriorityField.setText(order.getPriority());
-        orderQuantityField.setText(order.getQuantity() + "");
-        orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getCategory()));
-        orderSmvField.setText(order.getSmv() + "");
-        orderDeliveryDatePicker.getEditor().setText(order.getDeliveryDate());
-        orderCostField.setText(order.getCost() + "");
-        orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getCurrency()));
-        orderInternalCommentsField.setText(order.getInternalComments());
+        orderDescriptionArea.setText(order.getOrderDescription());
+        orderPriorityField.setText(order.getOrderPriority());
+        orderFloorNoBox.getSelectionModel().select(Floors.valueOf(order.getOrderFloorNo()));
+        orderLineNoBox.getSelectionModel().select(Lines.valueOf(order.getOrderLineNo()));
+        orderQuantityField.setText(order.getOrderQuantity() + "");
+        orderCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
+        orderSmvField.setText(order.getOrderSmv() + "");
+        orderDeliveryDatePicker.getEditor().setText(order.getOrderDeliveryDate());
+        orderCostField.setText(order.getOrderCost() + "");
+        orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getOrderCurrency()));
+        orderInternalCommentsField.setText(order.getOrderInternalComments());
     }
 
     @FXML
@@ -699,28 +730,31 @@ public class MerchandiserPanelUIController implements Initializable {
         String orderName = orderNameField.getText();
         String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
         String buyerRequirements = orderBuyerReqirementsField.getText();
-        String description = orderDescriptionArea.getText();
-        String priority = orderPriorityField.getText();
-        int quantity = Integer.parseInt(orderQuantityField.getText());
-        String floorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
-        String lineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
-        String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
-        double smv = Double.parseDouble(orderSmvField.getText());
+        String orderDescription = orderDescriptionArea.getText();
+        String orderPriority = orderPriorityField.getText();
+        int orderQuantity = Integer.parseInt(orderQuantityField.getText());
+        String orderFloorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
+        String orderLineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
+        String orderCategory = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
+        double orderSmv = Double.parseDouble(orderSmvField.getText());
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date currentDate= new Date();
         String orderDate = format.format(currentDate);
-        System.out.println(orderDate);
-        String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
-        double cost = Double.parseDouble(orderCostField.getText());
-        String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
-        String internalComments = orderInternalCommentsField.getText();
-        String addedBy = merchandiserOrderIdText.getText();
-        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        String orderDeliveryDate = orderDeliveryDatePicker.getEditor().getText();
+        double orderCost = Double.parseDouble(orderCostField.getText());
+        String orderCurrency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
+        String orderInternalComments = orderInternalCommentsField.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String orderAddedBy = user;
+        String orderLastUpdatedBy = user;
         
         // Instantiate Order
-        Order addOrder = new Order( orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        Order addOrder = new Order(orderId, orderName, buyerName, buyerRequirements, orderDescription, orderPriority, orderQuantity, orderFloorNo, orderLineNo, orderCategory, orderSmv, orderDate, orderDeliveryDate, orderCost, orderCurrency, orderInternalComments, orderAddedBy, orderLastUpdatedBy);
         orders.removeAll(orders);
-        System.out.println(addOrder);
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
@@ -728,9 +762,7 @@ public class MerchandiserPanelUIController implements Initializable {
         
         // Database Actions
         try{
-            System.out.println("Hibernate Prepared");
             session.save(addOrder);
-            System.out.println("Order Saved");
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
         }catch(Exception e){
@@ -743,7 +775,9 @@ public class MerchandiserPanelUIController implements Initializable {
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
         for (int i = 0; i < orders.size(); i++){
-            ordersView.add(orders.get(i));
+            if(orders.get(i).getOrderIsDeleted() == 0){
+                ordersView.add(orders.get(i));
+            }
         }
         
         // Set Order To TableView
@@ -751,12 +785,12 @@ public class MerchandiserPanelUIController implements Initializable {
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
         orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
         orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
-        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderCategory()));
         orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
-        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
-        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
-        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
         
         // Refresh FXML
         orderIdField.setText("");
@@ -788,22 +822,28 @@ public class MerchandiserPanelUIController implements Initializable {
         String description = orderDescriptionArea.getText();
         String priority = orderPriorityField.getText();
         int quantity = Integer.parseInt(orderQuantityField.getText());
-        String floorNo = "";
-        String lineNo = "";
+        String orderFloorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
+        String orderLineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
         String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
         double smv = Double.parseDouble(orderSmvField.getText());
-        String orderDate = new SimpleDateFormat("dd-mm-yyyy") + "";
+        String orderDate = "";
         String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
         double cost = Double.parseDouble(orderCostField.getText());
         String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
         String internalComments = orderInternalCommentsField.getText();
         String addedBy = "";
-        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String lastUpdatedBy = user;
         
         // Instantiate Order
-        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, orderFloorNo, orderLineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
         order.setOrderId(this.order.getOrderId());
-        order.setAddedBy(this.order.getAddedBy());
+        order.setOrderDate(this.order.getOrderDate());
+        order.setOrderAddedBy(this.order.getOrderAddedBy());
         orders.removeAll(orders);
         
         // Prepare Hibernate
@@ -825,7 +865,9 @@ public class MerchandiserPanelUIController implements Initializable {
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
         for (int i = 0; i < orders.size(); i++){
-            ordersView.add(orders.get(i));
+            if(orders.get(i).getOrderIsDeleted() == 0){
+                ordersView.add(orders.get(i));
+            }
         }
         
         // Set Order To TableView
@@ -833,12 +875,12 @@ public class MerchandiserPanelUIController implements Initializable {
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
         orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
         orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
-        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderCategory()));
         orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
-        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
-        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
-        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
         
         // Refresh FXML
         orderIdField.setText("");
@@ -847,6 +889,8 @@ public class MerchandiserPanelUIController implements Initializable {
         orderBuyerReqirementsField.setText("");
         orderDescriptionArea.setText("");
         orderPriorityField.setText("");
+        orderFloorNoBox.getSelectionModel().clearSelection();
+        orderLineNoBox.getSelectionModel().clearSelection();
         orderQuantityField.setText("");
         orderCategoryBox.getSelectionModel().clearSelection();
         orderSmvField.setText("");
@@ -868,22 +912,29 @@ public class MerchandiserPanelUIController implements Initializable {
         String description = orderDescriptionArea.getText();
         String priority = orderPriorityField.getText();
         int quantity = Integer.parseInt(orderQuantityField.getText());
-        String floorNo = "";
-        String lineNo = "";
+        String orderFloorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
+        String orderLineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
         String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
         double smv = Double.parseDouble(orderSmvField.getText());
-        String orderDate = new SimpleDateFormat("dd-mm-yyyy") + "";
+        String orderDate = "";
         String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
         double cost = Double.parseDouble(orderCostField.getText());
         String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
         String internalComments = orderInternalCommentsField.getText();
         String addedBy = "";
-        String lastUpdatedBy = merchandiserOrderIdText.getText();
+        
+        // Get User ID
+        String getIdText = merchandiserOrderIdText.getText();
+        String idTokens[] = getIdText.split(" ");
+        String user = idTokens[2];
+        String lastUpdatedBy = user;
         
         // Instantiate Order
-        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
+        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, orderFloorNo, orderLineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
         order.setOrderId(this.order.getOrderId());
-        order.setAddedBy(this.order.getAddedBy());
+        order.setOrderDate(this.order.getOrderDate());
+        order.setOrderAddedBy(this.order.getOrderAddedBy());
+        order.setOrderIsDeleted(1);
         orders.removeAll(orders);
         
         // Prepare Hibernate
@@ -893,7 +944,7 @@ public class MerchandiserPanelUIController implements Initializable {
         
         // Database Actions
         try{
-            session.delete(order);
+            session.update(order);
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
         }catch(Exception e){
@@ -905,7 +956,9 @@ public class MerchandiserPanelUIController implements Initializable {
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
         for (int i = 0; i < orders.size(); i++){
-            ordersView.add(orders.get(i));
+            if(orders.get(i).getOrderIsDeleted() == 0){
+                ordersView.add(orders.get(i));
+            }
         }
         
         // Set Order To TableView
@@ -913,12 +966,12 @@ public class MerchandiserPanelUIController implements Initializable {
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
         orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
         orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getQuantity()));
-        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCategory()));
+        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderQuantity()));
+        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderCategory()));
         orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
-        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDeliveryDate()));
-        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
-        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getLastUpdatedBy()));
+        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
+        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
+        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
         
         // Refresh FXML
         orderIdField.setText("");
@@ -927,6 +980,8 @@ public class MerchandiserPanelUIController implements Initializable {
         orderBuyerReqirementsField.setText("");
         orderDescriptionArea.setText("");
         orderPriorityField.setText("");
+        orderFloorNoBox.getSelectionModel().clearSelection();
+        orderLineNoBox.getSelectionModel().clearSelection();
         orderQuantityField.setText("");
         orderCategoryBox.getSelectionModel().clearSelection();
         orderSmvField.setText("");

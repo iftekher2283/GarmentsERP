@@ -27,6 +27,7 @@ public class Buyer {
     private String areaCode;
     private String addedBy;
     private String updatedBy;
+    private int isDeleted;
 
     public Buyer() {
     }
@@ -44,6 +45,7 @@ public class Buyer {
         this.areaCode = areaCode;
         this.addedBy = addedBy;
         this.updatedBy = updatedBy;
+        this.isDeleted = 0;
     }
 
     public String getBuyerName() {
@@ -142,6 +144,14 @@ public class Buyer {
         this.updatedBy = updatedBy;
     }
 
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
     @Override
     public String toString() {
         return "Buyer{" + "buyerName=" + buyerName + ", officeSiteName=" + officeSiteName + ", companyBrandName=" + companyBrandName + ", phone=" + phone + ", email=" + email + ", address=" + address + ", city=" + city + ", state=" + state + ", zipCode=" + zipCode + ", areaCode=" + areaCode + ", addedBy=" + addedBy + ", updatedBy=" + updatedBy + '}';

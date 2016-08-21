@@ -106,6 +106,8 @@ public class IEPanelUIController implements Initializable {
     private TextField uclBulletinField;
     @FXML
     private TextField pitchTimeBulletinField;
+    
+    // Bulletin Operation
     @FXML
     private ComboBox<Components> componentBulletinBox;
     @FXML
@@ -138,75 +140,78 @@ public class IEPanelUIController implements Initializable {
     private TextField smvBulletinField;
     @FXML
     private TextField secondsCountBulletinField;
+    
     //Bulletin Operation Description Table
     @FXML
-    private TableView<BulletinOperationDetails> bulletinOperationDescriptionTableView;
+    private TableView<BulletinOperation> bulletinOperationDescriptionTableView;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> slOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> slOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> componentsOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, String> componentsOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> operationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, String> operationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> mcHelpOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, String> mcHelpOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> mcCodeOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, String> mcCodeOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> smvOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> smvOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> reqMpOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> reqMpOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> mpAllOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> mpAllOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> hundredTargetOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> hundredTargetOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> indTargetOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> indTargetOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> mcQuantityOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> mcQuantityOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> operatorOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> operatorOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> helperOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> helperOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> imOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> imOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> acTargetOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, Number> acTargetOperationDescriptionTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> remarksOperationDescriptionTableColumn;
+    private TableColumn<BulletinOperation, String> remarksOperationDescriptionTableColumn;
+    
     //Bulletin Operation Summary Table
     @FXML
-    private TableView<BulletinOperationDetails> bulletinOperationSummaryTableView;
+    private TableView<BulletinOperation> bulletinOperationSummaryTableView;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> componentsOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, String> componentsOperationSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> smvOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> smvOperationSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> manPowerAllOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> manPowerAllOperationSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> mcQuantityOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> mcQuantityOperationSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> operatorOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> operatorOperationSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> helperOperationSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> helperOperationSummaryTableColumn;
+    
     //Bulletin Summary Table
     @FXML
-    private TableView<BulletinOperationDetails> bulletinSummaryTableView;
+    private TableView<BulletinOperation> bulletinSummaryTableView;
     @FXML
-    private TableColumn<BulletinOperationDetails, String> areaBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, String> areaBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> smvBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> smvBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> mcOpBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> mcOpBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> imBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> imBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> hpBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> hpBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> totalBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> totalBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> hudredTargetBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> hudredTargetBulletinSummaryTableColumn;
     @FXML
-    private TableColumn<BulletinOperationDetails, Number> targetBulletinSummaryTableColumn;
+    private TableColumn<BulletinOperation, Number> targetBulletinSummaryTableColumn;
     
     // Capacity Study FXML
     @FXML
@@ -397,8 +402,8 @@ public class IEPanelUIController implements Initializable {
     
     // Required ObservableLists
     private ObservableList<String> orderIds;
-    private ObservableList<BulletinOperationDetails> bulletinOperationDetails;
-    private ObservableList<BulletinOperationDetails> bulletinOperationSummaries;
+    private ObservableList<BulletinOperation> bulletinOperationDetails;
+    private ObservableList<BulletinOperation> bulletinOperationSummaries;
     
     // Hibernate Variables
     private SessionFactory factory;
@@ -451,6 +456,7 @@ public class IEPanelUIController implements Initializable {
           //  orders = session.createCriteria(Order.class).list();
             ieBulletins = session.createCriteria(IEBulletin.class).list();
             users = session.createCriteria(User.class).list();
+            orders = session.createCriteria(Order.class).list();
             transaction.commit();
         }catch(Exception e){
             System.err.println(e);
@@ -458,43 +464,6 @@ public class IEPanelUIController implements Initializable {
             System.out.println("RollBacked");
         }
         session.close();
-        
-        
-        // Connect To Database And Retrieve Orders
-        try{
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            Statement statement = connection.createStatement();
-            
-            String query = "select * from Order;";
-            
-            ResultSet getOrders = statement.executeQuery(query);
-            while(getOrders.next()){
-                int orderId = getOrders.getInt("orderId");
-                String orderName = getOrders.getString("orderName");
-                String buyerName = getOrders.getString("buyerName");
-                String buyerRequirements = getOrders.getString("buyerRequirements");
-                String description = getOrders.getString("description");
-                String priority = getOrders.getString("priority");
-                int quantity = getOrders.getInt("quantity");
-                String floorNo = getOrders.getString("floorNo");
-                String lineNo = getOrders.getString("lineNo");
-                String category = getOrders.getString("category");
-                double smv = getOrders.getDouble("smv");
-                String orderDate = getOrders.getString("orderDate");
-                String deliveryDate = getOrders.getString("deliveryDate");
-                double cost = getOrders.getDouble("cost");
-                String currency = getOrders.getString("currency");
-                String internalComments = getOrders.getString("internalComments");
-                String addedBy = getOrders.getString("addedBy");
-                String lastUpdatedBy = getOrders.getString("lastUpdatedBy");
-                
-                Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, floorNo, lineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
-                
-                orders.add(order);
-            }
-        }catch (SQLException ex) {
-            Logger.getLogger(IEPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         // Add Order Ids to ObservableList and Set it To ComboBox
         for(int i = 0; i < orders.size(); i++){
@@ -625,10 +594,10 @@ public class IEPanelUIController implements Initializable {
             if(orders.get(i).getOrderId() == orderId){
                 order = orders.get(i);
                 buyeNameBulletinField.setText(order.getBuyerName());
-                orderDescriptionBulletinArea.setText(order.getDescription());
-                orderQuantityBulletinField.setText(order.getQuantity() + "");
-                floorNoBulletinBox.getSelectionModel().select(Floors.valueOf(order.getFloorNo()));
-                lineNoBulletinBox.getSelectionModel().select(Lines.valueOf(order.getLineNo()));
+                orderDescriptionBulletinArea.setText(order.getOrderDescription());
+                orderQuantityBulletinField.setText(order.getOrderQuantity() + "");
+                floorNoBulletinBox.getSelectionModel().select(Floors.valueOf(order.getOrderFloorNo()));
+                lineNoBulletinBox.getSelectionModel().select(Lines.valueOf(order.getOrderLineNo()));
                 
                 break;
             }
@@ -649,6 +618,8 @@ public class IEPanelUIController implements Initializable {
             bulletinOperations = new ArrayList<>();
             bulletinOperationDetails = FXCollections.observableArrayList();
             bulletinOperationSummaries = FXCollections.observableArrayList();
+            ieBulletin = new IEBulletin();
+            ieBulletin.setOrderId(orderId);
         }
         else{
             bulletinOperations = new ArrayList<>();
@@ -658,69 +629,96 @@ public class IEPanelUIController implements Initializable {
             bulletinOperations = ieBulletin.getOperationDetails();
             for(int i = 1; i <= bulletinOperations.size(); i++){
                 bulletinOperation = bulletinOperations.get(i);
-                int sl = i;
+                int id = i;
                 String component = bulletinOperation.getComponent();
-                String operationDescription = bulletinOperation.getDescription();
-                String mcHelp = bulletinOperation.getMcOrHelper();
+                String description = bulletinOperation.getDescription();
+                String mcOrHelper = bulletinOperation.getMcOrHelper();
                 String machineCode = bulletinOperation.getMachineCode();
                 int secondsCount = bulletinOperation.getSecondsCount();
-                double requiredMp = bulletinOperation.getRequiredManpower();
-                double mpAllocation = bulletinOperation.getManpowerAllocation();
-                int hundredTgt = bulletinOperation.getHundredTarget();
-                int indTgt = bulletinOperation.getIndividualTarget();
+                double requiredManpower = bulletinOperation.getRequiredManpower();
+                double manpowerAllocation = bulletinOperation.getManpowerAllocation();
+                int hundredTarget = bulletinOperation.getHundredTarget();
+                int individualTarget = bulletinOperation.getIndividualTarget();
                 double machineQuantity = bulletinOperation.getMachineQuantity();
-                double op = bulletinOperation.getOperator();
-                double hp = bulletinOperation.getHelper();
+                double operator = bulletinOperation.getOperator();
+                double helper = bulletinOperation.getHelper();
                 double im = bulletinOperation.getIm();
-                double acTgt = bulletinOperation.getAcTarget();
+                int acTarget = bulletinOperation.getAcTarget();
                 String remarks = bulletinOperation.getRemarks();
                 
-                BulletinOperationDetails bulletinOperationDetail = new BulletinOperationDetails(sl, component, operationDescription, mcHelp, machineCode, secondsCount, requiredMp, mpAllocation, hundredTgt, indTgt, machineQuantity, op, hp, im, acTgt, remarks);
-                bulletinOperationDetails.add(bulletinOperationDetail);
+                BulletinOperation bulletinOperation = new BulletinOperation(id, component, description, mcOrHelper, machineCode, secondsCount, requiredManpower, manpowerAllocation, hundredTarget, individualTarget, machineQuantity, operator, helper, im, acTarget, remarks);
+                bulletinOperations.add(bulletinOperation);
+                bulletinOperationDetails.add(bulletinOperation);
             }
             
             BulletinOperationSummary bulletinSummaries = new BulletinOperationSummary();
             bulletinOperationSummaries = bulletinSummaries.getSummaries();
             
             bulletinOperationDescriptionTableView.setItems(bulletinOperationDetails);
-            slOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getSl()));
+            slOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getId()));
             componentsOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
-            mcHelpOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMcHelp()));
+            mcHelpOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMcOrHelper()));
             mcCodeOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMachineCode()));
             smvOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSmv()));
-            reqMpOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRequiredMp()));
-            mpAllOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMpAllocation()));
-            hundredTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getHundredTgt()));
-            indTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIndTgt()));
+            reqMpOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRequiredManpower()));
+            mpAllOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getManpowerAllocation()));
+            hundredTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getHundredTarget()));
+            indTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIndividualTarget()));
             mcQuantityOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMachineQuantity()));
-            operatorOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getOp()));
-            helperOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHp()));
+            operatorOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getOperator()));
+            helperOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHelper()));
             imOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getIm()));
-            acTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAcTgt()));
+            acTargetOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getAcTarget()));
             remarksOperationDescriptionTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getRemarks()));
             
             bulletinOperationSummaryTableView.setItems(bulletinOperationSummaries);
             componentsOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
             smvOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSmv()));
-            manPowerAllOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMpAllocation()));
+            manPowerAllOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getManpowerAllocation()));
             mcQuantityOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMachineQuantity()));
-            operatorOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getOp()));
-            helperOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHp()));
+            operatorOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getOperator()));
+            helperOperationSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHelper()));
             
             bulletinSummaryTableView.setItems(bulletinOperationSummaries);
             areaBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
             smvBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSmv()));
-            mcOpBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMcOrOP()));
+            mcOpBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMachineQuantity() + d.getValue().getOperator()));
             imBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getIm()));
-            hpBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHp()));
-            totalBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getMpAllocation()));
-            hudredTargetBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHundredTgt()));
-            targetBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getTotal()));
+            hpBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHelper()));
+            totalBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getManpowerAllocation()));
+            hudredTargetBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getHundredTarget()));
+            targetBulletinSummaryTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAcTarget()));
         }        
     }    
 
     @FXML
     private void handleAddBulletinOperationAction(ActionEvent event) {
+        if (ieBulletin != null){
+            int id = 0;
+            String component = componentBulletinBox.getSelectionModel().getSelectedItem() + "";
+            String mcOrHelper = machineOrHelperBulletinBox.getSelectionModel().getSelectedItem() + "";
+            String machineCode = machineCodeBulletinBox.getSelectionModel().getSelectedItem() + "";
+            String description = descriptionBulletinField.getText();
+            double operator = Double.parseDouble(operatorBulletinField.getText());
+            double machineQuantity = Double.parseDouble(machineQuantityBulletinField.getText());
+            int individualTarget = Integer.parseInt(indTargetBulletinField.getText());
+            int hundredTarget = Integer.parseInt(hundredTargetBulletinField.getText());
+            String remarks = remarksBulletinField.getText();
+            int acTarget = Integer.parseInt(acTargetBulletinField.getText());
+            double im = Double.parseDouble(imBulletinField.getText());
+            double helper = Double.parseDouble(helperBulletinField.getText());
+            double manpowerAllocation = Double.parseDouble(mpAllocationBulletinField.getText());
+            double requiredManpower = Double.parseDouble(requiredMpBulletinField.getText());
+            double smv = Double.parseDouble(smvBulletinField.getText());
+            int secondsCount = Integer.parseInt(secondsCountBulletinField.getText());
+            
+            BulletinOperation bulletinOperation = new BulletinOperation(id, component, description, mcOrHelper, machineCode, secondsCount, requiredManpower, manpowerAllocation, hundredTarget, individualTarget, machineQuantity, operator, helper, im, acTarget, remarks);
+            ieBulletin.addBulletinOperation(bulletinOperation);
+            bulletinOperations.add(bulletinOperation);
+            
+            BulletinOperationSummary bulletinSummary = new BulletinOperationSummary(bulletinOperations);
+            bulletinOperationSummaries = bulletinSummary.getSummaries();
+        }
     }
 
     @FXML

@@ -33,11 +33,13 @@ public class User {
     private String userTypeSt;
     @Transient
     private String isBlockedSt;
+    private String addedBy;
+    private String lastUpdatedBy;
 
     public User() {
     }
 
-    public User(int sl, String employeeId, String password, int userType, int isBlocked) {
+    public User(int sl, String employeeId, String password, int userType, int isBlocked, String addedBy, String lastUpdatedBy) {
         this.sl = sl;
         this.employeeId = employeeId;
         this.password = password;
@@ -73,6 +75,8 @@ public class User {
         else if(isBlocked == 1){
             this.isBlockedSt = "Yes";
         }
+        this.addedBy = addedBy;
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public int getSl() {
@@ -161,6 +165,22 @@ public class User {
         this.isBlockedSt = isBlockedSt;
     }
 
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "sl=" + sl + ", employeeId=" + employeeId + ", password=" + password + ", userType=" + userType + ", isBlocked=" + isBlocked + ", userTypeSt=" + userTypeSt + ", isBlockedSt=" + isBlockedSt + '}';

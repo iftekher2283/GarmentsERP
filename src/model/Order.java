@@ -5,60 +5,84 @@
  */
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author iftekher
  */
 @Entity
-public class Order{
+@Table(name="tbl_order")
+public class Order {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="`orderId`")
     private int orderId;
+    @Column(name="`orderName`")
     private String orderName;
+    @Column(name="`buyerName`")
     private String buyerName;
+    @Column(name="`buyerRequirements`")
     private String buyerRequirements;
-    private String description;
-    private String priority;
-    private int quantity;
-    private String floorNo;
-    private String lineNo;
-    private String category;
-    private double smv;
+    @Column(name="`orderDescription`")
+    private String orderDescription;
+    @Column(name="`orderPriority`")
+    private String orderPriority;
+    @Column(name="`orderQuantity`")
+    private int orderQuantity;
+    @Column(name="`orderFloorNo`")
+    private String orderFloorNo;
+    @Column(name="`orderLineNo`")
+    private String orderLineNo;
+    @Column(name="`orderCategory`")
+    private String orderCategory;
+    @Column(name="`orderSmv`")
+    private double orderSmv;
+    @Column(name="`orderDate`")
     private String orderDate;
-    private String deliveryDate;
-    private double cost;
-    private String currency;
-    private String internalComments;
-    private String addedBy;
-    private String lastUpdatedBy;
+    @Column(name="`orderDeliveryDate`")
+    private String orderDeliveryDate;
+    @Column(name="`orderCost`")
+    private double orderCost;
+    @Column(name="`orderCurrency`")
+    private String orderCurrency;
+    @Column(name="`orderInternalComments`")
+    private String orderInternalComments;
+    @Column(name="`orderAddedBy`")
+    private String orderAddedBy;
+    @Column(name="`orderLastUpdatedBy`")
+    private String orderLastUpdatedBy;
+    @Column(name="`orderIsDeleted`")
+    private int orderIsDeleted;
 
     public Order() {
     }
 
-    public Order(int orderId, String orderName, String buyerName, String buyerRequirements, String description, String priority, int quantity, String floorNo, String lineNo, String category, double smv, String orderDate, String deliveryDate, double cost, String currency, String internalComments, String addedBy, String lastUpdatedBy) {
+    public Order(int orderId, String orderName, String buyerName, String buyerRequirements, String orderDescription, String orderPriority, int orderQuantity, String orderFloorNo, String orderLineNo, String orderCategory, double orderSmv, String orderDate, String orderDeliveryDate, double orderCost, String orderCurrency, String orderInternalComments, String orderAddedBy, String orderLastUpdatedBy) {
         this.orderId = orderId;
         this.orderName = orderName;
         this.buyerName = buyerName;
         this.buyerRequirements = buyerRequirements;
-        this.description = description;
-        this.priority = priority;
-        this.quantity = quantity;
-        this.floorNo = floorNo;
-        this.lineNo = lineNo;
-        this.category = category;
-        this.smv = smv;
+        this.orderDescription = orderDescription;
+        this.orderPriority = orderPriority;
+        this.orderQuantity = orderQuantity;
+        this.orderFloorNo = orderFloorNo;
+        this.orderLineNo = orderLineNo;
+        this.orderCategory = orderCategory;
+        this.orderSmv = orderSmv;
         this.orderDate = orderDate;
-        this.deliveryDate = deliveryDate;
-        this.cost = cost;
-        this.currency = currency;
-        this.internalComments = internalComments;
-        this.addedBy = addedBy;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.orderDeliveryDate = orderDeliveryDate;
+        this.orderCost = orderCost;
+        this.orderCurrency = orderCurrency;
+        this.orderInternalComments = orderInternalComments;
+        this.orderAddedBy = orderAddedBy;
+        this.orderLastUpdatedBy = orderLastUpdatedBy;
+        this.orderIsDeleted = 0;
     }
 
     public int getOrderId() {
@@ -93,60 +117,60 @@ public class Order{
         this.buyerRequirements = buyerRequirements;
     }
 
-    public String getDescription() {
-        return description;
+    public String getOrderDescription() {
+        return orderDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setOrderDescription(String orderDescription) {
+        this.orderDescription = orderDescription;
     }
 
-    public String getPriority() {
-        return priority;
+    public String getOrderPriority() {
+        return orderPriority;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    public void setOrderPriority(String orderPriority) {
+        this.orderPriority = orderPriority;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getOrderQuantity() {
+        return orderQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setOrderQuantity(int orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
 
-    public String getFloorNo() {
-        return floorNo;
+    public String getOrderFloorNo() {
+        return orderFloorNo;
     }
 
-    public void setFloorNo(String floorNo) {
-        this.floorNo = floorNo;
+    public void setOrderFloorNo(String orderFloorNo) {
+        this.orderFloorNo = orderFloorNo;
     }
 
-    public String getLineNo() {
-        return lineNo;
+    public String getOrderLineNo() {
+        return orderLineNo;
     }
 
-    public void setLineNo(String lineNo) {
-        this.lineNo = lineNo;
+    public void setOrderLineNo(String orderLineNo) {
+        this.orderLineNo = orderLineNo;
     }
 
-    public String getCategory() {
-        return category;
+    public String getOrderCategory() {
+        return orderCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setOrderCategory(String orderCategory) {
+        this.orderCategory = orderCategory;
     }
 
-    public double getSmv() {
-        return smv;
+    public double getOrderSmv() {
+        return orderSmv;
     }
 
-    public void setSmv(double smv) {
-        this.smv = smv;
+    public void setOrderSmv(double orderSmv) {
+        this.orderSmv = orderSmv;
     }
 
     public String getOrderDate() {
@@ -157,56 +181,65 @@ public class Order{
         this.orderDate = orderDate;
     }
 
-    public String getDeliveryDate() {
-        return deliveryDate;
+    public String getOrderDeliveryDate() {
+        return orderDeliveryDate;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setOrderDeliveryDate(String orderDeliveryDate) {
+        this.orderDeliveryDate = orderDeliveryDate;
     }
 
-    public double getCost() {
-        return cost;
+    public double getOrderCost() {
+        return orderCost;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setOrderCost(double orderCost) {
+        this.orderCost = orderCost;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getOrderCurrency() {
+        return orderCurrency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setOrderCurrency(String orderCurrency) {
+        this.orderCurrency = orderCurrency;
     }
 
-    public String getInternalComments() {
-        return internalComments;
+    public String getOrderInternalComments() {
+        return orderInternalComments;
     }
 
-    public void setInternalComments(String internalComments) {
-        this.internalComments = internalComments;
+    public void setOrderInternalComments(String orderInternalComments) {
+        this.orderInternalComments = orderInternalComments;
     }
 
-    public String getAddedBy() {
-        return addedBy;
+    public String getOrderAddedBy() {
+        return orderAddedBy;
     }
 
-    public void setAddedBy(String addedBy) {
-        this.addedBy = addedBy;
+    public void setOrderAddedBy(String orderAddedBy) {
+        this.orderAddedBy = orderAddedBy;
     }
 
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
+    public String getOrderLastUpdatedBy() {
+        return orderLastUpdatedBy;
     }
 
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
+    public void setOrderLastUpdatedBy(String orderLastUpdatedBy) {
+        this.orderLastUpdatedBy = orderLastUpdatedBy;
+    }
+
+    public int getOrderIsDeleted() {
+        return orderIsDeleted;
+    }
+
+    public void setOrderIsDeleted(int orderIsDeleted) {
+        this.orderIsDeleted = orderIsDeleted;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderId=" + orderId + ", orderName=" + orderName + ", buyerName=" + buyerName + ", buyerRequirements=" + buyerRequirements + ", description=" + description + ", priority=" + priority + ", quantity=" + quantity + ", floorNo=" + floorNo + ", lineNo=" + lineNo + ", category=" + category + ", smv=" + smv + ", orderDate=" + orderDate + ", deliveryDate=" + deliveryDate + ", cost=" + cost + ", currency=" + currency + ", internalComments=" + internalComments + ", addedBy=" + addedBy + ", lastUpdatedBy=" + lastUpdatedBy + '}';
+        return "Order{" + "orderId=" + orderId + ", orderName=" + orderName + ", buyerName=" + buyerName + ", buyerRequirements=" + buyerRequirements + ", orderDescription=" + orderDescription + ", orderPriority=" + orderPriority + ", orderQuantity=" + orderQuantity + ", orderFloorNo=" + orderFloorNo + ", orderLineNo=" + orderLineNo + ", orderCategory=" + orderCategory + ", orderSmv=" + orderSmv + ", orderDate=" + orderDate + ", orderDeliveryDate=" + orderDeliveryDate + ", orderCost=" + orderCost + ", orderCurrency=" + orderCurrency + ", orderInternalComments=" + orderInternalComments + ", orderAddedBy=" + orderAddedBy + ", orderLastUpdatedBy=" + orderLastUpdatedBy + '}';
     }
+    
 }

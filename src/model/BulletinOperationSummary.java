@@ -14,30 +14,30 @@ import javafx.collections.ObservableList;
  * @author iftekher
  */
 public class BulletinOperationSummary {
-    private ObservableList<BulletinOperationDetails> summaries;
-    private BulletinOperationDetails front;
-    private BulletinOperationDetails back;
-    private BulletinOperationDetails sleeve;
-    private BulletinOperationDetails flap;
-    private BulletinOperationDetails assemble;
-    private BulletinOperationDetails collar;
-    private BulletinOperationDetails cuff;
-    private BulletinOperationDetails button;
-    private BulletinOperationDetails total;
+    private ObservableList<BulletinOperation> summaries;
+    private BulletinOperation front;
+    private BulletinOperation back;
+    private BulletinOperation sleeve;
+    private BulletinOperation flap;
+    private BulletinOperation assemble;
+    private BulletinOperation collar;
+    private BulletinOperation cuff;
+    private BulletinOperation button;
+    private BulletinOperation total;
 
     public BulletinOperationSummary() {
     }
 
-    public BulletinOperationSummary(List<BulletinOperationDetails> details) {
-        front = new BulletinOperationDetails(0, "Front", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        back = new BulletinOperationDetails(1, "Back", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        sleeve = new BulletinOperationDetails(2, "Sleeve", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        flap = new BulletinOperationDetails(3, "Flap", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        assemble = new BulletinOperationDetails(4, "Assemble", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        collar = new BulletinOperationDetails(5, "Collar", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        cuff = new BulletinOperationDetails(6, "Cuff", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        button = new BulletinOperationDetails(7, "Button", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
-        total = new BulletinOperationDetails(8, "Total", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, "");
+    public BulletinOperationSummary(List<BulletinOperation> details) {
+        front = new BulletinOperation(0, "Front", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        back = new BulletinOperation(1, "Back", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        sleeve = new BulletinOperation(2, "Sleeve", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        flap = new BulletinOperation(3, "Flap", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        assemble = new BulletinOperation(4, "Assemble", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        collar = new BulletinOperation(5, "Collar", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        cuff = new BulletinOperation(6, "Cuff", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        button = new BulletinOperation(7, "Button", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
+        total = new BulletinOperation(8, "Total", "", "", "", 0, 0.0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, "");
         
         summaries = FXCollections.observableArrayList();
         summaries.add(front);
@@ -52,7 +52,7 @@ public class BulletinOperationSummary {
         
         for(int i = 0; i < details.size(); i++){
             int componentCode = 0;
-            BulletinOperationDetails detail = details.get(i);
+            BulletinOperation detail = details.get(i);
             if(detail.getComponent().equals("Front")){
                 componentCode = 0;
             }
@@ -78,30 +78,30 @@ public class BulletinOperationSummary {
                 componentCode = 7;
             }
             summaries.get(componentCode).setSmv(summaries.get(componentCode).getSmv() + detail.getSmv());
-            summaries.get(componentCode).setIndTgt(summaries.get(componentCode).getIndTgt() + detail.getIndTgt());
-            summaries.get(componentCode).setHundredTgt(summaries.get(componentCode).getHundredTgt() + detail.getHundredTgt());
-            summaries.get(componentCode).setRequiredMp(summaries.get(componentCode).getRequiredMp() + detail.getRequiredMp());
-            summaries.get(componentCode).setMpAllocation(summaries.get(componentCode).getMpAllocation() + detail.getMpAllocation());
+            summaries.get(componentCode).setIndividualTarget(summaries.get(componentCode).getIndividualTarget() + detail.getIndividualTarget());
+            summaries.get(componentCode).setHundredTarget(summaries.get(componentCode).getHundredTarget() + detail.getHundredTarget());
+            summaries.get(componentCode).setRequiredManpower(summaries.get(componentCode).getRequiredManpower() + detail.getRequiredManpower());
+            summaries.get(componentCode).setManpowerAllocation(summaries.get(componentCode).getManpowerAllocation() + detail.getManpowerAllocation());
             summaries.get(componentCode).setMachineQuantity(summaries.get(componentCode).getMachineQuantity() + detail.getMachineQuantity());
-            summaries.get(componentCode).setOp(summaries.get(componentCode).getOp() + detail.getOp());
-            summaries.get(componentCode).setHp(summaries.get(componentCode).getHp() + detail.getHp());
+            summaries.get(componentCode).setOperator(summaries.get(componentCode).getOperator() + detail.getOperator());
+            summaries.get(componentCode).setHelper(summaries.get(componentCode).getHelper() + detail.getHelper());
             summaries.get(componentCode).setIm(summaries.get(componentCode).getIm() + detail.getIm());
-            summaries.get(componentCode).setAcTgt(summaries.get(componentCode).getAcTgt() + detail.getAcTgt());
+            summaries.get(componentCode).setAcTarget(summaries.get(componentCode).getAcTarget() + detail.getAcTarget());
             
             summaries.get(8).setSmv(summaries.get(8).getSmv() + detail.getSmv());
-            summaries.get(8).setIndTgt(summaries.get(8).getIndTgt() + detail.getIndTgt());
-            summaries.get(8).setHundredTgt(summaries.get(8).getHundredTgt() + detail.getHundredTgt());
-            summaries.get(8).setRequiredMp(summaries.get(8).getRequiredMp() + detail.getRequiredMp());
-            summaries.get(8).setMpAllocation(summaries.get(8).getMpAllocation() + detail.getMpAllocation());
+            summaries.get(8).setIndividualTarget(summaries.get(8).getIndividualTarget()+ detail.getIndividualTarget());
+            summaries.get(8).setHundredTarget(summaries.get(8).getHundredTarget() + detail.getHundredTarget());
+            summaries.get(8).setRequiredManpower(summaries.get(8).getRequiredManpower() + detail.getRequiredManpower());
+            summaries.get(8).setManpowerAllocation(summaries.get(8).getManpowerAllocation() + detail.getManpowerAllocation());
             summaries.get(8).setMachineQuantity(summaries.get(8).getMachineQuantity() + detail.getMachineQuantity());
-            summaries.get(8).setOp(summaries.get(8).getOp() + detail.getOp());
-            summaries.get(8).setHp(summaries.get(8).getHp() + detail.getHp());
+            summaries.get(8).setOperator(summaries.get(8).getOperator() + detail.getOperator());
+            summaries.get(8).setHelper(summaries.get(8).getHelper() + detail.getHelper());
             summaries.get(8).setIm(summaries.get(8).getIm() + detail.getIm());
-            summaries.get(8).setAcTgt(summaries.get(8).getAcTgt() + detail.getAcTgt());
+            summaries.get(8).setAcTarget(summaries.get(8).getAcTarget() + detail.getAcTarget());
         }
     }
 
-    public ObservableList<BulletinOperationDetails> getSummaries() {
+    public ObservableList<BulletinOperation> getSummaries() {
         return summaries;
     }
 

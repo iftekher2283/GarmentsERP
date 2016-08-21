@@ -122,7 +122,9 @@ public class LoginPanelUIController implements Initializable {
                 String get_pass = users.getString("password");
                 int get_user_type = users.getInt("user_type");
                 int get_is_blocked = users.getInt("isBlocked");
-                User user = new User(get_sl, get_user, get_pass, get_user_type, get_is_blocked);
+                String getAddedBy = users.getString("addedBy");
+                String getLastUpdatedBy = users.getString("lastUpdatedBy");
+                User user = new User(get_sl, get_user, get_pass, get_user_type, get_is_blocked, getAddedBy, getLastUpdatedBy);
                 if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
                     if(userTypeCode == user.getUserType() && user.getIsBlocked() == 0){
                         loginConf = 1;

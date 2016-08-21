@@ -209,7 +209,9 @@ public class AdminPanelUIController implements Initializable {
             String password = users.get(i).getPassword();
             int userType = users.get(i).getUserType();
             int isBlocked = users.get(i).getIsBlocked();
-            User user = new User(sl, username, password, userType, isBlocked);
+            String addedBy = users.get(i).getAddedBy();
+            String lastUpdatedBy = users.get(i).getLastUpdatedBy();
+            User user = new User(sl, username, password, userType, isBlocked, addedBy, lastUpdatedBy);
             usersView.add(user);
         }
         
@@ -391,7 +393,16 @@ public class AdminPanelUIController implements Initializable {
             }
             user.setUserType(userTypeCode);
             user.setIsBlocked(0);
-
+            
+            // Get User ID
+            String getIdText = adminManageUsersIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String userId = idTokens[2];
+            String addedBy = userId;
+            String lastUpdatedBy = userId;
+            
+            user.setAddedBy(addedBy);
+            user.setLastUpdatedBy(lastUpdatedBy);
             if(password.length() >= 6){
                 if(password.equals(reTypePassword)){
                     HashMD5 encPass = new HashMD5(password);
@@ -427,7 +438,9 @@ public class AdminPanelUIController implements Initializable {
                 String passwordV = users.get(i).getPassword();
                 int userTypeV = users.get(i).getUserType();
                 int isBlocked = users.get(i).getIsBlocked();
-                User userV = new User(sl, username, passwordV, userTypeV, isBlocked);
+                String addedByV = users.get(i).getAddedBy();
+                String lastUpdatedByV = users.get(i).getLastUpdatedBy();
+                User userV = new User(sl, username, passwordV, userTypeV, isBlocked, addedByV, lastUpdatedByV);
                 usersView.add(userV);
             }
             adminUsersAllUsersTableView.setItems(usersView);
@@ -472,6 +485,15 @@ public class AdminPanelUIController implements Initializable {
             user.setUserType(this.user.getUserType());
             user.setIsBlocked(1);
             
+            // Get User ID
+            String getIdText = adminManageUsersIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String userId = idTokens[2];
+            String lastUpdatedBy = userId;
+            
+            user.setAddedBy(this.user.getAddedBy());
+            user.setLastUpdatedBy(lastUpdatedBy);
+            
             factory = HibernateSingleton.getSessionFactory();
             session = factory.openSession();
             transaction = session.beginTransaction();
@@ -494,7 +516,9 @@ public class AdminPanelUIController implements Initializable {
                 String passwordV = users.get(i).getPassword();
                 int userTypeV = users.get(i).getUserType();
                 int isBlocked = users.get(i).getIsBlocked();
-                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked);
+                String addedByV = users.get(i).getAddedBy();
+                String lastUpdatedByV = users.get(i).getLastUpdatedBy();
+                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked, addedByV, lastUpdatedByV);
                 usersView.add(userV);
             }
             adminUsersAllUsersTableView.setItems(usersView);
@@ -541,6 +565,15 @@ public class AdminPanelUIController implements Initializable {
             user.setUserType(this.user.getUserType());
             user.setIsBlocked(0);
             
+            // Get User ID
+            String getIdText = adminManageUsersIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String userId = idTokens[2];
+            String lastUpdatedBy = userId;
+            
+            user.setAddedBy(this.user.getAddedBy());
+            user.setLastUpdatedBy(lastUpdatedBy);
+            
             factory = HibernateSingleton.getSessionFactory();
             session = factory.openSession();
             transaction = session.beginTransaction();
@@ -563,7 +596,9 @@ public class AdminPanelUIController implements Initializable {
                 String passwordV = users.get(i).getPassword();
                 int userTypeV = users.get(i).getUserType();
                 int isBlocked = users.get(i).getIsBlocked();
-                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked);
+                String addedByV = users.get(i).getAddedBy();
+                String lastUpdatedByV = users.get(i).getLastUpdatedBy();
+                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked, addedByV, lastUpdatedByV);
                 usersView.add(userV);
             }
             adminUsersAllUsersTableView.setItems(usersView);
@@ -673,6 +708,15 @@ public class AdminPanelUIController implements Initializable {
             user.setUserType(userTypeCode);
             user.setIsBlocked(this.user.getIsBlocked());
             
+            // Get User ID
+            String getIdText = adminManageUsersIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String userId = idTokens[2];
+            String lastUpdatedBy = userId;
+            
+            user.setAddedBy(this.user.getAddedBy());
+            user.setLastUpdatedBy(lastUpdatedBy);
+            
             factory = HibernateSingleton.getSessionFactory();
             session = factory.openSession();
             transaction = session.beginTransaction();
@@ -695,7 +739,9 @@ public class AdminPanelUIController implements Initializable {
                 String passwordV = users.get(i).getPassword();
                 int userTypeV = users.get(i).getUserType();
                 int isBlocked = users.get(i).getIsBlocked();
-                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked);
+                String addedByV = users.get(i).getAddedBy();
+                String lastUpdatedByV = users.get(i).getLastUpdatedBy();
+                User userV = new User(sl, usernameV, passwordV, userTypeV, isBlocked, addedByV, lastUpdatedByV);
                 usersView.add(userV);
             }
             adminUsersAllUsersTableView.setItems(usersView);
