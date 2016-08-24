@@ -156,6 +156,150 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private Text merchandiserOrderIdText;
     
+    // Consumption FXML
+    @FXML
+    private ComboBox<?> consumptionCategoryBox;
+    @FXML
+    private ComboBox<?> consumptionOrderIdBox;
+    @FXML
+    private DatePicker consumptionDatePicker;
+    @FXML
+    private TextField consumptionSizeQuantityField;
+    @FXML
+    private TextField consumptionOrderQuantity;
+    @FXML
+    private TextField consumptionbuyerNameField;
+    @FXML
+    private ComboBox<?> consumptionSizeBox;
+    @FXML
+    private TableView<?> consumptionFabricComponentsTableView;
+    @FXML
+    private TableColumn<?, ?> consumptionFabricComponentTableColumn;
+    @FXML
+    private TableColumn<?, ?> consumptionFabricSewingAllowanceTableColumn;
+    @FXML
+    private ComboBox<?> consumptionFabricComponentBox;
+    @FXML
+    private TextField consumptionFabricPerPieceField;
+    @FXML
+    private TextField consumptionFabricPerDozenField;
+    @FXML
+    private TextField consumptionFabricAllowanceField;
+    @FXML
+    private TextField consumptionFabricWastageField;
+    @FXML
+    private TextField consumptionFabricGsmField;
+    @FXML
+    private TableView<?> consumptionThreadOperationsTableView;
+    @FXML
+    private TableColumn<?, ?> consumptionThreadOperationNameTableColumn;
+    @FXML
+    private TableColumn<?, ?> consumptionThreadSeamTableColumn;
+    @FXML
+    private TableColumn<?, ?> consumptionThreadStitchTypeTableColumn;
+    @FXML
+    private TableColumn<?, ?> consumptionThreadRatioTableColumn;
+    @FXML
+    private TableColumn<?, ?> consumptionThreadEstimatedTbleColumn;
+    @FXML
+    private ComboBox<?> consumptionThreadStitchTypeBox;
+    @FXML
+    private ComboBox<?> consumptionThreadOperationNameBox;
+    @FXML
+    private TextField consumptionThreadField;
+    @FXML
+    private TextField consumptionThreadEstimatedField;
+    @FXML
+    private TextField consumptionThreadInitialField;
+    @FXML
+    private TextField consumptionThreadRatioField;
+    @FXML
+    private TextField consumptionThreadSeamLengthField;
+    @FXML
+    private TextField consumptionThreadWastageField;
+    @FXML
+    private Text merchandiserConsumptionIdText;
+    
+    // Costing FXML
+    @FXML
+    private TextField costingOtherUnitPriceField;
+    @FXML
+    private TextField costingDyeingUnitPriceField;
+    @FXML
+    private TextField costingKnittingUnitPriceField;
+    @FXML
+    private TextField costingYarnUnitPriceField;
+    @FXML
+    private TextField costingOtherAmountField;
+    @FXML
+    private TextField costingDyeingAmountField;
+    @FXML
+    private TextField costingKnittingAmountField;
+    @FXML
+    private TextField costingYarnAmountField;
+    @FXML
+    private TextField costingOtherConsumptionField;
+    @FXML
+    private TextField costingDyeingConsumptionField;
+    @FXML
+    private TextField costingKnittingConsumptionField;
+    @FXML
+    private TextField costingYarnConsumptionField;
+    @FXML
+    private TextField costingFabAndProcPerDozentField;
+    @FXML
+    private TextArea costingFabricationArea;
+    @FXML
+    private TextField costingThreadUnitPriceField;
+    @FXML
+    private TextField costingThreadConsumptionField;
+    @FXML
+    private TextField costingThreadAmountField;
+    @FXML
+    private TextField costingAccessoriesAmountField;
+    @FXML
+    private ComboBox<?> costingAccessoriesItemBox;
+    @FXML
+    private TableView<?> costingAccessoriesItemsTableView;
+    @FXML
+    private TableColumn<?, ?> costingAccessoriesItemTableColumn;
+    @FXML
+    private TableColumn<?, ?> costingAccessoriesAmountTableColumn;
+    @FXML
+    private TextField costingFobPricePerDozenField;
+    @FXML
+    private TextField costingTotalPricePerDozenField;
+    @FXML
+    private TextField costingCommercialCostField;
+    @FXML
+    private TextField costingCmPerDozenField;
+    @FXML
+    private TextField costingTotalCostPerDozenField;
+    @FXML
+    private TextField costingLabTestCostField;
+    @FXML
+    private TextField costingTotalAccessoriesCostField;
+    @FXML
+    private ComboBox<?> costingCategoryField;
+    @FXML
+    private ComboBox<?> costingOrderIdBox;
+    @FXML
+    private DatePicker costingDatePicker;
+    @FXML
+    private TextField costingSizeQuantityField;
+    @FXML
+    private TextField costingOrderQuantityField;
+    @FXML
+    private TextField costingbuyerNameField;
+    @FXML
+    private ComboBox<?> costingSizeBox;
+    @FXML
+    private TextField costingDescriptionField;
+    @FXML
+    private Text merchandiserCostingIdText;
+    @FXML
+    private TextField costingFabricGsmField;
+    
     // Profile FXML
     @FXML
     private Text profileDesignationText;
@@ -232,6 +376,9 @@ public class MerchandiserPanelUIController implements Initializable {
     private SessionFactory factory;
     private Session session;
     private Transaction transaction;
+    
+    
+    
     
     /**
      * Initializes the controller class.
@@ -1015,6 +1162,7 @@ public class MerchandiserPanelUIController implements Initializable {
         merchandiserBuyerIdText.setText("Merchandizer ID: " + username);
         merchandiserOrderIdText.setText("Merchandizer ID: " + username);
         merchandiserProfileIdText.setText("Merchandizer ID: " + username);
+        merchandiserConsumptionIdText.setText("Merchandizer ID: " + username);
         
         employees = new ArrayList<>();
         
@@ -1159,5 +1307,85 @@ public class MerchandiserPanelUIController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void handleConsumptionOrderIdAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSelectFabricConsumptionComponentAction(MouseEvent event) {
+    }
+
+    @FXML
+    private void handleFabricConsumptionComponentRemoveAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleFabricConsumptionComponentAddAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSelectThreadConsumptionOperationAction(MouseEvent event) {
+    }
+
+    @FXML
+    private void handleThreadConsumptionOperationRemoveAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleThreadConsumptionOperationAddAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSignOutConsumptionAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleConsumptionSaveAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleConsumptionPrintAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleConsumptionRemoveAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleConsumptionRefreshAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSignOutCostingAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSaveCostingAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleRemoveCostingAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleRefreshCostingAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleCostingAccessoriesItemRemoveAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleCostingAccessoriesItemAddAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleSelectCostingAccessoriesItemAction(MouseEvent event) {
+    }
+
+    @FXML
+    private void handleCostingOrderIdAction(ActionEvent event) {
     }
 }

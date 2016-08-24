@@ -51,7 +51,7 @@ public class PdfEmployee {
     public Document getPdfDocumet(){
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("generatedPdfs/Employee.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("generatedPdfs/Employees/Employee_" + employee.getId() + ".pdf"));
             document.open();
             document.addTitle("Employee's Details");
             document.addSubject("A document where information of an employee is written");

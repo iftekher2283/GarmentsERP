@@ -16,7 +16,10 @@ import enums.MaritalStatus;
 import enums.Religion;
 import hibernatesingleton.HibernateSingleton;
 import java.awt.Desktop;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -46,6 +49,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javax.jnlp.PrintService;
+import javax.print.DocFlavor;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Sides;
 import md5.HashMD5;
 import model.Address;
 import model.Employee;
@@ -1276,11 +1285,16 @@ public class HRPanelUIController implements Initializable {
         PdfEmployee pdfEmployee = new PdfEmployee(this.employee);
         Document employeePdfDoc = new Document();
         employeePdfDoc = pdfEmployee.getPdfDocumet();
-        System.out.println("Generated");
-        File file = new File("generatedPdfs/Employee.pdf");
+        
+        DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
+        PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
+        patts.add(Sides.DUPLEX);
+        javax.print.PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
+        
+        PrinterJob job = PrinterJob.getPrinterJob();
         try {
-            Desktop.getDesktop().print(file);
-        } catch (IOException ex) {
+            job.setPrintService(ps[0]);
+        } catch (PrinterException ex) {
             Logger.getLogger(HRPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

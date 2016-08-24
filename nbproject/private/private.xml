@@ -18,6 +18,7 @@
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/model/BulletinOperationSummary.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/textileerp/ProductionPanelUIController.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/BranchID.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/printpdfs/PdfEmployee.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/hibernatesingleton/HibernateSingleton.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/Currency.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/model/User.java</file>
@@ -33,6 +34,7 @@
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/Religion.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/Section.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/textileerp/LoginPanelUIController.java</file>
+            <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/model/PersonalInformation.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/Lines.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/textileerp/HomePageUIController.java</file>
             <file>file:/home/iftekher/NetBeansProjects/Research/TextileERPv4/src/enums/OrderCategory.java</file>
