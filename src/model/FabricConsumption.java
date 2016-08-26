@@ -7,10 +7,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -25,21 +28,20 @@ public class FabricConsumption {
     private int sl;
     private double fabricGsm;
     private double wastage;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "FabricConsumption_FabricConsumptionComponents",
+            joinColumns = @JoinColumn(name = "FabricConsumption_sl"),
+            inverseJoinColumns = @JoinColumn(name = "components_sl")
+    )
     private List<FabricConsumptionComponents> components;
     @Transient
     private double consumptionPerDozen;
     @Transient
     private double consumptionPerPiece;
-    @Transient
-    private double totalComponentLength = 0;
-    @Transient
-    private double totalComponentOther = 0;
 
     public FabricConsumption() {
         components = new ArrayList<>();
-        totalComponentLength = 0;
-        totalComponentOther = 0;
     }
 
     public FabricConsumption(int sl, double fabricGsm, double wastage) {
@@ -47,8 +49,6 @@ public class FabricConsumption {
         this.fabricGsm = fabricGsm;
         this.wastage = wastage;
         components = new ArrayList<>();
-        totalComponentLength = 0;
-        totalComponentOther = 0;
     }
 
     public int getSl() {
@@ -74,18 +74,27 @@ public class FabricConsumption {
     public void setWastage(double wastage) {
         this.wastage = wastage;
     }
-
-    public List<FabricConsumptionComponents> getComponents() {
+    
+    public List<FabricConsumptionComponents> getComponents(){
         return components;
     }
+    
+//    public List<FabricConsumptionComponents> getComponents(List<FabricConsumptionComponents> fabricConsumptionComponents, List<FabricConsumption_FabricConsumptionComponents> componentSls) {
+//        for(int i = 0; i < fabricConsumptionComponents.size(); i++){
+//            if(componentSls.get(i).getFabricConsumption_sl() == sl && componentSls.get(i).getFabricConsumption_sl() == fabricConsumptionComponents.get(i).getSl()){
+//                this.components.add(fabricConsumptionComponents.get(i));
+//            }
+//        }
+//        return components;
+//    }
 
     public void setComponents(List<FabricConsumptionComponents> components) {
         this.components = components;
     }
 
     public double getConsumptionPerDozen() {
-        totalComponentLength = 0;
-        totalComponentOther = 0;
+        double totalComponentLength = 0;
+        double totalComponentOther = 0;
         for(int i = 0; i< components.size(); i++){
             if(components.get(i).getComponent().contains("Length")){
                 totalComponentLength = totalComponentLength + components.get(i).getValue() + components.get(i).getAllowance();
@@ -103,8 +112,8 @@ public class FabricConsumption {
     }
 
     public double getConsumptionPerPiece() {
-        totalComponentLength = 0;
-        totalComponentOther = 0;
+        double totalComponentLength = 0;
+        double totalComponentOther = 0;
         for(int i = 0; i < components.size(); i++){
             if(components.get(i).getComponent().contains("Length")){
                 totalComponentLength = totalComponentLength + components.get(i).getValue() + components.get(i).getAllowance();

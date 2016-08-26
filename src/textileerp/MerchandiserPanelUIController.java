@@ -5,6 +5,7 @@
  */
 package textileerp;
 
+import enums.AccessoriesItems;
 import enums.ConsumptionComponent;
 import enums.ConsumptionOperationName;
 import enums.ConsumptionStitchType;
@@ -50,6 +51,8 @@ import javafx.scene.text.Text;
 import md5.HashMD5;
 import model.Buyer;
 import model.Consumption;
+import model.Costing;
+import model.CostingAccessoriesItem;
 import model.Employee;
 import model.FabricConsumption;
 import model.FabricConsumptionComponents;
@@ -275,13 +278,13 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private TextField costingAccessoriesAmountField;
     @FXML
-    private ComboBox<?> costingAccessoriesItemBox;
+    private ComboBox<AccessoriesItems> costingAccessoriesItemBox;
     @FXML
-    private TableView<?> costingAccessoriesItemsTableView;
+    private TableView<CostingAccessoriesItem> costingAccessoriesItemsTableView;
     @FXML
-    private TableColumn<?, ?> costingAccessoriesItemTableColumn;
+    private TableColumn<CostingAccessoriesItem, String> costingAccessoriesItemTableColumn;
     @FXML
-    private TableColumn<?, ?> costingAccessoriesAmountTableColumn;
+    private TableColumn<CostingAccessoriesItem, Number> costingAccessoriesAmountTableColumn;
     @FXML
     private TextField costingFobPricePerDozenField;
     @FXML
@@ -297,7 +300,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private TextField costingTotalAccessoriesCostField;
     @FXML
-    private ComboBox<?> costingCategoryField;
+    private ComboBox<OrderCategory> costingCategoryBox;
     @FXML
     private ComboBox<String> costingOrderIdBox;
     @FXML
@@ -309,7 +312,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private TextField costingbuyerNameField;
     @FXML
-    private ComboBox<?> costingSizeBox;
+    private ComboBox<Size> costingSizeBox;
     @FXML
     private TextField costingDescriptionField;
     @FXML
@@ -381,6 +384,8 @@ public class MerchandiserPanelUIController implements Initializable {
     private List<ThreadConsumption> threadConsumptions;
     private List<FabricConsumptionComponents> fabricConsumptionComponents;
     private List<ThreadConsumptionOperation> threadConsumptionOperations;
+    private List<Costing> costings;
+    private List<CostingAccessoriesItem> costingAccessories;
 
     // Required ObservableLists
     private ObservableList<Buyer> buyersView;
@@ -389,6 +394,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private ObservableList<String> orderIds;
     private ObservableList<FabricConsumptionComponents> fabricConsumptionComponentsView;
     private ObservableList<ThreadConsumptionOperation> threadConsumptionOperationsView;
+    private ObservableList<CostingAccessoriesItem> costingAccessoriesView;
 
     // Required Global Variables
     private String merchandizerId;
@@ -401,6 +407,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private FabricConsumptionComponents fabricConsumptionComponent;
     private ThreadConsumption threadConsumption;
     private ThreadConsumptionOperation threadConsumptionOperation;
+    private Costing costing;
 
     // Required Variable Handle Batabase Actions
     private SessionFactory factory;
@@ -439,11 +446,12 @@ public class MerchandiserPanelUIController implements Initializable {
             buyers = session.createCriteria(Buyer.class).list();
             orders = session.createCriteria(Order.class).list();
             users = session.createCriteria(User.class).list();
-            consumptions = session.createCriteria(Consumption.class).list();
-            fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
-            threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
             fabricConsumptionComponents = session.createCriteria(FabricConsumptionComponents.class).list();
             threadConsumptionOperations = session.createCriteria(ThreadConsumptionOperation.class).list();
+            fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
+            threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
+            consumptions = session.createCriteria(Consumption.class).list();
+        //    componentSls = session.createCriteria(FabricConsumption_FabricConsumptionComponents.class).list();
             transaction.commit();
         } catch (Exception e) {
             System.err.println(e);
@@ -1355,7 +1363,14 @@ public class MerchandiserPanelUIController implements Initializable {
     private void handleConsumptionOrderIdAction(ActionEvent event) {
         // Get Order Id From FXML
         int orderId = Integer.parseInt(consumptionOrderIdBox.getSelectionModel().getSelectedItem());
-
+        
+        // Set Combo Box Values
+        consumptionSizeBox.getItems().addAll(Size.values());
+        consumptionCategoryBox.getItems().addAll(OrderCategory.values());
+        consumptionFabricComponentBox.getItems().addAll(ConsumptionComponent.values());
+        consumptionThreadOperationNameBox.getItems().addAll(ConsumptionOperationName.values());
+        consumptionThreadStitchTypeBox.getItems().addAll(ConsumptionStitchType.values());
+        
         // Get Order Using Id
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getOrderId() == orderId) {
@@ -1366,13 +1381,6 @@ public class MerchandiserPanelUIController implements Initializable {
                 break;
             }
         }
-
-        // Set Combo Box Values
-        consumptionSizeBox.getItems().addAll(Size.values());
-        consumptionCategoryBox.getItems().addAll(OrderCategory.values());
-        consumptionFabricComponentBox.getItems().addAll(ConsumptionComponent.values());
-        consumptionThreadOperationNameBox.getItems().addAll(ConsumptionOperationName.values());
-        consumptionThreadStitchTypeBox.getItems().addAll(ConsumptionStitchType.values());
     }
 
     @FXML
@@ -1385,7 +1393,7 @@ public class MerchandiserPanelUIController implements Initializable {
         int consumptionFound = 0;
 
         for (int i = 0; i < consumptions.size(); i++) {
-            if (consumptions.get(i).getOrderId() == orderId && consumptions.get(i).getSize().equals(size)) {
+            if (consumptions.get(i).getOrderId() == orderId && consumptions.get(i).getSize().equals(size) && consumptions.get(i).getIsDeleted() == 0) {
                 consumption = consumptions.get(i);
                 consumptionFound = 1;
                 break;
@@ -1401,7 +1409,10 @@ public class MerchandiserPanelUIController implements Initializable {
             fabricConsumption = consumption.getFabricConsumption();
             consumptionFabricGsmField.setText(fabricConsumption.getFabricGsm() + "");
             consumptionFabricWastageField.setText(fabricConsumption.getWastage() + "");
+            List<FabricConsumptionComponents> fabricConsumptionComponents = new ArrayList<>();
             fabricConsumptionComponents = fabricConsumption.getComponents();
+            consumption.getFabricConsumption().setComponents(fabricConsumptionComponents);
+            fabricConsumptionComponentsView = FXCollections.observableArrayList();
             for (int i = 0; i < fabricConsumptionComponents.size(); i++) {
                 fabricConsumptionComponentsView.add(fabricConsumptionComponents.get(i));
             }
@@ -1417,6 +1428,7 @@ public class MerchandiserPanelUIController implements Initializable {
             threadConsumption = consumption.getThreadConsumption();
             consumptionThreadWastageField.setText(threadConsumption.getWastage() + "");
             threadConsumptionOperations = threadConsumption.getOperations();
+            threadConsumptionOperationsView = FXCollections.observableArrayList();
             for (int i = 0; i < threadConsumptionOperations.size(); i++) {
                 threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
             }
@@ -1556,32 +1568,20 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleThreadConsumptionOperationRemoveAction(ActionEvent event) {
-        // Get Data From FXML
-        int sl = 0;
-        String operationName = consumptionThreadOperationNameBox.getSelectionModel().getSelectedItem() + "";
-        double seamLength = Double.parseDouble(consumptionThreadSeamLengthField.getText());
-        String stitchType = consumptionThreadStitchTypeBox.getSelectionModel().getSelectedItem() + "";
-        double ratio = Double.parseDouble(consumptionThreadRatioField.getText());
-        double initialConsumption = Double.parseDouble(consumptionThreadInitialField.getText());
-        double estimatedConsumption = Double.parseDouble(consumptionThreadEstimatedField.getText());
-        
-        // Instantiate Thread Consumption Component And Remove Fabric Consumption List
-        if(!operationName.equals("") && !stitchType.equals("") && seamLength > 0 && ratio > 0 && initialConsumption > 0 && estimatedConsumption > 0){
-            threadConsumptionOperation = new ThreadConsumptionOperation(sl, operationName, seamLength, stitchType, ratio, initialConsumption, estimatedConsumption);
-            threadConsumptionOperation.setSl(consumption.getThreadConsumption().getSl());
+        // Remove Threa Consumption Operation
+        if (threadConsumptionOperation != null) {
             consumption.getThreadConsumption().removeConsumptionOperation(threadConsumptionOperation);
-            System.out.println(threadConsumptionOperation);
         }
         
-        // Get All Fabric Consumption Components And Add To Observable List
+        // Get All Thread Consumption Operations And Add To Observable List
+        threadConsumptionOperations = new ArrayList<>();
         threadConsumptionOperations = consumption.getThreadConsumption().getOperations();
         threadConsumptionOperationsView.remove(0, threadConsumptionOperationsView.size());
         for (int i = 0; i < threadConsumptionOperations.size(); i++) {
             threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
-            System.out.println(threadConsumptionOperations.get(i));
         }
         
-        // Set Fabric Consumption Components To Table View
+        // Set Thread Consumption Operations To Table View
         consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
         consumptionThreadOperationNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOperationName()));
         consumptionThreadSeamTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSeamLength()));
@@ -1621,20 +1621,20 @@ public class MerchandiserPanelUIController implements Initializable {
         double initialConsumption = Double.parseDouble(consumptionThreadInitialField.getText());
         double estimatedConsumption = Double.parseDouble(consumptionThreadEstimatedField.getText());
         
-        // Instantiate Thread Consumption Component And Add To Fabric Consumption List
+        // Instantiate Thread Consumption Operation And Add To Thread Consumption List
         if(!operationName.equals("") && !stitchType.equals("") && seamLength > 0 && ratio > 0 && initialConsumption > 0 && estimatedConsumption > 0){
             threadConsumptionOperation = new ThreadConsumptionOperation(sl, operationName, seamLength, stitchType, ratio, initialConsumption, estimatedConsumption);
             consumption.getThreadConsumption().addConsumptionOperation(threadConsumptionOperation);
         }
         
-        // Get All Fabric Consumption Components And Add To Observable List
+        // Get All Thread Consumption Operation And Add To Observable List
         threadConsumptionOperations = consumption.getThreadConsumption().getOperations();
         threadConsumptionOperationsView.remove(0, threadConsumptionOperationsView.size());
         for (int i = 0; i < threadConsumptionOperations.size(); i++) {
             threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
         }
         
-        // Set Fabric Consumption Components To Table View
+        // Set Thread Consumption Operations To Table View
         consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
         consumptionThreadOperationNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOperationName()));
         consumptionThreadSeamTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSeamLength()));
@@ -1686,6 +1686,54 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleConsumptionSaveAction(ActionEvent event) {
+        // Check If Consumption Is Already In Database
+        int isFound = 0;
+
+        for (int i = 0; i < consumptions.size(); i++) {
+            if (consumptions.get(i).getSl() == consumption.getSl() && consumptions.get(i).getSize().equals(consumption.getSize()) && consumptions.get(i).getIsDeleted() == 0) {
+                isFound = 1;
+                break;
+            }
+        }
+        
+        if(isFound == 1){
+            String getIdText = merchandiserConsumptionIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String user = idTokens[2];
+            String consumptionLastUpdatedBy = user;
+
+            consumption.setLastUpdatedBy(consumptionLastUpdatedBy);
+        }
+        String date = consumptionDatePicker.getEditor().getText();
+        int sizeQantity = Integer.parseInt(consumptionSizeQuantityField.getText());
+        
+        consumption.setDate(date);
+        consumption.setSizeQuantity(sizeQantity);
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Action
+        try{
+            for(int i = 0; i < consumption.getFabricConsumption().getComponents().size(); i++){
+                session.saveOrUpdate(consumption.getFabricConsumption().getComponents().get(i));
+            }
+            for(int i = 0; i < consumption.getThreadConsumption().getOperations().size(); i++){
+                session.saveOrUpdate(consumption.getThreadConsumption().getOperations().get(i));
+            }
+            session.saveOrUpdate(consumption.getFabricConsumption());
+            session.saveOrUpdate(consumption.getThreadConsumption());
+            session.saveOrUpdate(consumption);
+            session.saveOrUpdate(consumption);
+            transaction.commit();
+        }catch(Exception e){
+            transaction.rollback();
+            System.out.println(e);
+            System.out.println("Roll Backed");
+        }
+        session.close();
     }
 
     @FXML
@@ -1730,9 +1778,68 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleCostingOrderIdAction(ActionEvent event) {
+        // Get Order Id From FXML
+        int orderId = Integer.parseInt(costingOrderIdBox.getSelectionModel().getSelectedItem());
+        
+        // Set Combo Box Values
+        costingSizeBox.getItems().addAll(Size.values());
+        costingCategoryBox.getItems().addAll(OrderCategory.values());
+        costingAccessoriesItemBox.getItems().addAll(AccessoriesItems.values());
+        
+        // Get Order Using Id
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderId() == orderId) {
+                order = orders.get(i);
+                costingbuyerNameField.setText(order.getBuyerName());
+                costingCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
+                costingOrderQuantityField.setText(order.getOrderQuantity() + "");
+                costingDescriptionField.setText(order.getOrderDescription());
+                break;
+            }
+        }
     }
 
     @FXML
     private void handleCostingSelectSizeAction(ActionEvent event) {
+        // Get Order Id and Size From FXML
+        int orderId = Integer.parseInt(costingOrderIdBox.getSelectionModel().getSelectedItem());
+        String size = costingSizeBox.getSelectionModel().getSelectedItem() + "";
+
+        // Check If Consumption Is Already In Database
+        int costingFound = 0;
+
+        for (int i = 0; i < costings.size(); i++) {
+            if (costings.get(i).getOrderId() == orderId && costings.get(i).getSize().equals(size) && costings.get(i).getIsDeleted() == 0) {
+                costing = costings.get(i);
+                costingFound = 1;
+                break;
+            }
+        }
+
+        // Set Consumption To FXML if Found
+        if (costingFound == 1) {
+            costingDatePicker.getEditor().setText(costing.getDate());
+            costingSizeQuantityField.setText(costing.getSizeQuantity() + "");
+            costingFabricGsmField.setText(costing.getFabricGsm() + "");
+            
+            
+        } // Instantiate New Consumption And Get Ready To Be Managed If Not Found
+        else {
+            costing = new Costing();
+            costing.setSl(0);
+            costing.setOrderId(order.getOrderId());
+            costing.setSize(size);
+            
+
+            // Get User ID
+            String getIdText = merchandiserCostingIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String user = idTokens[2];
+            String consumptionCalculatedBy = user;
+            String consumptionLastUpdatedBy = user;
+
+            costing.setCalculatedBy(consumptionCalculatedBy);
+            costing.setLastUpdatedBy(consumptionLastUpdatedBy);
+        }
     }
 }

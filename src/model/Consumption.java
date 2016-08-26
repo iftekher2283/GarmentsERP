@@ -30,6 +30,7 @@ public class Consumption {
     private ThreadConsumption threadConsumption;
     private String calculatedBy;
     private String lastUpdatedBy;
+    private int isDeleted;
     
     public Consumption() {
     }
@@ -44,6 +45,7 @@ public class Consumption {
         this.threadConsumption = threadConsumption;
         this.calculatedBy = calculatedBy;
         this.lastUpdatedBy = lastUpdatedBy;
+        this.isDeleted = 0;
     }
 
     public int getSl() {
@@ -118,6 +120,14 @@ public class Consumption {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    
     @Override
     public String toString() {
         return "Consumption{" + "sl=" + sl + ", orderId=" + orderId + ", date=" + date + ", size=" + size + ", sizeQuantity=" + sizeQuantity + ", fabricConsumption=" + fabricConsumption + ", threadConsumption=" + threadConsumption + ", calculatedBy=" + calculatedBy + ", lastUpdatedBy=" + lastUpdatedBy + '}';
