@@ -5,14 +5,19 @@
  */
 package textileerp;
 
+import enums.ConsumptionComponent;
+import enums.ConsumptionOperationName;
+import enums.ConsumptionStitchType;
 import enums.Currency;
 import enums.Floors;
 import enums.Lines;
 import enums.OrderCategory;
+import enums.Size;
 import hibernatesingleton.HibernateSingleton;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +25,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -43,8 +49,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import md5.HashMD5;
 import model.Buyer;
+import model.Consumption;
 import model.Employee;
+import model.FabricConsumption;
+import model.FabricConsumptionComponents;
 import model.Order;
+import model.ThreadConsumption;
+import model.ThreadConsumptionOperation;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -56,7 +67,9 @@ import org.hibernate.Transaction;
  * @author iftekher
  */
 public class MerchandiserPanelUIController implements Initializable {
+
     // Buyer FXML
+
     @FXML
     private TextField buyerNameField;
     @FXML
@@ -97,7 +110,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text buyerNameMatchingText;
     @FXML
     private Text merchandiserBuyerIdText;
-    
+
     // Order FXML
     @FXML
     private Text orderIdSearchMessageText;
@@ -155,12 +168,12 @@ public class MerchandiserPanelUIController implements Initializable {
     private TableColumn<Order, String> orderLastUpdatedByTableColumn;
     @FXML
     private Text merchandiserOrderIdText;
-    
+
     // Consumption FXML
     @FXML
-    private ComboBox<?> consumptionCategoryBox;
+    private ComboBox<OrderCategory> consumptionCategoryBox;
     @FXML
-    private ComboBox<?> consumptionOrderIdBox;
+    private ComboBox<String> consumptionOrderIdBox;
     @FXML
     private DatePicker consumptionDatePicker;
     @FXML
@@ -170,15 +183,19 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private TextField consumptionbuyerNameField;
     @FXML
-    private ComboBox<?> consumptionSizeBox;
+    private ComboBox<Size> consumptionSizeBox;
     @FXML
-    private TableView<?> consumptionFabricComponentsTableView;
+    private TableView<FabricConsumptionComponents> consumptionFabricComponentsTableView;
     @FXML
-    private TableColumn<?, ?> consumptionFabricComponentTableColumn;
+    private TableColumn<FabricConsumptionComponents, String> consumptionFabricComponentTableColumn;
     @FXML
-    private TableColumn<?, ?> consumptionFabricSewingAllowanceTableColumn;
+    private TableColumn<FabricConsumptionComponents, Number> consumptionFabricValueTableColumn;
     @FXML
-    private ComboBox<?> consumptionFabricComponentBox;
+    private TableColumn<FabricConsumptionComponents, Number> consumptionFabricSewingAllowanceTableColumn;
+    @FXML
+    private ComboBox<ConsumptionComponent> consumptionFabricComponentBox;
+    @FXML
+    private TextField consumptionFabricComponentValueField;
     @FXML
     private TextField consumptionFabricPerPieceField;
     @FXML
@@ -190,21 +207,21 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private TextField consumptionFabricGsmField;
     @FXML
-    private TableView<?> consumptionThreadOperationsTableView;
+    private TableView<ThreadConsumptionOperation> consumptionThreadOperationsTableView;
     @FXML
-    private TableColumn<?, ?> consumptionThreadOperationNameTableColumn;
+    private TableColumn<ThreadConsumptionOperation, String> consumptionThreadOperationNameTableColumn;
     @FXML
-    private TableColumn<?, ?> consumptionThreadSeamTableColumn;
+    private TableColumn<ThreadConsumptionOperation, Number> consumptionThreadSeamTableColumn;
     @FXML
-    private TableColumn<?, ?> consumptionThreadStitchTypeTableColumn;
+    private TableColumn<ThreadConsumptionOperation, String> consumptionThreadStitchTypeTableColumn;
     @FXML
-    private TableColumn<?, ?> consumptionThreadRatioTableColumn;
+    private TableColumn<ThreadConsumptionOperation, Number> consumptionThreadRatioTableColumn;
     @FXML
-    private TableColumn<?, ?> consumptionThreadEstimatedTbleColumn;
+    private TableColumn<ThreadConsumptionOperation, Number> consumptionThreadEstimatedTbleColumn;
     @FXML
-    private ComboBox<?> consumptionThreadStitchTypeBox;
+    private ComboBox<ConsumptionStitchType> consumptionThreadStitchTypeBox;
     @FXML
-    private ComboBox<?> consumptionThreadOperationNameBox;
+    private ComboBox<ConsumptionOperationName> consumptionThreadOperationNameBox;
     @FXML
     private TextField consumptionThreadField;
     @FXML
@@ -219,7 +236,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private TextField consumptionThreadWastageField;
     @FXML
     private Text merchandiserConsumptionIdText;
-    
+
     // Costing FXML
     @FXML
     private TextField costingOtherUnitPriceField;
@@ -282,7 +299,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private ComboBox<?> costingCategoryField;
     @FXML
-    private ComboBox<?> costingOrderIdBox;
+    private ComboBox<String> costingOrderIdBox;
     @FXML
     private DatePicker costingDatePicker;
     @FXML
@@ -299,7 +316,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text merchandiserCostingIdText;
     @FXML
     private TextField costingFabricGsmField;
-    
+
     // Profile FXML
     @FXML
     private Text profileDesignationText;
@@ -353,33 +370,43 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text merchandiserChangePasswordMessageText;
     @FXML
     private Text merchandiserProfileIdText;
-    
+
     // Required Lists
     private List<Buyer> buyers;
     private List<Order> orders;
     private List<Employee> employees;
     private List<User> users;
-    
+    private List<Consumption> consumptions;
+    private List<FabricConsumption> fabricConsumptions;
+    private List<ThreadConsumption> threadConsumptions;
+    private List<FabricConsumptionComponents> fabricConsumptionComponents;
+    private List<ThreadConsumptionOperation> threadConsumptionOperations;
+
     // Required ObservableLists
     private ObservableList<Buyer> buyersView;
     private ObservableList<String> buyerNames;
     private ObservableList<Order> ordersView;
-    
+    private ObservableList<String> orderIds;
+    private ObservableList<FabricConsumptionComponents> fabricConsumptionComponentsView;
+    private ObservableList<ThreadConsumptionOperation> threadConsumptionOperationsView;
+
     // Required Global Variables
     private String merchandizerId;
     private Buyer buyer;
     private Order order;
     private Employee employee;
     private User user;
-    
+    private Consumption consumption;
+    private FabricConsumption fabricConsumption;
+    private FabricConsumptionComponents fabricConsumptionComponent;
+    private ThreadConsumption threadConsumption;
+    private ThreadConsumptionOperation threadConsumptionOperation;
+
     // Required Variable Handle Batabase Actions
     private SessionFactory factory;
     private Session session;
     private Transaction transaction;
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
@@ -391,42 +418,56 @@ public class MerchandiserPanelUIController implements Initializable {
         orderFloorNoBox.getItems().addAll(Floors.values());
         orderLineNoBox.getItems().addAll(Lines.values());
         orderCurrencyBox.getItems().addAll(Currency.values());
-        
+
         // Instantiate Lists
         buyers = new ArrayList<>();
         orders = new ArrayList<>();
         users = new ArrayList<>();
-        
+        consumptions = new ArrayList<>();
+        fabricConsumptions = new ArrayList<>();
+        threadConsumptions = new ArrayList<>();
+        fabricConsumptionComponents = new ArrayList<>();
+        threadConsumptionOperations = new ArrayList<>();
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             buyers = session.createCriteria(Buyer.class).list();
             orders = session.createCriteria(Order.class).list();
             users = session.createCriteria(User.class).list();
+            consumptions = session.createCriteria(Consumption.class).list();
+            fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
+            threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
+            fabricConsumptionComponents = session.createCriteria(FabricConsumptionComponents.class).list();
+            threadConsumptionOperations = session.createCriteria(ThreadConsumptionOperation.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Instantiate Observable Lists
         buyersView = FXCollections.observableArrayList();
         buyerNames = FXCollections.observableArrayList();
-        
+        ordersView = FXCollections.observableArrayList();
+        orderIds = FXCollections.observableArrayList();
+        fabricConsumptionComponentsView = FXCollections.observableArrayList();
+        threadConsumptionOperationsView = FXCollections.observableArrayList();
+
         // Set ObservableLists Values Related To Buyer
-        for (int i = 0; i < buyers.size(); i++){
-            if(buyers.get(i).getIsDeleted() == 0){
+        for (int i = 0; i < buyers.size(); i++) {
+            if (buyers.get(i).getIsDeleted() == 0) {
                 buyersView.add(buyers.get(i));
                 buyerNames.add(buyers.get(i).getBuyerName());
             }
         }
         orderBuyerNameBox.setItems(buyerNames);
-        
+
         // Set Buyers To Table View
         buyersTableView.setItems(buyersView);
         buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
@@ -436,15 +477,19 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
         buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
         buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
-        
+
         // Set ObservableLists Values Related To Order
-        ordersView = FXCollections.observableArrayList();
-        for (int i = 0; i < orders.size(); i++){
-            if(orders.get(i).getOrderIsDeleted() == 0){
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderIsDeleted() == 0) {
                 ordersView.add(orders.get(i));
+                orderIds.add(orders.get(i).getOrderId() + "");
             }
         }
-        
+
+        // Set OrderIds to Combo Box
+        consumptionOrderIdBox.setItems(orderIds);
+        costingOrderIdBox.setItems(orderIds);
+
         // Set Orders To Table View
         ordersTableView.setItems(ordersView);
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
@@ -456,20 +501,20 @@ public class MerchandiserPanelUIController implements Initializable {
         orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
         orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
         orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
-        
+
         buyerNameMatchingText.setText("");
         orderIdSearchMessageText.setText("");
-    }    
+    }
 
     @FXML
     private void handleSearchBuyerNameAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         String buyerName = buyerNameField.getText();
-        for (int i = 0; i < buyers.size(); i++){
-            if(buyers.get(i).getBuyerName().equals(buyerName)){
+        for (int i = 0; i < buyers.size(); i++) {
+            if (buyers.get(i).getBuyerName().equals(buyerName)) {
                 buyer = buyers.get(i);
-                
+
                 buyerNameField.setText(buyer.getBuyerName());
                 buyerOfficeSiteNameField.setText(buyer.getOfficeSiteName());
                 buyerCompanyBrandNameField.setText(buyer.getCompanyBrandName());
@@ -481,8 +526,7 @@ public class MerchandiserPanelUIController implements Initializable {
                 buyerZipCodeField.setText(buyer.getZipCode());
                 buyerAreaCodeField.setText(buyer.getAreaCode());
                 break;
-            }
-            else{
+            } else {
                 buyerNameMatchingText.setText("Buyer Not Found. You Can Add This As New Buyer Name.");
             }
         }
@@ -491,7 +535,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleAddBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         // Get Data From FXML
         String buyerName = buyerNameField.getText();
         String officeSiteName = buyerOfficeSiteNameField.getText();
@@ -503,45 +547,45 @@ public class MerchandiserPanelUIController implements Initializable {
         String state = buyerStateField.getText();
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String addedBy = user;
         String lastUpdatedBy = user;
-        
+
         // Instantiate Buyer Object
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
         buyers.removeAll(buyers);
-        
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.save(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh Buyers Observable List
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
-        for (int i = 0; i < buyers.size(); i++){
-            if(buyers.get(i).getIsDeleted() == 0){
+        for (int i = 0; i < buyers.size(); i++) {
+            if (buyers.get(i).getIsDeleted() == 0) {
                 buyersView.add(buyers.get(i));
                 buyerNames.add(buyers.get(i).getBuyerName());
             }
         }
         orderBuyerNameBox.setItems(buyerNames);
-        
+
         // Set Buyers To Table View
         buyersTableView.setItems(buyersView);
         buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
@@ -551,7 +595,7 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
         buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
         buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
-        
+
         // Refresh FXML
         buyerNameField.setText("");
         buyerOfficeSiteNameField.setText("");
@@ -568,7 +612,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleUpdateBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         // Get Data From FXML
         String buyerName = "";
         String officeSiteName = buyerOfficeSiteNameField.getText();
@@ -581,46 +625,46 @@ public class MerchandiserPanelUIController implements Initializable {
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
         String addedBy = "";
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String lastUpdatedBy = user;
-        
+
         // Instantiate Buyer
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
         buyer.setBuyerName(this.buyer.getBuyerName());
         buyer.setAddedBy(this.buyer.getAddedBy());
         buyers.removeAll(buyers);
-        
+
         //Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh Buyer ObservableLists
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
-        for (int i = 0; i < buyers.size(); i++){
-            if(buyers.get(i).getIsDeleted() == 0){
+        for (int i = 0; i < buyers.size(); i++) {
+            if (buyers.get(i).getIsDeleted() == 0) {
                 buyersView.add(buyers.get(i));
                 buyerNames.add(buyers.get(i).getBuyerName());
             }
         }
         orderBuyerNameBox.setItems(buyerNames);
-        
+
         // Set Buyer To Table View
         buyersTableView.setItems(buyersView);
         buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
@@ -630,7 +674,7 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
         buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
         buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
-        
+
         // Refresh FXML
         buyerNameField.setText("");
         buyerOfficeSiteNameField.setText("");
@@ -647,7 +691,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRemoveBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         // Get Data From FXML
         String buyerName = "";
         String officeSiteName = buyerOfficeSiteNameField.getText();
@@ -660,47 +704,47 @@ public class MerchandiserPanelUIController implements Initializable {
         String zipCode = buyerZipCodeField.getText();
         String areaCode = buyerAreaCodeField.getText();
         String addedBy = "";
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String lastUpdatedBy = user;
-        
+
         // Instantiate Buyer
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
         buyer.setBuyerName(this.buyer.getBuyerName());
         buyer.setAddedBy(this.buyer.getAddedBy());
         buyer.setIsDeleted(1);
         buyers.removeAll(buyers);
-        
+
         // Prepare Hibernate 
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh Buyer ObservableLists
         buyersView.remove(0, buyersView.size());
         buyerNames.remove(0, buyerNames.size());
-        for (int i = 0; i < buyers.size(); i++){
-            if(buyers.get(i).getIsDeleted() == 0){
+        for (int i = 0; i < buyers.size(); i++) {
+            if (buyers.get(i).getIsDeleted() == 0) {
                 buyersView.add(buyers.get(i));
                 buyerNames.add(buyers.get(i).getBuyerName());
             }
         }
         orderBuyerNameBox.setItems(buyerNames);
-        
+
         // Set Buyers To Table View
         buyersTableView.setItems(buyersView);
         buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
@@ -710,7 +754,7 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
         buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
         buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
-        
+
         // Refresh FXML
         buyerNameField.setText("");
         buyerOfficeSiteNameField.setText("");
@@ -727,7 +771,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRefreshBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         buyerNameField.setText("");
         buyerOfficeSiteNameField.setText("");
         buyerCompanyBrandNameField.setText("");
@@ -743,10 +787,10 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSelectBuyerAcion(MouseEvent event) {
         buyerNameMatchingText.setText("");
-        
+
         // Get Selected Buyer
         buyer = buyersTableView.getSelectionModel().getSelectedItem();
-        
+
         // Set Buyer Information To FXML
         buyerNameField.setText(buyer.getBuyerName());
         buyerOfficeSiteNameField.setText(buyer.getOfficeSiteName());
@@ -762,13 +806,13 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleBuyerNameMathcingAction(KeyEvent event) {
-        if(event.getCode() != KeyCode.ENTER){
+        if (event.getCode() != KeyCode.ENTER) {
             buyerNameMatchingText.setText("");
 
             String buyerName = buyerNameField.getText();
 
-            for (int i = 0; i < buyers.size(); i++){
-                if(buyers.get(i).getBuyerName().equals(buyerName)){
+            for (int i = 0; i < buyers.size(); i++) {
+                if (buyers.get(i).getBuyerName().equals(buyerName)) {
                     buyerNameMatchingText.setText("Buyer Name Already Taken. Press Enter to View Information.");
                     break;
                 }
@@ -785,7 +829,7 @@ public class MerchandiserPanelUIController implements Initializable {
             loader.load();
             Parent root = loader.getRoot();
             Scene scene = new Scene(root);
-            
+
             TextileERP.getMainStage().setScene(scene);
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
@@ -802,7 +846,7 @@ public class MerchandiserPanelUIController implements Initializable {
             loader.load();
             Parent root = loader.getRoot();
             Scene scene = new Scene(root);
-            
+
             TextileERP.getMainStage().setScene(scene);
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
@@ -813,15 +857,15 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSearchOrderIdAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         // Get Order ID From FXML
         int orderId = Integer.parseInt(orderIdField.getText());
-        
+
         // Match Order ID And Perform Actions
-        for (int i = 0; i < orders.size(); i++){
-            if (orders.get(i).getOrderId() == orderId){
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderId() == orderId) {
                 order = orders.get(i);
-                
+
                 orderIdField.setText(order.getOrderId() + "");
                 orderNameField.setText(order.getOrderName());
                 orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
@@ -836,8 +880,7 @@ public class MerchandiserPanelUIController implements Initializable {
                 orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getOrderCurrency()));
                 orderInternalCommentsField.setText(order.getOrderInternalComments());
                 break;
-            }
-            else{
+            } else {
                 orderIdSearchMessageText.setText("Order Not Found. Please Try With Different ID");
             }
         }
@@ -846,10 +889,10 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSelectOrderAction(MouseEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         // Get Selected Order
         order = ordersTableView.getSelectionModel().getSelectedItem();
-        
+
         // Set Order Information To FXML
         orderIdField.setText(order.getOrderId() + "");
         orderNameField.setText(order.getOrderName());
@@ -871,7 +914,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleOrderAddAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         // Get Data From FXML
         int orderId = 0;
         String orderName = orderNameField.getText();
@@ -885,20 +928,20 @@ public class MerchandiserPanelUIController implements Initializable {
         String orderCategory = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
         double orderSmv = Double.parseDouble(orderSmvField.getText());
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date currentDate= new Date();
+        Date currentDate = new Date();
         String orderDate = format.format(currentDate);
         String orderDeliveryDate = orderDeliveryDatePicker.getEditor().getText();
         double orderCost = Double.parseDouble(orderCostField.getText());
         String orderCurrency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
         String orderInternalComments = orderInternalCommentsField.getText();
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String orderAddedBy = user;
         String orderLastUpdatedBy = user;
-        
+
         // Instantiate Order
         Order addOrder = new Order(orderId, orderName, buyerName, buyerRequirements, orderDescription, orderPriority, orderQuantity, orderFloorNo, orderLineNo, orderCategory, orderSmv, orderDate, orderDeliveryDate, orderCost, orderCurrency, orderInternalComments, orderAddedBy, orderLastUpdatedBy);
         orders.removeAll(orders);
@@ -906,27 +949,27 @@ public class MerchandiserPanelUIController implements Initializable {
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.save(addOrder);
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
             System.out.println("Transaction Roll Backed");
         }
         session.close();
-        
+
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
-        for (int i = 0; i < orders.size(); i++){
-            if(orders.get(i).getOrderIsDeleted() == 0){
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderIsDeleted() == 0) {
                 ordersView.add(orders.get(i));
             }
         }
-        
+
         // Set Order To TableView
         ordersTableView.setItems(ordersView);
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
@@ -938,7 +981,7 @@ public class MerchandiserPanelUIController implements Initializable {
         orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
         orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
         orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
-        
+
         // Refresh FXML
         orderIdField.setText("");
         orderNameField.setText("");
@@ -960,9 +1003,9 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleUpdateOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         // Get Data From FXML
-        int orderId = 0; 
+        int orderId = 0;
         String orderName = orderNameField.getText();
         String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
         String buyerRequirements = orderBuyerReqirementsField.getText();
@@ -979,44 +1022,44 @@ public class MerchandiserPanelUIController implements Initializable {
         String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
         String internalComments = orderInternalCommentsField.getText();
         String addedBy = "";
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String lastUpdatedBy = user;
-        
+
         // Instantiate Order
         Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, orderFloorNo, orderLineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
         order.setOrderId(this.order.getOrderId());
         order.setOrderDate(this.order.getOrderDate());
         order.setOrderAddedBy(this.order.getOrderAddedBy());
         orders.removeAll(orders);
-        
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.update(order);
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
-        for (int i = 0; i < orders.size(); i++){
-            if(orders.get(i).getOrderIsDeleted() == 0){
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderIsDeleted() == 0) {
                 ordersView.add(orders.get(i));
             }
         }
-        
+
         // Set Order To TableView
         ordersTableView.setItems(ordersView);
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
@@ -1028,7 +1071,7 @@ public class MerchandiserPanelUIController implements Initializable {
         orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
         orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
         orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
-        
+
         // Refresh FXML
         orderIdField.setText("");
         orderNameField.setText("");
@@ -1050,7 +1093,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRemoveOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         // Get Data From FXML
         int orderId = Integer.parseInt(orderIdField.getText());
         String orderName = orderNameField.getText();
@@ -1069,13 +1112,13 @@ public class MerchandiserPanelUIController implements Initializable {
         String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
         String internalComments = orderInternalCommentsField.getText();
         String addedBy = "";
-        
+
         // Get User ID
         String getIdText = merchandiserOrderIdText.getText();
         String idTokens[] = getIdText.split(" ");
         String user = idTokens[2];
         String lastUpdatedBy = user;
-        
+
         // Instantiate Order
         Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, orderFloorNo, orderLineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
         order.setOrderId(this.order.getOrderId());
@@ -1083,31 +1126,31 @@ public class MerchandiserPanelUIController implements Initializable {
         order.setOrderAddedBy(this.order.getOrderAddedBy());
         order.setOrderIsDeleted(1);
         orders.removeAll(orders);
-        
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.update(order);
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh Order ObservableLists
         ordersView.remove(0, ordersView.size());
-        for (int i = 0; i < orders.size(); i++){
-            if(orders.get(i).getOrderIsDeleted() == 0){
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderIsDeleted() == 0) {
                 ordersView.add(orders.get(i));
             }
         }
-        
+
         // Set Order To TableView
         ordersTableView.setItems(ordersView);
         orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
@@ -1119,7 +1162,7 @@ public class MerchandiserPanelUIController implements Initializable {
         orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
         orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
         orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
-        
+
         // Refresh FXML
         orderIdField.setText("");
         orderNameField.setText("");
@@ -1141,7 +1184,7 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRefreshOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-        
+
         orderIdField.setText("");
         orderNameField.setText("");
         orderBuyerNameBox.getSelectionModel().clearSelection();
@@ -1156,38 +1199,39 @@ public class MerchandiserPanelUIController implements Initializable {
         orderCurrencyBox.getSelectionModel().clearSelection();
         orderInternalCommentsField.setText("");
     }
-    
-    public void setMerchandiserId(String username){
+
+    public void setMerchandiserId(String username) {
         this.merchandizerId = username;
         merchandiserBuyerIdText.setText("Merchandizer ID: " + username);
         merchandiserOrderIdText.setText("Merchandizer ID: " + username);
         merchandiserProfileIdText.setText("Merchandizer ID: " + username);
         merchandiserConsumptionIdText.setText("Merchandizer ID: " + username);
-        
+        merchandiserCostingIdText.setText("Merchandizer ID: " + username);
+
         employees = new ArrayList<>();
-        
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             transaction.rollback();
         }
         session.close();
-        
+
         // Get Employee Information Using ID
-        for(int i = 0; i < employees.size(); i++){
-            if(username.equals(employees.get(i).getId())){
+        for (int i = 0; i < employees.size(); i++) {
+            if (username.equals(employees.get(i).getId())) {
                 employee = employees.get(i);
             }
         }
-        
+
         // Set Profile Information To FXML
         profileEmployeeIdText.setText(employee.getId());
         profileDesignationText.setText(employee.getDesignation());
@@ -1217,12 +1261,11 @@ public class MerchandiserPanelUIController implements Initializable {
         merchandiserChangePasswordMessageText.setText("");
         String password = profileNewPasswordField.getText();
         String reTypePassword = profileRetypeNewPasswordField.getText();
-        
+
         int isMatched = 0;
-        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+        if (!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)) {
             isMatched = 1;
-        }
-        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+        } else if (!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null) {
             merchandiserChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
         }
     }
@@ -1232,12 +1275,11 @@ public class MerchandiserPanelUIController implements Initializable {
         merchandiserChangePasswordMessageText.setText("");
         String password = profileNewPasswordField.getText();
         String reTypePassword = profileRetypeNewPasswordField.getText();
-        
+
         int isMatched = 0;
-        if(!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)){
+        if (!password.equals("") && !reTypePassword.equals("") && password.equals(reTypePassword)) {
             isMatched = 1;
-        }
-        else if(!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null){
+        } else if (!password.equals("") && !reTypePassword.equals("") && !password.equals(reTypePassword) && password != null && reTypePassword != null) {
             merchandiserChangePasswordMessageText.setText("Please Enter Same Password in Both Fields");
         }
     }
@@ -1247,45 +1289,45 @@ public class MerchandiserPanelUIController implements Initializable {
         // Get Values From FXML
         String username = profileUsernameText.getText();
         String getPass = profileOldPasswordField.getText();
-        
+
         String getNewPass = profileNewPasswordField.getText();
         String getNewRePass = profileRetypeNewPasswordField.getText();
-        
+
         // Encrypt Passwords
         HashMD5 encPass = new HashMD5(getPass);
         String password = encPass.getHash();
-        
+
         HashMD5 encNewPass = new HashMD5(getNewPass);
         String newPassword = encNewPass.getHash();
-        
+
         // Get The User
-        for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)){
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmployeeId().equals(username) && users.get(i).getPassword().equals(password)) {
                 user = users.get(i);
                 break;
             }
         }
-        
+
         // Set User's New Password
-        if(getNewPass.equals(getNewRePass)){
+        if (getNewPass.equals(getNewRePass)) {
             user.setPassword(newPassword);
         }
-        
+
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         transaction = session.beginTransaction();
-        
+
         // Database Actions
-        try{
+        try {
             session.update(user);
             transaction.commit();
-        }catch(Exception e){
+        } catch (Exception e) {
             merchandiserChangePasswordMessageText.setText(e + "");
             transaction.rollback();
         }
         session.close();
-        
+
         // Refresh FXML
         profileOldPasswordField.setText("");
         profileNewPasswordField.setText("");
@@ -1301,7 +1343,7 @@ public class MerchandiserPanelUIController implements Initializable {
             loader.load();
             Parent root = loader.getRoot();
             Scene scene = new Scene(root);
-            
+
             TextileERP.getMainStage().setScene(scene);
             TextileERP.getMainStage().show();
         } catch (IOException ex) {
@@ -1311,32 +1353,333 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleConsumptionOrderIdAction(ActionEvent event) {
+        // Get Order Id From FXML
+        int orderId = Integer.parseInt(consumptionOrderIdBox.getSelectionModel().getSelectedItem());
+
+        // Get Order Using Id
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getOrderId() == orderId) {
+                order = orders.get(i);
+                consumptionbuyerNameField.setText(order.getBuyerName());
+                consumptionCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
+                consumptionOrderQuantity.setText(order.getOrderQuantity() + "");
+                break;
+            }
+        }
+
+        // Set Combo Box Values
+        consumptionSizeBox.getItems().addAll(Size.values());
+        consumptionCategoryBox.getItems().addAll(OrderCategory.values());
+        consumptionFabricComponentBox.getItems().addAll(ConsumptionComponent.values());
+        consumptionThreadOperationNameBox.getItems().addAll(ConsumptionOperationName.values());
+        consumptionThreadStitchTypeBox.getItems().addAll(ConsumptionStitchType.values());
+    }
+
+    @FXML
+    private void handleConsumptionSelectSizeAction(ActionEvent event) {
+        // Get Order Id and Size From FXML
+        int orderId = Integer.parseInt(consumptionOrderIdBox.getSelectionModel().getSelectedItem());
+        String size = consumptionSizeBox.getSelectionModel().getSelectedItem() + "";
+
+        // Check If Consumption Is Already In Database
+        int consumptionFound = 0;
+
+        for (int i = 0; i < consumptions.size(); i++) {
+            if (consumptions.get(i).getOrderId() == orderId && consumptions.get(i).getSize().equals(size)) {
+                consumption = consumptions.get(i);
+                consumptionFound = 1;
+                break;
+            }
+        }
+
+        // Set Consumption To FXML if Found
+        if (consumptionFound == 1) {
+            consumptionDatePicker.getEditor().setText(consumption.getDate());
+            consumptionSizeQuantityField.setText(consumption.getSizeQuantity() + "");
+            
+            // Set Fabric Consumption Values To FXML
+            fabricConsumption = consumption.getFabricConsumption();
+            consumptionFabricGsmField.setText(fabricConsumption.getFabricGsm() + "");
+            consumptionFabricWastageField.setText(fabricConsumption.getWastage() + "");
+            fabricConsumptionComponents = fabricConsumption.getComponents();
+            for (int i = 0; i < fabricConsumptionComponents.size(); i++) {
+                fabricConsumptionComponentsView.add(fabricConsumptionComponents.get(i));
+            }
+            consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+            consumptionFabricComponentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
+            consumptionFabricValueTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getValue()));
+            consumptionFabricSewingAllowanceTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAllowance()));
+            DecimalFormat df = new DecimalFormat(".##");
+            consumptionFabricPerDozenField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerDozen()) + "");
+            consumptionFabricPerPieceField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerPiece()) + "");
+            
+            // Set Thread Consumption Values To FXML
+            threadConsumption = consumption.getThreadConsumption();
+            consumptionThreadWastageField.setText(threadConsumption.getWastage() + "");
+            threadConsumptionOperations = threadConsumption.getOperations();
+            for (int i = 0; i < threadConsumptionOperations.size(); i++) {
+                threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
+            }
+            consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+            consumptionThreadOperationNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOperationName()));
+            consumptionThreadSeamTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSeamLength()));
+            consumptionThreadStitchTypeTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStitchType()));
+            consumptionThreadRatioTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRatio()));
+            consumptionThreadEstimatedTbleColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getEstimatedThreadConsumption()));
+            consumptionThreadField.setText(df.format(threadConsumption.getThreadConsumption()) + "");
+        } // Instantiate New Consumption And Get Ready To Be Managed If Not Found
+        else {
+            consumption = new Consumption();
+            consumption.setSl(0);
+            consumption.setOrderId(order.getOrderId());
+            consumption.setSize(size);
+            fabricConsumption = new FabricConsumption();
+            consumption.setFabricConsumption(fabricConsumption);
+            threadConsumption = new ThreadConsumption();
+            consumption.setThreadConsumption(threadConsumption);
+
+            // Get User ID
+            String getIdText = merchandiserConsumptionIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String user = idTokens[2];
+            String consumptionCalculatedBy = user;
+            String consumptionLastUpdatedBy = user;
+
+            consumption.setCalculatedBy(consumptionCalculatedBy);
+            consumption.setLastUpdatedBy(consumptionLastUpdatedBy);
+        }
     }
 
     @FXML
     private void handleSelectFabricConsumptionComponentAction(MouseEvent event) {
+        // Set FabricConsumptionComponent To FXML
+        fabricConsumptionComponent = consumptionFabricComponentsTableView.getSelectionModel().getSelectedItem();
+        consumptionFabricComponentBox.getSelectionModel().select(ConsumptionComponent.valueOf(fabricConsumptionComponent.getComponent()));
+        consumptionFabricComponentValueField.setText(fabricConsumptionComponent.getValue() + "");
+        consumptionFabricAllowanceField.setText(fabricConsumptionComponent.getAllowance() + "");
     }
 
     @FXML
     private void handleFabricConsumptionComponentRemoveAction(ActionEvent event) {
+        // Remove Fabric Consumption Component
+        if (fabricConsumptionComponent != null) {
+            consumption.getFabricConsumption().removeConsumptionComponent(fabricConsumptionComponent);
+        }
+
+        // Get All Fabric Consumption Components And Add To Observable List
+        fabricConsumptionComponents = new ArrayList<>();
+        fabricConsumptionComponents = consumption.getFabricConsumption().getComponents();
+        fabricConsumptionComponentsView.remove(0, fabricConsumptionComponentsView.size());
+        for (int i = 0; i < fabricConsumptionComponents.size(); i++) {
+            fabricConsumptionComponentsView.add(fabricConsumptionComponents.get(i));
+        }
+
+        // Set Fabric Consumption Components To Table View
+        consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+        consumptionFabricComponentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
+        consumptionFabricValueTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getValue()));
+        consumptionFabricSewingAllowanceTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAllowance()));
+
+        // Refresh FXML
+        consumptionFabricComponentBox.getSelectionModel().clearSelection();
+        consumptionFabricComponentValueField.setText("0");
+        consumptionFabricAllowanceField.setText("0");
+
+        // Set Fabric Comsumptions
+        DecimalFormat df = new DecimalFormat(".##");
+        consumptionFabricPerDozenField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerDozen()) + "");
+        consumptionFabricPerPieceField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerPiece()) + "");
     }
 
     @FXML
     private void handleFabricConsumptionComponentAddAction(ActionEvent event) {
+        // Get Data From FXML
+        double fabricGsm = Double.parseDouble(consumptionFabricGsmField.getText());
+        double wastage = Double.parseDouble(consumptionFabricWastageField.getText());
+
+        // Set Fabric GSM
+        if (fabricGsm > 0) {
+            consumption.getFabricConsumption().setFabricGsm(fabricGsm);
+        }
+
+        // Set Wastage
+        if (wastage > 0) {
+            consumption.getFabricConsumption().setWastage(wastage);
+        }
+
+        // Get Data From FXML
+        int sl = 0;
+        String component = consumptionFabricComponentBox.getSelectionModel().getSelectedItem() + "";
+        double value = Double.parseDouble(consumptionFabricComponentValueField.getText());
+        double allowance = Double.parseDouble(consumptionFabricAllowanceField.getText());
+
+        // Instantiate Fabric Consumption Component And Add To Fabric Consumption List
+        if (!component.equals("") && value > 0 && allowance > 0) {
+            fabricConsumptionComponent = new FabricConsumptionComponents(sl, component, value, allowance);
+            consumption.getFabricConsumption().addConsumptionComponent(fabricConsumptionComponent);
+        }
+
+        // Get All Fabric Consumption Components And Add To Observable List
+        fabricConsumptionComponents = consumption.getFabricConsumption().getComponents();
+        fabricConsumptionComponentsView.remove(0, fabricConsumptionComponentsView.size());
+        for (int i = 0; i < fabricConsumptionComponents.size(); i++) {
+            fabricConsumptionComponentsView.add(fabricConsumptionComponents.get(i));
+        }
+
+        // Set Fabric Consumption Components To Table View
+        consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+        consumptionFabricComponentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
+        consumptionFabricValueTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getValue()));
+        consumptionFabricSewingAllowanceTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAllowance()));
+
+        // Refresh FXML
+        consumptionFabricComponentBox.getSelectionModel().clearSelection();
+        consumptionFabricComponentValueField.setText("0");
+        consumptionFabricAllowanceField.setText("0");
+
+        // Set Fabric Comsumptions
+        DecimalFormat df = new DecimalFormat(".##");
+        consumptionFabricPerDozenField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerDozen()) + "");
+        consumptionFabricPerPieceField.setText(df.format(consumption.getFabricConsumption().getConsumptionPerPiece()) + "");
     }
 
     @FXML
     private void handleSelectThreadConsumptionOperationAction(MouseEvent event) {
+        threadConsumptionOperation = consumptionThreadOperationsTableView.getSelectionModel().getSelectedItem();
+        consumptionThreadOperationNameBox.getSelectionModel().select(ConsumptionOperationName.valueOf(threadConsumptionOperation.getOperationName()));
+        consumptionThreadSeamLengthField.setText(threadConsumptionOperation.getSeamLength() + "");
+        consumptionThreadStitchTypeBox.getSelectionModel().select(ConsumptionStitchType.valueOf(threadConsumptionOperation.getStitchType()));
+        consumptionThreadRatioField.setText(threadConsumptionOperation.getRatio() + "");
+        consumptionThreadInitialField.setText(threadConsumptionOperation.getInitialConsumption() + "");
+        consumptionThreadEstimatedField.setText(threadConsumptionOperation.getEstimatedThreadConsumption() + "");
     }
 
     @FXML
     private void handleThreadConsumptionOperationRemoveAction(ActionEvent event) {
+        // Get Data From FXML
+        int sl = 0;
+        String operationName = consumptionThreadOperationNameBox.getSelectionModel().getSelectedItem() + "";
+        double seamLength = Double.parseDouble(consumptionThreadSeamLengthField.getText());
+        String stitchType = consumptionThreadStitchTypeBox.getSelectionModel().getSelectedItem() + "";
+        double ratio = Double.parseDouble(consumptionThreadRatioField.getText());
+        double initialConsumption = Double.parseDouble(consumptionThreadInitialField.getText());
+        double estimatedConsumption = Double.parseDouble(consumptionThreadEstimatedField.getText());
+        
+        // Instantiate Thread Consumption Component And Remove Fabric Consumption List
+        if(!operationName.equals("") && !stitchType.equals("") && seamLength > 0 && ratio > 0 && initialConsumption > 0 && estimatedConsumption > 0){
+            threadConsumptionOperation = new ThreadConsumptionOperation(sl, operationName, seamLength, stitchType, ratio, initialConsumption, estimatedConsumption);
+            threadConsumptionOperation.setSl(consumption.getThreadConsumption().getSl());
+            consumption.getThreadConsumption().removeConsumptionOperation(threadConsumptionOperation);
+            System.out.println(threadConsumptionOperation);
+        }
+        
+        // Get All Fabric Consumption Components And Add To Observable List
+        threadConsumptionOperations = consumption.getThreadConsumption().getOperations();
+        threadConsumptionOperationsView.remove(0, threadConsumptionOperationsView.size());
+        for (int i = 0; i < threadConsumptionOperations.size(); i++) {
+            threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
+            System.out.println(threadConsumptionOperations.get(i));
+        }
+        
+        // Set Fabric Consumption Components To Table View
+        consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+        consumptionThreadOperationNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOperationName()));
+        consumptionThreadSeamTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSeamLength()));
+        consumptionThreadStitchTypeTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStitchType()));
+        consumptionThreadRatioTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRatio()));
+        consumptionThreadEstimatedTbleColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getEstimatedThreadConsumption()));
+        
+        // Refresh FXML
+        consumptionThreadOperationNameBox.getSelectionModel().clearSelection();
+        consumptionThreadSeamLengthField.setText("0");
+        consumptionThreadStitchTypeBox.getSelectionModel().clearSelection();
+        consumptionThreadRatioField.setText("0");
+        consumptionThreadInitialField.setText("0");
+        consumptionThreadEstimatedField.setText("0");
+        
+        // Set Thread Consumption
+        DecimalFormat df = new DecimalFormat(".##");
+        consumptionThreadField.setText(df.format(consumption.getThreadConsumption().getThreadConsumption()) + "");
     }
 
     @FXML
     private void handleThreadConsumptionOperationAddAction(ActionEvent event) {
+        // Get Data From FXML
+        double wastage = Double.parseDouble(consumptionThreadWastageField.getText());
+        
+        // Set Wastage
+        if (wastage > 0){
+            consumption.getThreadConsumption().setWastage(wastage);
+        }
+        
+        // Get Data From FXML
+        int sl = 0;
+        String operationName = consumptionThreadOperationNameBox.getSelectionModel().getSelectedItem() + "";
+        double seamLength = Double.parseDouble(consumptionThreadSeamLengthField.getText());
+        String stitchType = consumptionThreadStitchTypeBox.getSelectionModel().getSelectedItem() + "";
+        double ratio = Double.parseDouble(consumptionThreadRatioField.getText());
+        double initialConsumption = Double.parseDouble(consumptionThreadInitialField.getText());
+        double estimatedConsumption = Double.parseDouble(consumptionThreadEstimatedField.getText());
+        
+        // Instantiate Thread Consumption Component And Add To Fabric Consumption List
+        if(!operationName.equals("") && !stitchType.equals("") && seamLength > 0 && ratio > 0 && initialConsumption > 0 && estimatedConsumption > 0){
+            threadConsumptionOperation = new ThreadConsumptionOperation(sl, operationName, seamLength, stitchType, ratio, initialConsumption, estimatedConsumption);
+            consumption.getThreadConsumption().addConsumptionOperation(threadConsumptionOperation);
+        }
+        
+        // Get All Fabric Consumption Components And Add To Observable List
+        threadConsumptionOperations = consumption.getThreadConsumption().getOperations();
+        threadConsumptionOperationsView.remove(0, threadConsumptionOperationsView.size());
+        for (int i = 0; i < threadConsumptionOperations.size(); i++) {
+            threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
+        }
+        
+        // Set Fabric Consumption Components To Table View
+        consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+        consumptionThreadOperationNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOperationName()));
+        consumptionThreadSeamTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getSeamLength()));
+        consumptionThreadStitchTypeTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStitchType()));
+        consumptionThreadRatioTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRatio()));
+        consumptionThreadEstimatedTbleColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getEstimatedThreadConsumption()));
+        
+        
+        // Refresh FXML
+        consumptionThreadOperationNameBox.getSelectionModel().clearSelection();
+        consumptionThreadSeamLengthField.setText("0");
+        consumptionThreadStitchTypeBox.getSelectionModel().clearSelection();
+        consumptionThreadRatioField.setText("0");
+        consumptionThreadInitialField.setText("0");
+        consumptionThreadEstimatedField.setText("0");
+        
+        // Set Thread Consumption
+        DecimalFormat df = new DecimalFormat(".##");
+        consumptionThreadField.setText(df.format(consumption.getThreadConsumption().getThreadConsumption()) + "");
     }
 
+    @FXML
+    private void handleSetThreadConsumptionWastageAction(ActionEvent event) {
+        double wastage = Double.parseDouble(consumptionThreadWastageField.getText());
+        
+        if(wastage > 0){
+            consumption.getThreadConsumption().setWastage(wastage);
+        }
+    }
+    
+    @FXML
+    private void handleCalculateOperationConsumptionAction(KeyEvent event) {
+        double seamLength = Double.parseDouble(consumptionThreadSeamLengthField.getText());
+        double ratio = Double.parseDouble(consumptionThreadRatioField.getText());
+        
+        if(seamLength > 0 && ratio > 0){
+            double initialConsumption = seamLength * ratio;
+            double estimatedConsumption = initialConsumption + ((initialConsumption * consumption.getThreadConsumption().getWastage()) / 100);
+            
+            DecimalFormat df = new DecimalFormat(".##");
+            consumptionThreadInitialField.setText(df.format(initialConsumption) + "");
+            consumptionThreadEstimatedField.setText(df.format(estimatedConsumption) + "");
+        }
+    }
+    
     @FXML
     private void handleSignOutConsumptionAction(ActionEvent event) {
     }
@@ -1387,5 +1730,9 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleCostingOrderIdAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void handleCostingSelectSizeAction(ActionEvent event) {
     }
 }

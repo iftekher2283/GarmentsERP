@@ -12,5 +12,10 @@
     <mapping class="model.Buyer"/>
     <mapping class="model.User"/>
     <mapping class="model.Order"/>
+    <mapping class="model.Consumption"/>
+    <mapping class="model.FabricConsumption"/>
+    <mapping class="model.FabricConsumptionComponents"/>
+    <mapping class="model.ThreadConsumption"/>
+    <mapping class="model.ThreadConsumptionOperation"/>
   </session-factory>
 </hibernate-configuration>
