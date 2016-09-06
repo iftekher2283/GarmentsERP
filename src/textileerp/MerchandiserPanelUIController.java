@@ -52,7 +52,13 @@ import md5.HashMD5;
 import model.Buyer;
 import model.Consumption;
 import model.Costing;
+import model.CostingAccessories;
 import model.CostingAccessoriesItem;
+import model.CostingDyeing;
+import model.CostingKnitting;
+import model.CostingOthers;
+import model.CostingThread;
+import model.CostingYarn;
 import model.Employee;
 import model.FabricConsumption;
 import model.FabricConsumptionComponents;
@@ -319,6 +325,10 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text merchandiserCostingIdText;
     @FXML
     private TextField costingFabricGsmField;
+    @FXML
+    private Text costingHandleActionDoneMessageText;
+    @FXML
+    private Text costingHandleActionNotDoneMessageText;
 
     // Profile FXML
     @FXML
@@ -373,6 +383,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text merchandiserChangePasswordMessageText;
     @FXML
     private Text merchandiserProfileIdText;
+    
 
     // Required Lists
     private List<Buyer> buyers;
@@ -385,7 +396,13 @@ public class MerchandiserPanelUIController implements Initializable {
     private List<FabricConsumptionComponents> fabricConsumptionComponents;
     private List<ThreadConsumptionOperation> threadConsumptionOperations;
     private List<Costing> costings;
-    private List<CostingAccessoriesItem> costingAccessories;
+    private List<CostingYarn> costingYarns;
+    private List<CostingKnitting> costingKnittings;
+    private List<CostingDyeing> costingDyeings;
+    private List<CostingThread> costingThreads;
+    private List<CostingOthers> costingOthers;
+    private List<CostingAccessories> costingAccessorieses;
+    private List<CostingAccessoriesItem> costingAccessoriesItems;
 
     // Required ObservableLists
     private ObservableList<Buyer> buyersView;
@@ -394,7 +411,7 @@ public class MerchandiserPanelUIController implements Initializable {
     private ObservableList<String> orderIds;
     private ObservableList<FabricConsumptionComponents> fabricConsumptionComponentsView;
     private ObservableList<ThreadConsumptionOperation> threadConsumptionOperationsView;
-    private ObservableList<CostingAccessoriesItem> costingAccessoriesView;
+    private ObservableList<CostingAccessoriesItem> costingAccessoriesItemsView;
 
     // Required Global Variables
     private String merchandizerId;
@@ -408,11 +425,24 @@ public class MerchandiserPanelUIController implements Initializable {
     private ThreadConsumption threadConsumption;
     private ThreadConsumptionOperation threadConsumptionOperation;
     private Costing costing;
+    private CostingYarn costingYarn;
+    private CostingKnitting costingKnitting;
+    private CostingDyeing costingDyeing;
+    private CostingThread costingThread;
+    private CostingOthers costingOther;
+    private CostingAccessories costingAccessories;
+    private CostingAccessoriesItem costingAccessoriesItem;
 
     // Required Variable Handle Batabase Actions
     private SessionFactory factory;
     private Session session;
     private Transaction transaction;
+    @FXML
+    private Text consumptionActionNotDoneMessageText;
+    @FXML
+    private Text consumptionActionDoneMessageText;
+    @FXML
+    private Text changePasswordActionDoneMessageText;
 
     /**
      * Initializes the controller class.
@@ -435,7 +465,15 @@ public class MerchandiserPanelUIController implements Initializable {
         threadConsumptions = new ArrayList<>();
         fabricConsumptionComponents = new ArrayList<>();
         threadConsumptionOperations = new ArrayList<>();
-
+        costings = new ArrayList<>();
+        costingYarns = new ArrayList<>();
+        costingKnittings = new ArrayList<>();
+        costingDyeings = new ArrayList<>();
+        costingThreads = new ArrayList<>();
+        costingOthers = new ArrayList<>();
+        costingAccessorieses = new ArrayList<>();
+        costingAccessoriesItems = new ArrayList<>();
+    
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
@@ -451,7 +489,14 @@ public class MerchandiserPanelUIController implements Initializable {
             fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
             threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
             consumptions = session.createCriteria(Consumption.class).list();
-        //    componentSls = session.createCriteria(FabricConsumption_FabricConsumptionComponents.class).list();
+            costingAccessoriesItems = session.createCriteria(CostingAccessoriesItem.class).list();
+            costingAccessorieses = session.createCriteria(CostingAccessories.class).list();
+            costingYarns = session.createCriteria(CostingYarn.class).list();
+            costingKnittings = session.createCriteria(CostingKnitting.class).list();
+            costingDyeings = session.createCriteria(CostingDyeing.class).list();
+            costingThreads = session.createCriteria(CostingThread.class).list();
+            costingOthers = session.createCriteria(CostingOthers.class).list();
+            costings = session.createCriteria(Costing.class).list();
             transaction.commit();
         } catch (Exception e) {
             System.err.println(e);
@@ -539,90 +584,13 @@ public class MerchandiserPanelUIController implements Initializable {
             }
         }
     }
-
+    
     @FXML
-    private void handleAddBuyerAction(ActionEvent event) {
+    private void handleSaveBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
 
         // Get Data From FXML
         String buyerName = buyerNameField.getText();
-        String officeSiteName = buyerOfficeSiteNameField.getText();
-        String companyBrandName = buyerCompanyBrandNameField.getText();
-        String phone = buyerPhoneField.getText();
-        String email = buyerEmailField.getText();
-        String address = buyerAddressArea.getText();
-        String city = buyerCityField.getText();
-        String state = buyerStateField.getText();
-        String zipCode = buyerZipCodeField.getText();
-        String areaCode = buyerAreaCodeField.getText();
-
-        // Get User ID
-        String getIdText = merchandiserOrderIdText.getText();
-        String idTokens[] = getIdText.split(" ");
-        String user = idTokens[2];
-        String addedBy = user;
-        String lastUpdatedBy = user;
-
-        // Instantiate Buyer Object
-        Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
-        buyers.removeAll(buyers);
-
-        // Prepare Hibernate
-        factory = HibernateSingleton.getSessionFactory();
-        session = factory.openSession();
-        transaction = session.beginTransaction();
-
-        // Database Actions
-        try {
-            session.save(buyer);
-            buyers = session.createCriteria(Buyer.class).list();
-            transaction.commit();
-        } catch (Exception e) {
-            System.err.println(e);
-            transaction.rollback();
-        }
-        session.close();
-
-        // Refresh Buyers Observable List
-        buyersView.remove(0, buyersView.size());
-        buyerNames.remove(0, buyerNames.size());
-        for (int i = 0; i < buyers.size(); i++) {
-            if (buyers.get(i).getIsDeleted() == 0) {
-                buyersView.add(buyers.get(i));
-                buyerNames.add(buyers.get(i).getBuyerName());
-            }
-        }
-        orderBuyerNameBox.setItems(buyerNames);
-
-        // Set Buyers To Table View
-        buyersTableView.setItems(buyersView);
-        buyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        buyerSiteNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOfficeSiteName()));
-        buyerBrandNameTableColummn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCompanyBrandName()));
-        buyerPhoneTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPhone()));
-        buyerEmailTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getEmail()));
-        buyerAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAddedBy()));
-        buyerLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getUpdatedBy()));
-
-        // Refresh FXML
-        buyerNameField.setText("");
-        buyerOfficeSiteNameField.setText("");
-        buyerCompanyBrandNameField.setText("");
-        buyerPhoneField.setText("");
-        buyerEmailField.setText("");
-        buyerAddressArea.setText("");
-        buyerCityField.setText("");
-        buyerStateField.setText("");
-        buyerZipCodeField.setText("");
-        buyerAreaCodeField.setText("");
-    }
-
-    @FXML
-    private void handleUpdateBuyerAction(ActionEvent event) {
-        buyerNameMatchingText.setText("");
-
-        // Get Data From FXML
-        String buyerName = "";
         String officeSiteName = buyerOfficeSiteNameField.getText();
         String companyBrandName = buyerCompanyBrandNameField.getText();
         String phone = buyerPhoneField.getText();
@@ -642,8 +610,15 @@ public class MerchandiserPanelUIController implements Initializable {
 
         // Instantiate Buyer
         Buyer buyer = new Buyer(buyerName, officeSiteName, companyBrandName, phone, email, address, city, state, zipCode, areaCode, addedBy, lastUpdatedBy);
-        buyer.setBuyerName(this.buyer.getBuyerName());
-        buyer.setAddedBy(this.buyer.getAddedBy());
+        
+        // Check if employee is already in database
+        int isAddedBefore = 0;
+        for (int i = 0; i < buyers.size(); i++){
+            if(buyers.get(i).getBuyerName().equals(buyer.getBuyerName())){
+                isAddedBefore = 1;
+                break;
+            }
+        }
         buyers.removeAll(buyers);
 
         //Prepare Hibernate
@@ -653,6 +628,13 @@ public class MerchandiserPanelUIController implements Initializable {
 
         // Database Actions
         try {
+            if(isAddedBefore == 0){
+                session.save(buyer);
+            }else if(isAddedBefore == 1){
+                buyer.setBuyerName(this.buyer.getBuyerName());
+                buyer.setAddedBy(this.buyer.getAddedBy());
+                session.update(buyer);
+            }
             session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
@@ -694,8 +676,9 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerStateField.setText("");
         buyerZipCodeField.setText("");
         buyerAreaCodeField.setText("");
+        this.buyer = new Buyer();
     }
-
+    
     @FXML
     private void handleRemoveBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
@@ -774,8 +757,13 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerStateField.setText("");
         buyerZipCodeField.setText("");
         buyerAreaCodeField.setText("");
+        this.buyer = new Buyer();
     }
-
+    
+    @FXML
+    private void handlePrintBuyerAction(ActionEvent event) {
+    }
+    
     @FXML
     private void handleRefreshBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
@@ -790,6 +778,7 @@ public class MerchandiserPanelUIController implements Initializable {
         buyerStateField.setText("");
         buyerZipCodeField.setText("");
         buyerAreaCodeField.setText("");
+        this.buyer = new Buyer();
     }
 
     @FXML
@@ -918,9 +907,9 @@ public class MerchandiserPanelUIController implements Initializable {
         orderCurrencyBox.getSelectionModel().select(Currency.valueOf(order.getOrderCurrency()));
         orderInternalCommentsField.setText(order.getOrderInternalComments());
     }
-
+    
     @FXML
-    private void handleOrderAddAction(ActionEvent event) {
+    private void handleOrderSaveAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
 
         // Get Data From FXML
@@ -952,7 +941,19 @@ public class MerchandiserPanelUIController implements Initializable {
 
         // Instantiate Order
         Order addOrder = new Order(orderId, orderName, buyerName, buyerRequirements, orderDescription, orderPriority, orderQuantity, orderFloorNo, orderLineNo, orderCategory, orderSmv, orderDate, orderDeliveryDate, orderCost, orderCurrency, orderInternalComments, orderAddedBy, orderLastUpdatedBy);
+        
+        // Check if employee is already in database
+        int isAddedBefore = 0;
+        for (int i = 0; i < orders.size(); i++){
+            if(order != null){
+                if(orders.get(i).getOrderId() == order.getOrderId()){
+                    isAddedBefore = 1;
+                    break;
+                }
+            }
+        }
         orders.removeAll(orders);
+        
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
@@ -960,7 +961,13 @@ public class MerchandiserPanelUIController implements Initializable {
 
         // Database Actions
         try {
-            session.save(addOrder);
+            if(isAddedBefore == 0){
+                session.save(addOrder);
+            }else if(isAddedBefore == 1){
+                addOrder.setOrderId(this.order.getOrderId());
+                addOrder.setOrderAddedBy(this.order.getOrderAddedBy());
+                session.update(addOrder);
+            }
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
         } catch (Exception e) {
@@ -1006,98 +1013,13 @@ public class MerchandiserPanelUIController implements Initializable {
         orderCostField.setText("");
         orderCurrencyBox.getSelectionModel().clearSelection();
         orderInternalCommentsField.setText("");
+        this.order = new Order();
     }
-
+    
     @FXML
-    private void handleUpdateOrderAction(ActionEvent event) {
-        orderIdSearchMessageText.setText("");
-
-        // Get Data From FXML
-        int orderId = 0;
-        String orderName = orderNameField.getText();
-        String buyerName = orderBuyerNameBox.getSelectionModel().getSelectedItem();
-        String buyerRequirements = orderBuyerReqirementsField.getText();
-        String description = orderDescriptionArea.getText();
-        String priority = orderPriorityField.getText();
-        int quantity = Integer.parseInt(orderQuantityField.getText());
-        String orderFloorNo = orderFloorNoBox.getSelectionModel().getSelectedItem() + "";
-        String orderLineNo = orderLineNoBox.getSelectionModel().getSelectedItem() + "";
-        String category = orderCategoryBox.getSelectionModel().getSelectedItem() + "";
-        double smv = Double.parseDouble(orderSmvField.getText());
-        String orderDate = "";
-        String deliveryDate = orderDeliveryDatePicker.getEditor().getText();
-        double cost = Double.parseDouble(orderCostField.getText());
-        String currency = orderCurrencyBox.getSelectionModel().getSelectedItem() + "";
-        String internalComments = orderInternalCommentsField.getText();
-        String addedBy = "";
-
-        // Get User ID
-        String getIdText = merchandiserOrderIdText.getText();
-        String idTokens[] = getIdText.split(" ");
-        String user = idTokens[2];
-        String lastUpdatedBy = user;
-
-        // Instantiate Order
-        Order order = new Order(orderId, orderName, buyerName, buyerRequirements, description, priority, quantity, orderFloorNo, orderLineNo, category, smv, orderDate, deliveryDate, cost, currency, internalComments, addedBy, lastUpdatedBy);
-        order.setOrderId(this.order.getOrderId());
-        order.setOrderDate(this.order.getOrderDate());
-        order.setOrderAddedBy(this.order.getOrderAddedBy());
-        orders.removeAll(orders);
-
-        // Prepare Hibernate
-        factory = HibernateSingleton.getSessionFactory();
-        session = factory.openSession();
-        transaction = session.beginTransaction();
-
-        // Database Actions
-        try {
-            session.update(order);
-            orders = session.createCriteria(Order.class).list();
-            transaction.commit();
-        } catch (Exception e) {
-            System.err.println(e);
-            transaction.rollback();
-        }
-        session.close();
-
-        // Refresh Order ObservableLists
-        ordersView.remove(0, ordersView.size());
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getOrderIsDeleted() == 0) {
-                ordersView.add(orders.get(i));
-            }
-        }
-
-        // Set Order To TableView
-        ordersTableView.setItems(ordersView);
-        orderIdTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderId()));
-        orderNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderName()));
-        orderBuyerNameTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBuyerName()));
-        orderQuantityTableColumn.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getOrderQuantity()));
-        orderCategoryTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderCategory()));
-        orderDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDate()));
-        orderDeliveryDateTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderDeliveryDate()));
-        orderAddedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderAddedBy()));
-        orderLastUpdatedByTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOrderLastUpdatedBy()));
-
-        // Refresh FXML
-        orderIdField.setText("");
-        orderNameField.setText("");
-        orderBuyerNameBox.getSelectionModel().clearSelection();
-        orderBuyerReqirementsField.setText("");
-        orderDescriptionArea.setText("");
-        orderPriorityField.setText("");
-        orderFloorNoBox.getSelectionModel().clearSelection();
-        orderLineNoBox.getSelectionModel().clearSelection();
-        orderQuantityField.setText("");
-        orderCategoryBox.getSelectionModel().clearSelection();
-        orderSmvField.setText("");
-        orderDeliveryDatePicker.getEditor().setText("");
-        orderCostField.setText("");
-        orderCurrencyBox.getSelectionModel().clearSelection();
-        orderInternalCommentsField.setText("");
+    private void handlePrintOrderAction(ActionEvent event) {
     }
-
+    
     @FXML
     private void handleRemoveOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
@@ -1187,18 +1109,21 @@ public class MerchandiserPanelUIController implements Initializable {
         orderCostField.setText("");
         orderCurrencyBox.getSelectionModel().clearSelection();
         orderInternalCommentsField.setText("");
+        this.order = new Order();
     }
 
     @FXML
     private void handleRefreshOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-
+        order = new Order();
         orderIdField.setText("");
         orderNameField.setText("");
         orderBuyerNameBox.getSelectionModel().clearSelection();
         orderBuyerReqirementsField.setText("");
         orderDescriptionArea.setText("");
         orderPriorityField.setText("");
+        orderFloorNoBox.getSelectionModel().clearSelection();
+        orderLineNoBox.getSelectionModel().clearSelection();
         orderQuantityField.setText("");
         orderCategoryBox.getSelectionModel().clearSelection();
         orderSmvField.setText("");
@@ -1294,6 +1219,8 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleMerchandiserChangePasswordAction(ActionEvent event) {
+        merchandiserChangePasswordMessageText.setText("");
+        changePasswordActionDoneMessageText.setText("");
         // Get Values From FXML
         String username = profileUsernameText.getText();
         String getPass = profileOldPasswordField.getText();
@@ -1330,8 +1257,9 @@ public class MerchandiserPanelUIController implements Initializable {
         try {
             session.update(user);
             transaction.commit();
+            changePasswordActionDoneMessageText.setText("Password Changed");
         } catch (Exception e) {
-            merchandiserChangePasswordMessageText.setText(e + "");
+            merchandiserChangePasswordMessageText.setText("Password Couldn't Changed");
             transaction.rollback();
         }
         session.close();
@@ -1361,10 +1289,19 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleConsumptionOrderIdAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("Please Select Size To Manage Consumption");
+        
         // Get Order Id From FXML
         int orderId = Integer.parseInt(consumptionOrderIdBox.getSelectionModel().getSelectedItem());
         
-        // Set Combo Box Values
+        // Refresh Combo Box Values
+        consumptionSizeBox.getItems().removeAll(Size.values());
+        consumptionCategoryBox.getItems().removeAll(OrderCategory.values());
+        consumptionFabricComponentBox.getItems().removeAll(ConsumptionComponent.values());
+        consumptionThreadOperationNameBox.getItems().removeAll(ConsumptionOperationName.values());
+        consumptionThreadStitchTypeBox.getItems().removeAll(ConsumptionStitchType.values());
         consumptionSizeBox.getItems().addAll(Size.values());
         consumptionCategoryBox.getItems().addAll(OrderCategory.values());
         consumptionFabricComponentBox.getItems().addAll(ConsumptionComponent.values());
@@ -1375,9 +1312,29 @@ public class MerchandiserPanelUIController implements Initializable {
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getOrderId() == orderId) {
                 order = orders.get(i);
+                consumptionbuyerNameField.setText("");
+                consumptionCategoryBox.getSelectionModel().clearSelection();
+                consumptionOrderQuantity.setText("");
                 consumptionbuyerNameField.setText(order.getBuyerName());
                 consumptionCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
                 consumptionOrderQuantity.setText(order.getOrderQuantity() + "");
+                consumptionDatePicker.getEditor().setText("");
+                consumptionSizeBox.getSelectionModel().clearSelection();
+                consumptionSizeQuantityField.setText("0");
+                consumptionFabricGsmField.setText("0");
+                consumptionFabricWastageField.setText("0");
+                consumptionFabricPerDozenField.setText("0");
+                consumptionFabricPerPieceField.setText("0");
+                consumptionThreadWastageField.setText("0");
+                consumptionThreadField.setText("0");
+
+                fabricConsumptionComponentsView = FXCollections.observableArrayList();
+                threadConsumptionOperationsView = FXCollections.observableArrayList();
+
+                consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+                consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+                
+                this.consumption = new Consumption();
                 break;
             }
         }
@@ -1385,6 +1342,9 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleConsumptionSelectSizeAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        
         // Get Order Id and Size From FXML
         int orderId = Integer.parseInt(consumptionOrderIdBox.getSelectionModel().getSelectedItem());
         String size = consumptionSizeBox.getSelectionModel().getSelectedItem() + "";
@@ -1396,6 +1356,7 @@ public class MerchandiserPanelUIController implements Initializable {
             if (consumptions.get(i).getOrderId() == orderId && consumptions.get(i).getSize().equals(size) && consumptions.get(i).getIsDeleted() == 0) {
                 consumption = consumptions.get(i);
                 consumptionFound = 1;
+                consumptionActionDoneMessageText.setText("Consumption Found");
                 break;
             }
         }
@@ -1427,7 +1388,7 @@ public class MerchandiserPanelUIController implements Initializable {
             // Set Thread Consumption Values To FXML
             threadConsumption = consumption.getThreadConsumption();
             consumptionThreadWastageField.setText(threadConsumption.getWastage() + "");
-            threadConsumptionOperations = threadConsumption.getOperations();
+            List<ThreadConsumptionOperation> threadConsumptionOperations = threadConsumption.getOperations();
             threadConsumptionOperationsView = FXCollections.observableArrayList();
             for (int i = 0; i < threadConsumptionOperations.size(); i++) {
                 threadConsumptionOperationsView.add(threadConsumptionOperations.get(i));
@@ -1441,6 +1402,7 @@ public class MerchandiserPanelUIController implements Initializable {
             consumptionThreadField.setText(df.format(threadConsumption.getThreadConsumption()) + "");
         } // Instantiate New Consumption And Get Ready To Be Managed If Not Found
         else {
+            consumptionActionDoneMessageText.setText("You Are Ready To Manage The Consumption");
             consumption = new Consumption();
             consumption.setSl(0);
             consumption.setOrderId(order.getOrderId());
@@ -1459,6 +1421,21 @@ public class MerchandiserPanelUIController implements Initializable {
 
             consumption.setCalculatedBy(consumptionCalculatedBy);
             consumption.setLastUpdatedBy(consumptionLastUpdatedBy);
+            
+            consumptionDatePicker.getEditor().setText("");
+            consumptionSizeQuantityField.setText("0");
+            consumptionFabricGsmField.setText("0");
+            consumptionFabricWastageField.setText("0");
+            consumptionFabricPerDozenField.setText("0");
+            consumptionFabricPerPieceField.setText("0");
+            consumptionThreadWastageField.setText("0");
+            consumptionThreadField.setText("0");
+            
+            fabricConsumptionComponentsView = FXCollections.observableArrayList();
+            threadConsumptionOperationsView = FXCollections.observableArrayList();
+            
+            consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+            consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
         }
     }
 
@@ -1473,6 +1450,8 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleFabricConsumptionComponentRemoveAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
         // Remove Fabric Consumption Component
         if (fabricConsumptionComponent != null) {
             consumption.getFabricConsumption().removeConsumptionComponent(fabricConsumptionComponent);
@@ -1491,7 +1470,9 @@ public class MerchandiserPanelUIController implements Initializable {
         consumptionFabricComponentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
         consumptionFabricValueTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getValue()));
         consumptionFabricSewingAllowanceTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAllowance()));
-
+        
+        consumptionActionDoneMessageText.setText("Fabric Consumption Component Removed");
+        
         // Refresh FXML
         consumptionFabricComponentBox.getSelectionModel().clearSelection();
         consumptionFabricComponentValueField.setText("0");
@@ -1505,6 +1486,9 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleFabricConsumptionComponentAddAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        
         // Get Data From FXML
         double fabricGsm = Double.parseDouble(consumptionFabricGsmField.getText());
         double wastage = Double.parseDouble(consumptionFabricWastageField.getText());
@@ -1543,7 +1527,9 @@ public class MerchandiserPanelUIController implements Initializable {
         consumptionFabricComponentTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getComponent()));
         consumptionFabricValueTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getValue()));
         consumptionFabricSewingAllowanceTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getAllowance()));
-
+        
+        consumptionActionDoneMessageText.setText("Fabric Consumption Component Added");
+        
         // Refresh FXML
         consumptionFabricComponentBox.getSelectionModel().clearSelection();
         consumptionFabricComponentValueField.setText("0");
@@ -1568,6 +1554,8 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleThreadConsumptionOperationRemoveAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
         // Remove Threa Consumption Operation
         if (threadConsumptionOperation != null) {
             consumption.getThreadConsumption().removeConsumptionOperation(threadConsumptionOperation);
@@ -1589,6 +1577,8 @@ public class MerchandiserPanelUIController implements Initializable {
         consumptionThreadRatioTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRatio()));
         consumptionThreadEstimatedTbleColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getEstimatedThreadConsumption()));
         
+        consumptionActionDoneMessageText.setText("Thread Consumption Operation Removed");
+        
         // Refresh FXML
         consumptionThreadOperationNameBox.getSelectionModel().clearSelection();
         consumptionThreadSeamLengthField.setText("0");
@@ -1604,6 +1594,8 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleThreadConsumptionOperationAddAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
         // Get Data From FXML
         double wastage = Double.parseDouble(consumptionThreadWastageField.getText());
         
@@ -1642,6 +1634,7 @@ public class MerchandiserPanelUIController implements Initializable {
         consumptionThreadRatioTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getRatio()));
         consumptionThreadEstimatedTbleColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getEstimatedThreadConsumption()));
         
+        consumptionActionDoneMessageText.setText("Thread Consumption Operation Added");
         
         // Refresh FXML
         consumptionThreadOperationNameBox.getSelectionModel().clearSelection();
@@ -1658,10 +1651,16 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleSetThreadConsumptionWastageAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
         double wastage = Double.parseDouble(consumptionThreadWastageField.getText());
         
         if(wastage > 0){
             consumption.getThreadConsumption().setWastage(wastage);
+            consumptionActionDoneMessageText.setText("Wastage Percantage Set To Thread Consumption");
+        }
+        else{
+            consumptionActionNotDoneMessageText.setText("Please Enter A Valid Input");
         }
     }
     
@@ -1682,10 +1681,26 @@ public class MerchandiserPanelUIController implements Initializable {
     
     @FXML
     private void handleSignOutConsumptionAction(ActionEvent event) {
+        try {
+            merchandizerId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void handleConsumptionSaveAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        
         // Check If Consumption Is Already In Database
         int isFound = 0;
 
@@ -1705,10 +1720,18 @@ public class MerchandiserPanelUIController implements Initializable {
             consumption.setLastUpdatedBy(consumptionLastUpdatedBy);
         }
         String date = consumptionDatePicker.getEditor().getText();
+        String size = consumptionSizeBox.getSelectionModel().getSelectedItem() + "";
         int sizeQantity = Integer.parseInt(consumptionSizeQuantityField.getText());
         
         consumption.setDate(date);
+        consumption.setSize(size);
         consumption.setSizeQuantity(sizeQantity);
+        
+        consumptions = new ArrayList<>();
+        fabricConsumptions = new ArrayList<>();
+        threadConsumptions = new ArrayList<>();
+        fabricConsumptionComponents = new ArrayList<>();
+        threadConsumptionOperations = new ArrayList<>();
         
         // Prepare Hibernate
         factory = HibernateSingleton.getSessionFactory();
@@ -1726,14 +1749,49 @@ public class MerchandiserPanelUIController implements Initializable {
             session.saveOrUpdate(consumption.getFabricConsumption());
             session.saveOrUpdate(consumption.getThreadConsumption());
             session.saveOrUpdate(consumption);
-            session.saveOrUpdate(consumption);
+            
+            fabricConsumptionComponents = session.createCriteria(FabricConsumptionComponents.class).list();
+            threadConsumptionOperations = session.createCriteria(ThreadConsumptionOperation.class).list();
+            fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
+            threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
+            consumptions = session.createCriteria(Consumption.class).list();
+            
             transaction.commit();
+            
+            consumptionActionDoneMessageText.setText("Consumption Updated To Database Successfully");
         }catch(Exception e){
             transaction.rollback();
-            System.out.println(e);
-            System.out.println("Roll Backed");
+            consumptionActionNotDoneMessageText.setText("Consumption Couldn't Be Saved");
         }
         session.close();
+        
+        consumptionSizeBox.getItems().removeAll(Size.values());
+        consumptionCategoryBox.getItems().removeAll(OrderCategory.values());
+        consumptionFabricComponentBox.getItems().removeAll(ConsumptionComponent.values());
+        consumptionThreadOperationNameBox.getItems().removeAll(ConsumptionOperationName.values());
+        consumptionThreadStitchTypeBox.getItems().removeAll(ConsumptionStitchType.values());
+        
+        consumptionOrderIdBox.getSelectionModel().clearSelection();
+        consumptionbuyerNameField.setText("");
+        consumptionCategoryBox.getSelectionModel().clearSelection();
+        consumptionOrderQuantity.setText("");
+        consumptionDatePicker.getEditor().setText("");
+        consumptionSizeBox.getSelectionModel().clearSelection();
+        consumptionSizeQuantityField.setText("0");
+        consumptionFabricGsmField.setText("0");
+        consumptionFabricWastageField.setText("0");
+        consumptionFabricPerDozenField.setText("0");
+        consumptionFabricPerPieceField.setText("0");
+        consumptionThreadWastageField.setText("0");
+        consumptionThreadField.setText("0");
+
+        fabricConsumptionComponentsView = FXCollections.observableArrayList();
+        threadConsumptionOperationsView = FXCollections.observableArrayList();
+
+        consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+        consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+        
+        this.consumption = new Consumption();
     }
 
     @FXML
@@ -1742,46 +1800,577 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleConsumptionRemoveAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        
+        if(consumption != null){
+            consumption.setIsDeleted(1);
+            
+            consumptions = new ArrayList<>();
+            fabricConsumptions = new ArrayList<>();
+            threadConsumptions = new ArrayList<>();
+            fabricConsumptionComponents = new ArrayList<>();
+            threadConsumptionOperations = new ArrayList<>();
+        
+            // Prepare Hibernate
+            factory = HibernateSingleton.getSessionFactory();
+            session = factory.openSession();
+            transaction = session.beginTransaction();
+
+            // Database Action
+            try{
+                session.update(consumption);
+                
+                fabricConsumptionComponents = session.createCriteria(FabricConsumptionComponents.class).list();
+                threadConsumptionOperations = session.createCriteria(ThreadConsumptionOperation.class).list();
+                fabricConsumptions = session.createCriteria(FabricConsumption.class).list();
+                threadConsumptions = session.createCriteria(ThreadConsumption.class).list();
+                consumptions = session.createCriteria(Consumption.class).list();
+                transaction.commit();
+                
+                consumptionActionDoneMessageText.setText("Consumption Deleted Successfully");
+            }catch(Exception e){
+                transaction.rollback();
+                consumptionActionNotDoneMessageText.setText("Consumption Couldn't Be Deleted");
+            }
+            session.close();
+
+            consumptionSizeBox.getItems().removeAll(Size.values());
+            consumptionCategoryBox.getItems().removeAll(OrderCategory.values());
+            consumptionFabricComponentBox.getItems().removeAll(ConsumptionComponent.values());
+            consumptionThreadOperationNameBox.getItems().removeAll(ConsumptionOperationName.values());
+            consumptionThreadStitchTypeBox.getItems().removeAll(ConsumptionStitchType.values());
+
+            consumptionOrderIdBox.getSelectionModel().clearSelection();
+            consumptionbuyerNameField.setText("");
+            consumptionCategoryBox.getSelectionModel().clearSelection();
+            consumptionOrderQuantity.setText("");
+            consumptionDatePicker.getEditor().setText("");
+            consumptionSizeBox.getSelectionModel().clearSelection();
+            consumptionSizeQuantityField.setText("0");
+            consumptionFabricGsmField.setText("0");
+            consumptionFabricWastageField.setText("0");
+            consumptionFabricPerDozenField.setText("0");
+            consumptionFabricPerPieceField.setText("0");
+            consumptionThreadWastageField.setText("0");
+            consumptionThreadField.setText("0");
+
+            fabricConsumptionComponentsView = FXCollections.observableArrayList();
+            threadConsumptionOperationsView = FXCollections.observableArrayList();
+
+            consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+            consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+
+            this.consumption = new Consumption();
+        }
     }
 
     @FXML
     private void handleConsumptionRefreshAction(ActionEvent event) {
+        consumptionActionNotDoneMessageText.setText("");
+        consumptionActionDoneMessageText.setText("");
+        
+        consumptionSizeBox.getItems().removeAll(Size.values());
+        consumptionCategoryBox.getItems().removeAll(OrderCategory.values());
+        consumptionFabricComponentBox.getItems().removeAll(ConsumptionComponent.values());
+        consumptionThreadOperationNameBox.getItems().removeAll(ConsumptionOperationName.values());
+        consumptionThreadStitchTypeBox.getItems().removeAll(ConsumptionStitchType.values());
+        
+        consumptionOrderIdBox.getSelectionModel().clearSelection();
+        consumptionbuyerNameField.setText("");
+        consumptionCategoryBox.getSelectionModel().clearSelection();
+        consumptionOrderQuantity.setText("");
+        consumptionDatePicker.getEditor().setText("");
+        consumptionSizeBox.getSelectionModel().clearSelection();
+        consumptionSizeQuantityField.setText("0");
+        consumptionFabricGsmField.setText("0");
+        consumptionFabricWastageField.setText("0");
+        consumptionFabricPerDozenField.setText("0");
+        consumptionFabricPerPieceField.setText("0");
+        consumptionThreadWastageField.setText("0");
+        consumptionThreadField.setText("0");
+
+        fabricConsumptionComponentsView = FXCollections.observableArrayList();
+        threadConsumptionOperationsView = FXCollections.observableArrayList();
+
+        consumptionFabricComponentsTableView.setItems(fabricConsumptionComponentsView);
+        consumptionThreadOperationsTableView.setItems(threadConsumptionOperationsView);
+        
+        this.consumption = new Consumption();
     }
 
     @FXML
     private void handleSignOutCostingAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        try {
+            merchandizerId = "";
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("HomePageUI.fxml"));
+            loader.load();
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+
+            TextileERP.getMainStage().setScene(scene);
+            TextileERP.getMainStage().show();
+        } catch (IOException ex) {
+            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void handleSaveCostingAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        // Get Data From FXML
+        String date = costingDatePicker.getEditor().getText();
+        int sizeQuantity = Integer.parseInt(costingSizeQuantityField.getText());
+        double fabricGsm = Double.parseDouble(costingFabricGsmField.getText());
+        String fabrication = costingFabricationArea.getText();
+        
+        // Set Data To Costing
+        costing.setDate(date);
+        costing.setSizeQuantity(sizeQuantity);
+        costing.setFabricGsm(fabricGsm);
+        costing.setFabrication(fabrication);
+        
+        int sl = 0;
+        
+        // Get CostingYarn Data From FXML
+        double costingYarnConsumption = Double.parseDouble(costingYarnConsumptionField.getText());
+        double costingYarnUnitPrice = Double.parseDouble(costingYarnUnitPriceField.getText());
+        double costingYarnAmount = Double.parseDouble(costingYarnAmountField.getText());
+        
+        // Set CostingYarn Values To Costing
+        costing.getCostingYarn().setSl(sl);
+        costing.getCostingYarn().setConsumption(costingYarnConsumption);
+        costing.getCostingYarn().setUnitPrice(costingYarnUnitPrice);
+        costing.getCostingYarn().setCost(costingYarnAmount);
+        
+        // Get CostingKnitting Data From FXML
+        double costingKnittingConsumption = Double.parseDouble(costingKnittingConsumptionField.getText());
+        double costingKnittingUnitPrice = Double.parseDouble(costingKnittingUnitPriceField.getText());
+        double costingKnittingAmount = Double.parseDouble(costingKnittingAmountField.getText());
+        
+        // Set CostingYarn Values To Costing
+        costing.getCostingKnitting().setSl(sl);
+        costing.getCostingKnitting().setConsumption(costingKnittingConsumption);
+        costing.getCostingKnitting().setUnitPrice(costingKnittingUnitPrice);
+        costing.getCostingKnitting().setCost(costingKnittingAmount);
+        
+        // Get CostingDyeing Data From FXML
+        double costingDyeingConsumption = Double.parseDouble(costingDyeingConsumptionField.getText());
+        double costingDyeingUnitPrice = Double.parseDouble(costingDyeingUnitPriceField.getText());
+        double costingDyeingAmount = Double.parseDouble(costingDyeingAmountField.getText());
+        
+        // Set CostingYarn Values To Costing
+        costing.getCostingDyeing().setSl(sl);
+        costing.getCostingDyeing().setConsumption(costingDyeingConsumption);
+        costing.getCostingDyeing().setUnitPrice(costingDyeingUnitPrice);
+        costing.getCostingDyeing().setCost(costingDyeingAmount);
+        
+        // Get CostingThread Data From FXML
+        double costingThreadConsumption = Double.parseDouble(costingThreadConsumptionField.getText());
+        double costingThreadUnitPrice = Double.parseDouble(costingThreadUnitPriceField.getText());
+        double costingThreadAmount = Double.parseDouble(costingThreadAmountField.getText());
+        
+        // Set CostingThread Values To Costing
+        costing.getCostingThread().setSl(sl);
+        costing.getCostingThread().setConsumption(costingThreadConsumption);
+        costing.getCostingThread().setUnitPrice(costingThreadUnitPrice);
+        costing.getCostingThread().setCost(costingThreadAmount);
+        
+        // Get CostingOther Data From FXML
+        double costingOtherConsumption = Double.parseDouble(costingOtherConsumptionField.getText());
+        double costingOtherUnitPrice = Double.parseDouble(costingOtherUnitPriceField.getText());
+        double costingOtherAmount = Double.parseDouble(costingOtherAmountField.getText());
+        
+        // Set CostingThread Values To Costing
+        costing.getCostingOther().setSl(sl);
+        costing.getCostingOther().setConsumption(costingOtherConsumption);
+        costing.getCostingOther().setUnitPrice(costingOtherUnitPrice);
+        costing.getCostingOther().setCost(costingOtherAmount);
+        
+        // Get Costs From FXML
+        double accessoriesCost = Double.parseDouble(costingTotalAccessoriesCostField.getText());
+        double labTestCost = Double.parseDouble(costingLabTestCostField.getText());
+        double totalCostPerDozen = Double.parseDouble(costingTotalCostPerDozenField.getText());
+        double costOfMakingIncProfitPerDozen = Double.parseDouble(costingCmPerDozenField.getText());
+        double commercialCostPerDozen = Double.parseDouble(costingCommercialCostField.getText());
+        double totalPricePerDozen = Double.parseDouble(costingTotalPricePerDozenField.getText());
+        double fobPricePerDozen = Double.parseDouble(costingFobPricePerDozenField.getText());
+        
+        // Set Costs To Costing
+        costing.setAccessoriesCost(accessoriesCost);
+        costing.setLabTestCost(labTestCost);
+        costing.setTotalCostPerDozen(totalCostPerDozen);
+        costing.setCostOfMakingIncProfitPerDozen(costOfMakingIncProfitPerDozen);
+        costing.setCommercialCostPerDozen(commercialCostPerDozen);
+        costing.setTotalPricePerDozen(totalPricePerDozen);
+        costing.setFobPricePerDozen(fobPricePerDozen);
+        
+        // Check If The Costing Is Already In The Database
+        int isFound = 0;
+        for(int i = 0; i < costings.size(); i++){
+            if(costings.get(i).getSl() == costing.getSl() && costings.get(i).getOrderId() == costing.getOrderId() && costings.get(i).getSize().equals(costing.getSize()) && costings.get(i).getIsDeleted() == 0){
+                isFound = 1;
+                break;
+            }
+        }
+        
+        // Set LastUpdatedBy To Costing If Found
+        if(isFound == 1){
+            String getIdText = merchandiserCostingIdText.getText();
+            String idTokens[] = getIdText.split(" ");
+            String user = idTokens[2];
+            String costingLastUpdatedBy = user;
+
+            costing.setLastUpdatedBy(costingLastUpdatedBy);
+        }
+        
+        costings = new ArrayList<>();
+        costingYarns = new ArrayList<>();
+        costingKnittings = new ArrayList<>();
+        costingDyeings = new ArrayList<>();
+        costingThreads = new ArrayList<>();
+        costingOthers = new ArrayList<>();
+        costingAccessorieses = new ArrayList<>();
+        costingAccessoriesItems = new ArrayList<>();
+        
+        // Prepare Hibernate
+        factory = HibernateSingleton.getSessionFactory();
+        session = factory.openSession();
+        transaction = session.beginTransaction();
+        
+        // Database Actions
+        try{
+            for(int i = 0; i < costing.getCostingAccessories().getAccessoriesItems().size(); i++){
+                session.saveOrUpdate(costing.getCostingAccessories().getAccessoriesItems().get(i));
+            }
+            session.saveOrUpdate(costing.getCostingAccessories());
+            session.saveOrUpdate(costing.getCostingYarn());
+            session.saveOrUpdate(costing.getCostingKnitting());
+            session.saveOrUpdate(costing.getCostingDyeing());
+            session.saveOrUpdate(costing.getCostingThread());
+            session.saveOrUpdate(costing.getCostingOther());
+            session.saveOrUpdate(costing);
+            
+            costingAccessoriesItems = session.createCriteria(CostingAccessoriesItem.class).list();
+            costingAccessorieses = session.createCriteria(CostingAccessories.class).list();
+            costingYarns = session.createCriteria(CostingYarn.class).list();
+            costingKnittings = session.createCriteria(CostingKnitting.class).list();
+            costingDyeings = session.createCriteria(CostingDyeing.class).list();
+            costingThreads = session.createCriteria(CostingThread.class).list();
+            costingOthers = session.createCriteria(CostingOthers.class).list();
+            costings = session.createCriteria(Costing.class).list();
+            
+            transaction.commit();
+        }catch(Exception e){
+            transaction.rollback();
+            costingHandleActionNotDoneMessageText.setText("Sorry! Costing Couldn't Be Updated");
+        }
+        session.close();
+        costingHandleActionDoneMessageText.setText("Costing Updated To Database Successfully");
+        
+        // Refresh FXML
+        costing = new Costing();
+        costingOrderIdBox.getSelectionModel().clearSelection();
+        costingbuyerNameField.setText("");
+        costingCategoryBox.getSelectionModel().clearSelection();
+        costingOrderQuantityField.setText("0");
+        costingDescriptionField.setText("");
+        
+        costingDatePicker.getEditor().setText("");
+        costingSizeBox.getItems().removeAll(Size.values());
+        costingCategoryBox.getItems().removeAll(OrderCategory.values());
+        costingSizeQuantityField.setText("0");
+        
+        costingAccessoriesItemBox.getItems().removeAll(AccessoriesItems.values());
+        costingFabricationArea.setText("");
+        costingOtherUnitPriceField.setText("0");
+        costingDyeingUnitPriceField.setText("0");
+        costingKnittingUnitPriceField.setText("0");
+        costingYarnUnitPriceField.setText("0");
+        costingOtherAmountField.setText("0");
+        costingDyeingAmountField.setText("0");
+        costingKnittingAmountField.setText("0");
+        costingYarnAmountField.setText("0");
+        costingOtherConsumptionField.setText("0");
+        costingDyeingConsumptionField.setText("0");
+        costingKnittingConsumptionField.setText("0");
+        costingYarnConsumptionField.setText("0");
+        costingFabAndProcPerDozentField.setText("0");
+        costingThreadUnitPriceField.setText("0");
+        costingThreadConsumptionField.setText("0");
+        costingThreadAmountField.setText("0");
+        costingAccessoriesAmountField.setText("0");
+        costingAccessoriesItemBox.getSelectionModel().clearSelection();
+        costingFobPricePerDozenField.setText("0");
+        costingTotalPricePerDozenField.setText("0");
+        costingCommercialCostField.setText("0");
+        costingCmPerDozenField.setText("0");
+        costingTotalCostPerDozenField.setText("0");
+        costingLabTestCostField.setText("0");
+        costingTotalAccessoriesCostField.setText("0");
+        costingFabricGsmField.setText("0");
+                
+        costingAccessoriesItemsView = FXCollections.observableArrayList();    
+        costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
     }
 
     @FXML
     private void handleRemoveCostingAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        if(costing != null){
+            costing.setIsDeleted(1);
+            costings = new ArrayList<>();
+            costingYarns = new ArrayList<>();
+            costingKnittings = new ArrayList<>();
+            costingDyeings = new ArrayList<>();
+            costingThreads = new ArrayList<>();
+            costingOthers = new ArrayList<>();
+            costingAccessorieses = new ArrayList<>();
+            costingAccessoriesItems = new ArrayList<>();
+
+            // Prepare Hibernate
+            factory = HibernateSingleton.getSessionFactory();
+            session = factory.openSession();
+            transaction = session.beginTransaction();
+
+            // Database Actions
+            try{
+                session.update(costing);
+
+                costingAccessoriesItems = session.createCriteria(CostingAccessoriesItem.class).list();
+                costingAccessorieses = session.createCriteria(CostingAccessories.class).list();
+                costingYarns = session.createCriteria(CostingYarn.class).list();
+                costingKnittings = session.createCriteria(CostingKnitting.class).list();
+                costingDyeings = session.createCriteria(CostingDyeing.class).list();
+                costingThreads = session.createCriteria(CostingThread.class).list();
+                costingOthers = session.createCriteria(CostingOthers.class).list();
+                costings = session.createCriteria(Costing.class).list();
+
+                transaction.commit();
+            }catch(Exception e){
+                transaction.rollback();
+                costingHandleActionNotDoneMessageText.setText("Sorry! Costing Couldn't Be Deleted");
+            }
+            session.close();
+            costingHandleActionDoneMessageText.setText("Costing Deleted Successfully");
+            
+            // Refresh FXML
+            costing = new Costing();
+            costingOrderIdBox.getSelectionModel().clearSelection();
+            costingbuyerNameField.setText("");
+            costingCategoryBox.getSelectionModel().clearSelection();
+            costingOrderQuantityField.setText("0");
+            costingDescriptionField.setText("");
+
+            costingDatePicker.getEditor().setText("");
+            costingSizeBox.getItems().removeAll(Size.values());
+            costingCategoryBox.getItems().removeAll(OrderCategory.values());
+            costingSizeQuantityField.setText("0");
+
+            costingAccessoriesItemBox.getItems().removeAll(AccessoriesItems.values());
+            costingFabricationArea.setText("");
+            costingOtherUnitPriceField.setText("0");
+            costingDyeingUnitPriceField.setText("0");
+            costingKnittingUnitPriceField.setText("0");
+            costingYarnUnitPriceField.setText("0");
+            costingOtherAmountField.setText("0");
+            costingDyeingAmountField.setText("0");
+            costingKnittingAmountField.setText("0");
+            costingYarnAmountField.setText("0");
+            costingOtherConsumptionField.setText("0");
+            costingDyeingConsumptionField.setText("0");
+            costingKnittingConsumptionField.setText("0");
+            costingYarnConsumptionField.setText("0");
+            costingFabAndProcPerDozentField.setText("0");
+            costingThreadUnitPriceField.setText("0");
+            costingThreadConsumptionField.setText("0");
+            costingThreadAmountField.setText("0");
+            costingAccessoriesAmountField.setText("0");
+            costingAccessoriesItemBox.getSelectionModel().clearSelection();
+            costingFobPricePerDozenField.setText("0");
+            costingTotalPricePerDozenField.setText("0");
+            costingCommercialCostField.setText("0");
+            costingCmPerDozenField.setText("0");
+            costingTotalCostPerDozenField.setText("0");
+            costingLabTestCostField.setText("0");
+            costingTotalAccessoriesCostField.setText("0");
+            costingFabricGsmField.setText("0");
+
+            costingAccessoriesItemsView = FXCollections.observableArrayList();    
+            costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
+        }
     }
 
     @FXML
     private void handleRefreshCostingAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        // Refresh FXML
+        costing = new Costing();
+        costingOrderIdBox.getSelectionModel().clearSelection();
+        costingbuyerNameField.setText("");
+        costingCategoryBox.getSelectionModel().clearSelection();
+        costingOrderQuantityField.setText("0");
+        costingDescriptionField.setText("");
+
+        costingDatePicker.getEditor().setText("");
+        costingSizeBox.getItems().removeAll(Size.values());
+        costingCategoryBox.getItems().removeAll(OrderCategory.values());
+        costingSizeQuantityField.setText("0");
+
+        costingAccessoriesItemBox.getItems().removeAll(AccessoriesItems.values());
+        costingFabricationArea.setText("");
+        costingOtherUnitPriceField.setText("0");
+        costingDyeingUnitPriceField.setText("0");
+        costingKnittingUnitPriceField.setText("0");
+        costingYarnUnitPriceField.setText("0");
+        costingOtherAmountField.setText("0");
+        costingDyeingAmountField.setText("0");
+        costingKnittingAmountField.setText("0");
+        costingYarnAmountField.setText("0");
+        costingOtherConsumptionField.setText("0");
+        costingDyeingConsumptionField.setText("0");
+        costingKnittingConsumptionField.setText("0");
+        costingYarnConsumptionField.setText("0");
+        costingFabAndProcPerDozentField.setText("0");
+        costingThreadUnitPriceField.setText("0");
+        costingThreadConsumptionField.setText("0");
+        costingThreadAmountField.setText("0");
+        costingAccessoriesAmountField.setText("0");
+        costingAccessoriesItemBox.getSelectionModel().clearSelection();
+        costingFobPricePerDozenField.setText("0");
+        costingTotalPricePerDozenField.setText("0");
+        costingCommercialCostField.setText("0");
+        costingCmPerDozenField.setText("0");
+        costingTotalCostPerDozenField.setText("0");
+        costingLabTestCostField.setText("0");
+        costingTotalAccessoriesCostField.setText("0");
+        costingFabricGsmField.setText("0");
+
+        costingAccessoriesItemsView = FXCollections.observableArrayList();    
+        costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
     }
 
     @FXML
     private void handleCostingAccessoriesItemRemoveAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        // Remove Selected Costing Accessories Item From Particular Costing
+        costing.getCostingAccessories().removeCostingAccessoriesItem(costingAccessoriesItem);
+        
+        // Refresh Costing Accessories Items List
+        costingAccessoriesItems = new ArrayList<>();
+        costingAccessoriesItems = costing.getCostingAccessories().getAccessoriesItems();
+        
+        // Refresh Costing Accessories Items Observable List
+        costingAccessoriesItemsView = FXCollections.observableArrayList();
+        for(int i = 0; i < costingAccessoriesItems.size(); i++){
+            costingAccessoriesItemsView.add(costingAccessoriesItems.get(i));
+        }
+        
+        // Set Costing Accesories Items To Table View
+        costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
+        costingAccessoriesItemTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getItemName()));
+        costingAccessoriesAmountTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getItemCost()));
+        
+        // Recalculate Costing And Set To FXML
+        DecimalFormat df = new DecimalFormat(".##");
+        costingTotalAccessoriesCostField.setText(df.format(costing.getCostingAccessories().getCost()) + "");
+        costingAccessoriesItemBox.getSelectionModel().clearSelection();
+        costingAccessoriesAmountField.setText("0");
+        
+        costingTotalCostPerDozenField.setText(costing.getTotalCostPerDozen() + "");
+        costingCmPerDozenField.setText(costing.getCostOfMakingIncProfitPerDozen() + "");
+        costingCommercialCostField.setText(costing.getCommercialCostPerDozen() + "");
+        costingTotalPricePerDozenField.setText(costing.getTotalPricePerDozen() + "");
+        costingFobPricePerDozenField.setText(costing.getFobPricePerDozen() + "");
     }
 
     @FXML
     private void handleCostingAccessoriesItemAddAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        // Get Data From FXML
+        int sl = 0;
+        String itemName = costingAccessoriesItemBox.getSelectionModel().getSelectedItem() + "";
+        double itemCost = Double.parseDouble(costingAccessoriesAmountField.getText());
+        
+        // Instantiate New Costing Accessories Item And Add It To The Particular Costing
+        costingAccessoriesItem = new CostingAccessoriesItem(sl, itemName, itemCost);
+        costing.getCostingAccessories().addCostingAccessoriesItem(costingAccessoriesItem);
+        
+        // Refresh Costing Accessories Items List
+        costingAccessoriesItems = new ArrayList<>();
+        costingAccessoriesItems = costing.getCostingAccessories().getAccessoriesItems();
+        
+        // Refresh Costing Accessories Items Observable List
+        costingAccessoriesItemsView = FXCollections.observableArrayList();
+        for(int i = 0; i < costingAccessoriesItems.size(); i++){
+            costingAccessoriesItemsView.add(costingAccessoriesItems.get(i));
+        }
+        
+        // Set Costing Accesories Items To Table View
+        costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
+        costingAccessoriesItemTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getItemName()));
+        costingAccessoriesAmountTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getItemCost()));
+        
+        // Recalculate Costing And Set To FXML
+        DecimalFormat df = new DecimalFormat(".##");
+        costingTotalAccessoriesCostField.setText(df.format(costing.getCostingAccessories().getCost()) + "");
+        costingAccessoriesItemBox.getSelectionModel().clearSelection();
+        costingAccessoriesAmountField.setText("0");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
     }
 
     @FXML
     private void handleSelectCostingAccessoriesItemAction(MouseEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        // Get Selected Costing Accessories Item
+        costingAccessoriesItem = costingAccessoriesItemsTableView.getSelectionModel().getSelectedItem();
+        
+        // Set Data To FXML
+        costingAccessoriesItemBox.getSelectionModel().select(AccessoriesItems.valueOf(costingAccessoriesItem.getItemName()));
+        costingAccessoriesAmountField.setText(costingAccessoriesItem.getItemCost() + "");
     }
 
     @FXML
     private void handleCostingOrderIdAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
         // Get Order Id From FXML
         int orderId = Integer.parseInt(costingOrderIdBox.getSelectionModel().getSelectedItem());
         
-        // Set Combo Box Values
+        // Refresh Combo Box Values
+        costingSizeBox.getItems().removeAll(Size.values());
+        costingCategoryBox.getItems().removeAll(OrderCategory.values());
+        costingAccessoriesItemBox.getItems().removeAll(AccessoriesItems.values());
         costingSizeBox.getItems().addAll(Size.values());
         costingCategoryBox.getItems().addAll(OrderCategory.values());
         costingAccessoriesItemBox.getItems().addAll(AccessoriesItems.values());
@@ -1790,10 +2379,51 @@ public class MerchandiserPanelUIController implements Initializable {
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getOrderId() == orderId) {
                 order = orders.get(i);
+                
+                // Set Order Basic Data To FXML
+                costingbuyerNameField.setText("");
+                costingCategoryBox.getSelectionModel().clearSelection();
+                costingOrderQuantityField.setText("0");
+                costingDescriptionField.setText("");
                 costingbuyerNameField.setText(order.getBuyerName());
                 costingCategoryBox.getSelectionModel().select(OrderCategory.valueOf(order.getOrderCategory()));
                 costingOrderQuantityField.setText(order.getOrderQuantity() + "");
                 costingDescriptionField.setText(order.getOrderDescription());
+                
+                // Refresh Other FXML Elements
+                costingDatePicker.getEditor().setText("");
+                costingSizeBox.getSelectionModel().getSelectedItem();
+                costingSizeQuantityField.setText("0");
+                costingFabricationArea.setText("");
+                costingOtherUnitPriceField.setText("0");
+                costingDyeingUnitPriceField.setText("0");
+                costingKnittingUnitPriceField.setText("0");
+                costingYarnUnitPriceField.setText("0");
+                costingOtherAmountField.setText("0");
+                costingDyeingAmountField.setText("0");
+                costingKnittingAmountField.setText("0");
+                costingYarnAmountField.setText("0");
+                costingOtherConsumptionField.setText("0");
+                costingDyeingConsumptionField.setText("0");
+                costingKnittingConsumptionField.setText("0");
+                costingYarnConsumptionField.setText("0");
+                costingFabAndProcPerDozentField.setText("0");
+                costingThreadUnitPriceField.setText("0");
+                costingThreadConsumptionField.setText("0");
+                costingThreadAmountField.setText("0");
+                costingAccessoriesAmountField.setText("0");
+                costingAccessoriesItemBox.getSelectionModel().clearSelection();
+                costingFobPricePerDozenField.setText("0");
+                costingTotalPricePerDozenField.setText("0");
+                costingCommercialCostField.setText("0");
+                costingCmPerDozenField.setText("0");
+                costingTotalCostPerDozenField.setText("0");
+                costingLabTestCostField.setText("0");
+                costingTotalAccessoriesCostField.setText("0");
+                costingFabricGsmField.setText("0");
+                
+                costingAccessoriesItemsView = FXCollections.observableArrayList();    
+                costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
                 break;
             }
         }
@@ -1801,45 +2431,305 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleCostingSelectSizeAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
         // Get Order Id and Size From FXML
         int orderId = Integer.parseInt(costingOrderIdBox.getSelectionModel().getSelectedItem());
         String size = costingSizeBox.getSelectionModel().getSelectedItem() + "";
-
+        
         // Check If Consumption Is Already In Database
-        int costingFound = 0;
-
-        for (int i = 0; i < costings.size(); i++) {
-            if (costings.get(i).getOrderId() == orderId && costings.get(i).getSize().equals(size) && costings.get(i).getIsDeleted() == 0) {
-                costing = costings.get(i);
-                costingFound = 1;
+        int consumptionFound = 0;
+        
+        for (int i = 0; i < consumptions.size(); i++) {
+            if (consumptions.get(i).getOrderId() == orderId && consumptions.get(i).getSize().equals(size) && consumptions.get(i).getIsDeleted() == 0) {
+                consumption = consumptions.get(i);
+                consumptionFound = 1;
                 break;
             }
         }
+        
+        // Give Message To Calculate Consumption For The Particular If Not Found
+        if(consumptionFound == 0){
+            costingHandleActionNotDoneMessageText.setText("Please Calculate Consumption First For This To Calculate Costing");
+        }
+        else{
+            // Check If Costing Is Already In Database
+            int costingFound = 0;
 
-        // Set Consumption To FXML if Found
-        if (costingFound == 1) {
-            costingDatePicker.getEditor().setText(costing.getDate());
-            costingSizeQuantityField.setText(costing.getSizeQuantity() + "");
-            costingFabricGsmField.setText(costing.getFabricGsm() + "");
-            
-            
-        } // Instantiate New Consumption And Get Ready To Be Managed If Not Found
-        else {
-            costing = new Costing();
-            costing.setSl(0);
-            costing.setOrderId(order.getOrderId());
-            costing.setSize(size);
-            
+            for (int i = 0; i < costings.size(); i++) {
+                if (costings.get(i).getOrderId() == orderId && costings.get(i).getSize().equals(size) && costings.get(i).getIsDeleted() == 0) {
+                    costing = costings.get(i);
+                    costingFound = 1;
+                    break;
+                }
+            }
 
-            // Get User ID
-            String getIdText = merchandiserCostingIdText.getText();
-            String idTokens[] = getIdText.split(" ");
-            String user = idTokens[2];
-            String consumptionCalculatedBy = user;
-            String consumptionLastUpdatedBy = user;
+            // Set Costing To FXML if Found
+            if (costingFound == 1) {
+                costingDatePicker.getEditor().setText(costing.getDate());
+                costingSizeQuantityField.setText(costing.getSizeQuantity() + "");
+                costingFabricGsmField.setText(costing.getFabricGsm() + "");
+                
+                DecimalFormat df = new DecimalFormat(".##");
+                costingFabricationArea.setText(costing.getFabrication());
+                costingOtherUnitPriceField.setText(df.format(costing.getCostingOther().getUnitPrice()) + "");
+                costingDyeingUnitPriceField.setText(df.format(costing.getCostingDyeing().getUnitPrice()) + "");
+                costingKnittingUnitPriceField.setText(df.format(costing.getCostingKnitting().getUnitPrice()) + "");
+                costingYarnUnitPriceField.setText(df.format(costing.getCostingYarn().getUnitPrice()) + "");
+                costingOtherAmountField.setText(df.format(costing.getCostingOther().getCost()) + "");
+                costingDyeingAmountField.setText(df.format(costing.getCostingDyeing().getCost()) + "");
+                costingKnittingAmountField.setText(df.format(costing.getCostingKnitting().getCost()) + "");
+                costingYarnAmountField.setText(df.format(costing.getCostingYarn().getCost()) + "");
+                costingOtherConsumptionField.setText(df.format(costing.getCostingOther().getConsumption()) + "");
+                costingDyeingConsumptionField.setText(df.format(costing.getCostingDyeing().getConsumption()) + "");
+                costingKnittingConsumptionField.setText(df.format(costing.getCostingYarn().getConsumption()) + "");
+                costingYarnConsumptionField.setText(df.format(costing.getCostingYarn().getConsumption()) + "");
+                costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+                costingThreadUnitPriceField.setText(df.format(costing.getCostingThread().getUnitPrice()) + "");
+                costingThreadConsumptionField.setText(df.format(costing.getCostingThread().getConsumption()) + "");
+                costingThreadAmountField.setText(df.format(costing.getCostingThread().getCost()) + "");
+                costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+                costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+                costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+                costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+                costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+                costingLabTestCostField.setText(df.format(costing.getLabTestCost()) + "");
+                costingTotalAccessoriesCostField.setText(df.format(costing.getCostingAccessories().getCost()) + "");
+                
+                costingAccessoriesItems = new ArrayList<>();
+                costingAccessoriesItems = costing.getCostingAccessories().getAccessoriesItems();
+                costingAccessoriesItemsView = FXCollections.observableArrayList();
+                for(int i = 0; i < costingAccessoriesItems.size(); i++){
+                    costingAccessoriesItemsView.add(costingAccessoriesItems.get(i));
+                }
+                costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
+                costingAccessoriesItemTableColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getItemName()));
+                costingAccessoriesAmountTableColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getItemCost()));
+                
+                costingHandleActionDoneMessageText.setText("Costing Found");
 
-            costing.setCalculatedBy(consumptionCalculatedBy);
-            costing.setLastUpdatedBy(consumptionLastUpdatedBy);
+            } // Instantiate New Costing And Get Ready To Be Managed If Not Found
+            else {
+                costing = new Costing();
+                costing.setSl(0);
+                costing.setOrderId(order.getOrderId());
+                costing.setSize(size);
+                
+                costingYarn = new CostingYarn();
+                costingYarn.setConsumption(consumption.getFabricConsumption().getConsumptionPerDozen());
+                costingKnitting = new CostingKnitting();
+                costingKnitting.setConsumption(consumption.getFabricConsumption().getConsumptionPerDozen());
+                costingDyeing = new CostingDyeing();
+                costingDyeing.setConsumption(consumption.getFabricConsumption().getConsumptionPerDozen());
+                costingThread = new CostingThread();
+                costingThread.setConsumption(consumption.getThreadConsumption().getThreadConsumption());
+                costingOther = new CostingOthers();
+                costingAccessories = new CostingAccessories();
+                List<CostingAccessoriesItem> costingAccessoriesItems = new ArrayList<>();
+                costingAccessories.setAccessoriesItems(costingAccessoriesItems);
+                costing.setCostingYarn(costingYarn);
+                costing.setCostingKnitting(costingKnitting);
+                costing.setCostingDyeing(costingDyeing);
+                costing.setCostingThread(costingThread);
+                costing.setCostingOther(costingOther);
+                costing.setCostingAccessories(costingAccessories);
+
+                // Get User ID
+                String getIdText = merchandiserCostingIdText.getText();
+                String idTokens[] = getIdText.split(" ");
+                String user = idTokens[2];
+                String consumptionCalculatedBy = user;
+                String consumptionLastUpdatedBy = user;
+
+                costing.setCalculatedBy(consumptionCalculatedBy);
+                costing.setLastUpdatedBy(consumptionLastUpdatedBy);
+                      
+                DecimalFormat df = new DecimalFormat(".##");
+                // Refresh Other FXML Elements
+                costingDatePicker.getEditor().setText("");
+                costingSizeQuantityField.setText("0");
+                costingFabricationArea.setText("");
+                costingOtherUnitPriceField.setText("0");
+                costingDyeingUnitPriceField.setText("0");
+                costingKnittingUnitPriceField.setText("0");
+                costingYarnUnitPriceField.setText("0");
+                costingOtherAmountField.setText("0");
+                costingDyeingAmountField.setText("0");
+                costingKnittingAmountField.setText("0");
+                costingYarnAmountField.setText("0");
+                costingOtherConsumptionField.setText("0");
+                costingDyeingConsumptionField.setText(df.format(costing.getCostingDyeing().getConsumption()) + "");
+                costingKnittingConsumptionField.setText(df.format(costing.getCostingKnitting().getConsumption()) + "");
+                costingYarnConsumptionField.setText(df.format(costing.getCostingYarn().getConsumption()) + "");
+                costingFabAndProcPerDozentField.setText("0");
+                costingThreadUnitPriceField.setText("0");
+                costingThreadConsumptionField.setText(df.format(costing.getCostingThread().getConsumption()) + "");
+                costingThreadAmountField.setText("0");
+                costingAccessoriesAmountField.setText("0");
+                costingAccessoriesItemBox.getSelectionModel().clearSelection();
+                costingFobPricePerDozenField.setText("0");
+                costingTotalPricePerDozenField.setText("0");
+                costingCommercialCostField.setText("0");
+                costingCmPerDozenField.setText("0");
+                costingTotalCostPerDozenField.setText("0");
+                costingLabTestCostField.setText("0");
+                costingTotalAccessoriesCostField.setText("0");
+                costingFabricGsmField.setText("0");
+                
+                costingAccessoriesItemsView = FXCollections.observableArrayList();    
+                costingAccessoriesItemsTableView.setItems(costingAccessoriesItemsView);
+                
+                costingHandleActionDoneMessageText.setText("You Are Ready To Manage This Costing");
+            }
         }
     }
+
+    @FXML
+    private void handleCalculateCostingOhersAmount(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        double otherConsumption = Double.parseDouble(costingOtherConsumptionField.getText());
+        double unitPrice = Double.parseDouble(costingOtherUnitPriceField.getText());
+        double cost = 0;
+        if(costing != null){
+            costing.getCostingOther().setConsumption(otherConsumption);
+            costing.getCostingOther().setUnitPrice(unitPrice);
+            cost = costing.getCostingOther().getCost();
+        }
+        DecimalFormat df = new DecimalFormat(".##");
+        costingOtherAmountField.setText(df.format(cost) + "");
+        costingFabAndProcPerDozentField.setText("0");
+        costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+    }
+
+    @FXML
+    private void handleCalculateCostingDyeingAmount(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        double dyeingConsumption = Double.parseDouble(costingDyeingConsumptionField.getText());
+        double unitPrice = Double.parseDouble(costingDyeingUnitPriceField.getText());
+        double cost = 0;
+        if(costing != null){
+            costing.getCostingDyeing().setConsumption(dyeingConsumption);
+            costing.getCostingDyeing().setUnitPrice(unitPrice);
+            cost = costing.getCostingDyeing().getCost();
+        }
+        DecimalFormat df = new DecimalFormat(".##");
+        costingDyeingAmountField.setText(df.format(cost) + "");
+        costingFabAndProcPerDozentField.setText("0");
+        costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+    }
+
+    @FXML
+    private void handleCalculateCostingKnittingAmount(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        double knittingConsumption = Double.parseDouble(costingKnittingConsumptionField.getText());
+        double unitPrice = Double.parseDouble(costingKnittingUnitPriceField.getText());
+        double cost = 0;
+        if(costing != null){
+            costing.getCostingKnitting().setConsumption(knittingConsumption);
+            costing.getCostingKnitting().setUnitPrice(unitPrice);
+            cost = costing.getCostingKnitting().getCost();
+        }
+        DecimalFormat df = new DecimalFormat(".##");
+        costingKnittingAmountField.setText(df.format(cost) + "");
+        costingFabAndProcPerDozentField.setText("0");
+        costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+    }
+
+    @FXML
+    private void handleCalculateCostingYarnAmount(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        double yarnConsumption = Double.parseDouble(costingYarnConsumptionField.getText());
+        double unitPrice = Double.parseDouble(costingYarnUnitPriceField.getText());
+        double cost = 0;
+        if(costing != null){
+            costing.getCostingYarn().setConsumption(yarnConsumption);
+            costing.getCostingYarn().setUnitPrice(unitPrice);
+            cost = costing.getCostingYarn().getCost();
+        }
+        DecimalFormat df = new DecimalFormat(".##");
+        costingYarnAmountField.setText(df.format(cost) + "");
+        costingFabAndProcPerDozentField.setText("0");
+        costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+    }
+
+    @FXML
+    private void handleCalculateCostingThreadAmount(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        double threadConsumption = Double.parseDouble(costingThreadConsumptionField.getText());
+        double unitPrice = Double.parseDouble(costingThreadUnitPriceField.getText());
+        double cost = 0;
+        if(costing != null){
+            costing.getCostingThread().setConsumption(threadConsumption);
+            costing.getCostingThread().setUnitPrice(unitPrice);
+            cost = costing.getCostingThread().getCost();
+        }
+        DecimalFormat df = new DecimalFormat(".##");
+        costingThreadAmountField.setText(df.format(cost) + "");
+        costingFabAndProcPerDozentField.setText("0");
+        costingFabAndProcPerDozentField.setText(df.format(costing.getTotalFabAndProcPerDozen()) + "");
+        
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+    }
+
+    @FXML
+    private void handleCostingSetLabTestCostAction(ActionEvent event) {
+        // Set Message Texts Empty
+        costingHandleActionDoneMessageText.setText("");
+        costingHandleActionNotDoneMessageText.setText("");
+        
+        double labCost = Double.parseDouble(costingLabTestCostField.getText());
+        
+        costing.setLabTestCost(labCost);
+        
+        DecimalFormat df = new DecimalFormat(".##");
+        costingTotalCostPerDozenField.setText(df.format(costing.getTotalCostPerDozen()) + "");
+        costingCmPerDozenField.setText(df.format(costing.getCostOfMakingIncProfitPerDozen()) + "");
+        costingCommercialCostField.setText(df.format(costing.getCommercialCostPerDozen()) + "");
+        costingTotalPricePerDozenField.setText(df.format(costing.getTotalPricePerDozen()) + "");
+        costingFobPricePerDozenField.setText(df.format(costing.getFobPricePerDozen()) + "");
+        
+        costingHandleActionDoneMessageText.setText("Lab Test Cost Has Been Set To Costing");
+    }
+
 }

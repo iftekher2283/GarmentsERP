@@ -26,12 +26,14 @@ public class CostingThread {
     private double cost;
 
     public CostingThread() {
+        this.cost = 0;
     }
     
     public CostingThread(int sl, double consumption, double unitPrice) {
         this.sl = sl;
         this.consumption = consumption;
         this.unitPrice = unitPrice;
+        this.cost = 0;
     }
 
     public int getSl() {

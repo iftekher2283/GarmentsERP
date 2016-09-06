@@ -26,12 +26,14 @@ public class CostingOthers {
     private double cost;
 
     public CostingOthers() {
+        this.cost = 0;
     }
     
     public CostingOthers(int sl, double consumption, double unitPrice) {
         this.sl = sl;
         this.consumption = consumption;
         this.unitPrice = unitPrice;
+        this.cost = 0;
     }
 
     public int getSl() {

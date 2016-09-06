@@ -26,12 +26,14 @@ public class CostingKnitting {
     private double cost;
 
     public CostingKnitting() {
+        this.cost = 0;
     }
     
     public CostingKnitting(int sl, double consumption, double unitPrice) {
         this.sl = sl;
         this.consumption = consumption;
         this.unitPrice = unitPrice;
+        this.cost = 0;
     }
 
     public int getSl() {

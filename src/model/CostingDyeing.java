@@ -26,12 +26,14 @@ public class CostingDyeing {
     private double cost;
 
     public CostingDyeing() {
+        this.cost = 0;
     }
     
     public CostingDyeing(int sl, double consumption, double unitPrice) {
         this.sl = sl;
         this.consumption = consumption;
         this.unitPrice = unitPrice;
+        this.cost = 0;
     }
 
     public int getSl() {

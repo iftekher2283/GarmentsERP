@@ -195,6 +195,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -211,6 +212,11 @@
                                        </font>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#handleCuttingRefreshAction" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleCuttingSaveAction" prefHeight="40.0" prefWidth="120.0" text="Print" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="System Bold" size="18.0" />
                                        </font>
@@ -378,8 +384,15 @@
                                     </Text>
                                     <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
+                                        <TableColumn prefWidth="85.00003051757812" text="Date" />
+                                        <TableColumn prefWidth="104.0" text="Order ID" />
+                                          <TableColumn prefWidth="164.0" text="Supervisor Name" />
+                                          <TableColumn prefWidth="146.0" text="Sewing Operator" />
+                                          <TableColumn prefWidth="177.0" text="Asst. Sewing Operator" />
+                                          <TableColumn prefWidth="114.0" text="Defects" />
+                                          <TableColumn prefWidth="124.0" text="Defectives" />
+                                          <TableColumn prefWidth="134.0" text="Sewing Output" />
+                                          <TableColumn prefWidth="116.0" text="Line Target" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -419,6 +432,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -435,6 +449,11 @@
                                        </font>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#handleSewingRefreshAction" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleSewingSaveAction" prefHeight="40.0" prefWidth="120.0" text="Print" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="System Bold" size="18.0" />
                                        </font>
@@ -564,10 +583,16 @@
                                        </font>
                                     </Text>
                                     <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                      <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
-                                      </columns>
+                                       <columns>
+                                          <TableColumn prefWidth="87.0" text="Date" />
+                                          <TableColumn prefWidth="124.0" text="Order ID" />
+                                          <TableColumn prefWidth="177.0" text="Supervisor Name" />
+                                          <TableColumn prefWidth="186.0" text="Finishing Operator" />
+                                          <TableColumn prefWidth="211.0" text="Asst. Finishing Operator" />
+                                          <TableColumn prefWidth="119.0" text="Defects" />
+                                          <TableColumn prefWidth="118.0" text="Defectives" />
+                                          <TableColumn prefWidth="142.0" text="FInishing Output" />
+                                       </columns>
                                     </TableView>
                                  </children>
                               </GridPane>
@@ -606,6 +631,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -622,6 +648,11 @@
                                        </font>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#handleFinishingRefreshAction" prefHeight="40.0" prefWidth="120.0" text="Refresh" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#handleFinishingRefreshAction" prefHeight="40.0" prefWidth="120.0" text="Print" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <font>
                                           <Font name="System Bold" size="18.0" />
                                        </font>

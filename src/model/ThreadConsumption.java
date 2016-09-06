@@ -7,12 +7,18 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -24,7 +30,17 @@ public class ThreadConsumption {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int sl;
     private double wastage;
-    @OneToMany
+    @OneToMany(
+            cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(
+            name = "ThreadConsumption_ThreadConsumptionOperation",
+            joinColumns = @JoinColumn(name = "ThreadConsumption_sl"),
+            inverseJoinColumns = @JoinColumn(name = "operations_sl")
+    )
     private List<ThreadConsumptionOperation> operations;
     @Transient
     private double threadConsumption;

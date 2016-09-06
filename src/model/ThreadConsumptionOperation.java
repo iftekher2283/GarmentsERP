@@ -83,6 +83,7 @@ public class ThreadConsumptionOperation {
     }
 
     public double getInitialConsumption() {
+        initialConsumption = seamLength * ratio;
         return initialConsumption;
     }
 

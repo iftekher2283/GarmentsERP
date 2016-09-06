@@ -7,6 +7,9 @@ package model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -16,6 +19,8 @@ import javax.persistence.Transient;
  */
 @Entity
 public class Costing {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int sl;
     private int orderId;
     private String date;
@@ -33,6 +38,8 @@ public class Costing {
     private CostingThread costingThread;
     @OneToOne
     private CostingOthers costingOther;
+    @Transient
+    private double totalFabAndProcPerDozen;
     @OneToOne
     private CostingAccessories costingAccessories;
     @Transient
@@ -180,6 +187,7 @@ public class Costing {
     }
 
     public double getAccessoriesCost() {
+        accessoriesCost = costingAccessories.getCost();
         return accessoriesCost;
     }
 
@@ -196,6 +204,7 @@ public class Costing {
     }
 
     public double getTotalCostPerDozen() {
+        totalCostPerDozen = getTotalFabAndProcPerDozen() + getAccessoriesCost() + labTestCost;
         return totalCostPerDozen;
     }
 
@@ -204,6 +213,7 @@ public class Costing {
     }
 
     public double getCostOfMakingIncProfitPerDozen() {
+        costOfMakingIncProfitPerDozen = getTotalCostPerDozen() + ((getTotalCostPerDozen() * 12)/100);
         return costOfMakingIncProfitPerDozen;
     }
 
@@ -212,6 +222,7 @@ public class Costing {
     }
 
     public double getCommercialCostPerDozen() {
+        commercialCostPerDozen = ((getTotalCostPerDozen() * 4)/100);
         return commercialCostPerDozen;
     }
 
@@ -220,6 +231,7 @@ public class Costing {
     }
 
     public double getTotalPricePerDozen() {
+        totalPricePerDozen = getTotalCostPerDozen() + getCostOfMakingIncProfitPerDozen() + getCommercialCostPerDozen();
         return totalPricePerDozen;
     }
 
@@ -228,6 +240,7 @@ public class Costing {
     }
 
     public double getFobPricePerDozen() {
+        fobPricePerDozen = getTotalPricePerDozen() + ((getTotalCostPerDozen() * 10)/100);
         return fobPricePerDozen;
     }
 
@@ -259,6 +272,15 @@ public class Costing {
         this.isDeleted = isDeleted;
     }
 
+    public double getTotalFabAndProcPerDozen() {
+        totalFabAndProcPerDozen = costingYarn.getCost() + costingKnitting.getCost() + costingDyeing.getCost() + costingThread.getCost() + costingOther.getCost();
+        return totalFabAndProcPerDozen;
+    }
+
+    public void setTotalFabAndProcPerDozen(double totalFabAndProcPerDozen) {
+        this.totalFabAndProcPerDozen = totalFabAndProcPerDozen;
+    }
+    
     @Override
     public String toString() {
         return "Costing{" + "sl=" + sl + ", orderId=" + orderId + ", date=" + date + ", size=" + size + ", sizeQuantity=" + sizeQuantity + ", fabricGsm=" + fabricGsm + ", fabrication=" + fabrication + ", costingYarn=" + costingYarn + ", costingKnitting=" + costingKnitting + ", costingDyeing=" + costingDyeing + ", costingThread=" + costingThread + ", costingOther=" + costingOther + ", costingAccessories=" + costingAccessories + ", accessoriesCost=" + accessoriesCost + ", labTestCost=" + labTestCost + ", totalCostPerDozen=" + totalCostPerDozen + ", costOfMakingIncProfitPerDozen=" + costOfMakingIncProfitPerDozen + ", commercialCostPerDozen=" + commercialCostPerDozen + ", totalPricePerDozen=" + totalPricePerDozen + ", fobPricePerDozen=" + fobPricePerDozen + ", calculatedBy=" + calculatedBy + ", lastUpdatedBy=" + lastUpdatedBy + ", isDeleted=" + isDeleted + '}';

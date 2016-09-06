@@ -26,12 +26,14 @@ public class CostingYarn {
     private double cost;
 
     public CostingYarn() {
+        this.cost = 0;
     }
     
     public CostingYarn(int sl, double consumption, double unitPrice) {
         this.sl = sl;
         this.consumption = consumption;
         this.unitPrice = unitPrice;
+        this.cost = 0;
     }
 
     public int getSl() {

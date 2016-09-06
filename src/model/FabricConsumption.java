@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,11 @@ public class FabricConsumption {
     private int sl;
     private double fabricGsm;
     private double wastage;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(
+            cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "FabricConsumption_FabricConsumptionComponents",
             joinColumns = @JoinColumn(name = "FabricConsumption_sl"),

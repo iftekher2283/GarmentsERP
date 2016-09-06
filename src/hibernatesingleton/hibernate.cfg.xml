@@ -17,5 +17,13 @@
     <mapping class="model.FabricConsumptionComponents"/>
     <mapping class="model.ThreadConsumption"/>
     <mapping class="model.ThreadConsumptionOperation"/>
+    <mapping class="model.CostingAccessoriesItem"/>
+    <mapping class="model.CostingAccessories"/>
+    <mapping class="model.CostingYarn"/>
+    <mapping class="model.CostingKnitting"/>
+    <mapping class="model.CostingDyeing"/>
+    <mapping class="model.CostingThread"/>
+    <mapping class="model.CostingOthers"/>
+    <mapping class="model.Costing"/>
   </session-factory>
 </hibernate-configuration>
