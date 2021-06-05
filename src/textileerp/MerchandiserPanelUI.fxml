@@ -131,6 +131,21 @@
                                           <Font size="12.0" />
                                        </font>
                                     </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Data">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="buyerActionNotDoneMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="buyerActionDoneMessageText" fill="#017915" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
                               </GridPane>
                               <GridPane GridPane.rowIndex="2">
@@ -327,7 +342,7 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Text>
-                                    <Text fx:id="manageOrderActionMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1">
+                                    <Text fx:id="manageOrderActionMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -344,6 +359,16 @@
                                     </Label>
                                     <ComboBox fx:id="orderLineNoBox" prefHeight="26.0" prefWidth="498.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     <ComboBox fx:id="orderFloorNoBox" prefHeight="26.0" prefWidth="498.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Text fx:id="orderActionNotDoneMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="orderActionDoneMessageText" fill="#076515" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Text>
                                  </children>
                               </GridPane>
                               <GridPane GridPane.rowIndex="3">

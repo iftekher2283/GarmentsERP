@@ -307,6 +307,10 @@ public class HRPanelUIController implements Initializable {
     private String employeeId;
     private Employee employee;
     private User user;
+    @FXML
+    private Text employeeActionNotDoneMessageText;
+    @FXML
+    private Text employeeActionDoneMessageText;
     
     /**
      * Initializes the controller class.
@@ -384,15 +388,22 @@ public class HRPanelUIController implements Initializable {
         grossSalaryColumn.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getGrossSalary()));
         bankCodeColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getBankCode()));
         acNoColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAcNo()));
+        
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
     }    
 
     @FXML
     private void handleIDAction(ActionEvent event) {
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
+        
         String id = idNoField.getText();
         Employee employee = null;
         for (int i = 0; i < employees.size(); i++){
             if(employees.get(i).getId() == id){
                 employee = employees.get(i);
+                employeeActionDoneMessageText.setText("Employee Found");
                 break;
             }
         }
@@ -504,6 +515,9 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleSalaryAction(ActionEvent event) {
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
+        
         double basic_salary = Double.parseDouble(basicSalaryField.getText());
         runningBasicField.setText("");
         houseRentField.setText("");
@@ -555,6 +569,9 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleAgeAction(ActionEvent event) {
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
+        
         int birth_year = Integer.parseInt(birthYearField.getText());
         int birth_month = Integer.parseInt(birthMonthField.getText());
         Date months = new Date();
@@ -575,6 +592,9 @@ public class HRPanelUIController implements Initializable {
     
     @FXML
     private void handleSaveAction(ActionEvent event) {
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
+        
         //Collect Necessary Data for Employee
         String id = idNoField.getText();
         String name = employeeNameField.getText();
@@ -669,8 +689,9 @@ public class HRPanelUIController implements Initializable {
             }
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
+            employeeActionDoneMessageText.setText("Employee Saved To Database Successfully");
         } catch (Exception e) {
-            System.err.println(e);
+            employeeActionDoneMessageText.setText("Employee Couldn't Be Saved");
             transaction.rollback();
         }
         session.close();
@@ -756,6 +777,9 @@ public class HRPanelUIController implements Initializable {
 
     @FXML
     private void handleRemoveAction(ActionEvent event) {
+        employeeActionDoneMessageText.setText("");
+        employeeActionNotDoneMessageText.setText("");
+        
         String id = "";
         String name = employeeNameField.getText();
         int company_no = Integer.parseInt(companyNoBox.getSelectionModel().getSelectedItem() + "");
@@ -833,8 +857,10 @@ public class HRPanelUIController implements Initializable {
             session.update(employee);
             employees = session.createCriteria(Employee.class).list();
             transaction.commit();
+            
+            employeeActionDoneMessageText.setText("Employee Removed Successfully");
         } catch (Exception e) {
-            System.err.println(e);
+            employeeActionDoneMessageText.setText("Employee Couldn't Be Removed");
             transaction.rollback();
         }
         session.close();
@@ -1251,8 +1277,9 @@ public class HRPanelUIController implements Initializable {
         try{
             session.update(user);
             transaction.commit();
+            hrmChangePasswordMessageText.setText("Password Changed Successfully");
         }catch(Exception e){
-            hrmChangePasswordMessageText.setText(e + "");
+            hrmChangePasswordMessageText.setText("Password Couldn't Be Changed");
             transaction.rollback();
         }
         session.close();

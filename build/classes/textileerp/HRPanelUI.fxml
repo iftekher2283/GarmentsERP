@@ -103,6 +103,16 @@
                                           <Font name="SansSerif Bold" size="13.0" />
                                        </font>
                                     </Text>
+                                    <Text fx:id="employeeActionNotDoneMessageText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="5">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="employeeActionDoneMessageText" fill="#04720c" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="5">
+                                       <font>
+                                          <Font name="SansSerif Bold" size="13.0" />
+                                       </font>
+                                    </Text>
                                  </children>
                               </GridPane>
                               <GridPane GridPane.rowIndex="2">

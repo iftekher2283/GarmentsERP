@@ -443,6 +443,14 @@ public class MerchandiserPanelUIController implements Initializable {
     private Text consumptionActionDoneMessageText;
     @FXML
     private Text changePasswordActionDoneMessageText;
+    @FXML
+    private Text orderActionNotDoneMessageText;
+    @FXML
+    private Text orderActionDoneMessageText;
+    @FXML
+    private Text buyerActionNotDoneMessageText;
+    @FXML
+    private Text buyerActionDoneMessageText;
 
     /**
      * Initializes the controller class.
@@ -562,12 +570,15 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSearchBuyerNameAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
+        buyerActionDoneMessageText.setText("");
+        buyerActionNotDoneMessageText.setText("");
 
         String buyerName = buyerNameField.getText();
         for (int i = 0; i < buyers.size(); i++) {
             if (buyers.get(i).getBuyerName().equals(buyerName)) {
                 buyer = buyers.get(i);
-
+                
+                buyerActionDoneMessageText.setText("Buyer Found");
                 buyerNameField.setText(buyer.getBuyerName());
                 buyerOfficeSiteNameField.setText(buyer.getOfficeSiteName());
                 buyerCompanyBrandNameField.setText(buyer.getCompanyBrandName());
@@ -588,6 +599,8 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSaveBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
+        buyerActionDoneMessageText.setText("");
+        buyerActionNotDoneMessageText.setText("");
 
         // Get Data From FXML
         String buyerName = buyerNameField.getText();
@@ -638,8 +651,10 @@ public class MerchandiserPanelUIController implements Initializable {
             session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
+            
+            buyerActionDoneMessageText.setText("Buyer Saved To Database Successfully");
         } catch (Exception e) {
-            System.err.println(e);
+            buyerActionNotDoneMessageText.setText("Buyer Couldn't Be Saved");
             transaction.rollback();
         }
         session.close();
@@ -682,6 +697,8 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRemoveBuyerAction(ActionEvent event) {
         buyerNameMatchingText.setText("");
+        buyerActionDoneMessageText.setText("");
+        buyerActionNotDoneMessageText.setText("");
 
         // Get Data From FXML
         String buyerName = "";
@@ -719,8 +736,9 @@ public class MerchandiserPanelUIController implements Initializable {
             session.update(buyer);
             buyers = session.createCriteria(Buyer.class).list();
             transaction.commit();
+            buyerActionDoneMessageText.setText("Buyer Removed Successfully");
         } catch (Exception e) {
-            System.err.println(e);
+            buyerActionNotDoneMessageText.setText("Buyer Coludn't Be Removed");
             transaction.rollback();
         }
         session.close();
@@ -803,10 +821,9 @@ public class MerchandiserPanelUIController implements Initializable {
 
     @FXML
     private void handleBuyerNameMathcingAction(KeyEvent event) {
-        if (event.getCode() != KeyCode.ENTER) {
+        String buyerName = buyerNameField.getText();
+        if (buyerName != null) {
             buyerNameMatchingText.setText("");
-
-            String buyerName = buyerNameField.getText();
 
             for (int i = 0; i < buyers.size(); i++) {
                 if (buyers.get(i).getBuyerName().equals(buyerName)) {
@@ -854,7 +871,9 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSearchOrderIdAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-
+        orderActionDoneMessageText.setText("");
+        orderActionNotDoneMessageText.setText("");
+        
         // Get Order ID From FXML
         int orderId = Integer.parseInt(orderIdField.getText());
 
@@ -862,7 +881,8 @@ public class MerchandiserPanelUIController implements Initializable {
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getOrderId() == orderId) {
                 order = orders.get(i);
-
+                
+                orderActionDoneMessageText.setText("Order Found");
                 orderIdField.setText(order.getOrderId() + "");
                 orderNameField.setText(order.getOrderName());
                 orderBuyerNameBox.getSelectionModel().select(order.getBuyerName());
@@ -886,6 +906,8 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleSelectOrderAction(MouseEvent event) {
         orderIdSearchMessageText.setText("");
+        orderActionDoneMessageText.setText("");
+        orderActionNotDoneMessageText.setText("");
 
         // Get Selected Order
         order = ordersTableView.getSelectionModel().getSelectedItem();
@@ -911,7 +933,9 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleOrderSaveAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
-
+        orderActionDoneMessageText.setText("");
+        orderActionNotDoneMessageText.setText("");
+        
         // Get Data From FXML
         int orderId = 0;
         String orderName = orderNameField.getText();
@@ -969,11 +993,11 @@ public class MerchandiserPanelUIController implements Initializable {
                 session.update(addOrder);
             }
             orders = session.createCriteria(Order.class).list();
+            orderActionDoneMessageText.setText("Order Saved To Database Successfully");
             transaction.commit();
         } catch (Exception e) {
-            System.err.println(e);
+            orderActionNotDoneMessageText.setText("Order Couldn't Be Saved");
             transaction.rollback();
-            System.out.println("Transaction Roll Backed");
         }
         session.close();
 
@@ -1023,6 +1047,8 @@ public class MerchandiserPanelUIController implements Initializable {
     @FXML
     private void handleRemoveOrderAction(ActionEvent event) {
         orderIdSearchMessageText.setText("");
+        orderActionDoneMessageText.setText("");
+        orderActionNotDoneMessageText.setText("");
 
         // Get Data From FXML
         int orderId = Integer.parseInt(orderIdField.getText());
@@ -1067,8 +1093,10 @@ public class MerchandiserPanelUIController implements Initializable {
             session.update(order);
             orders = session.createCriteria(Order.class).list();
             transaction.commit();
+            
+            orderActionDoneMessageText.setText("Order Removed Successfully");
         } catch (Exception e) {
-            System.err.println(e);
+            orderActionNotDoneMessageText.setText("Order Couldn't Be Removed");
             transaction.rollback();
         }
         session.close();

@@ -53,144 +53,115 @@ public class LoginPanelUIController implements Initializable {
     private String userType;
     private int userTypeCode;
     private int loginConf = 0;
-   
-    private String DB_URL = "jdbc:mysql://127.0.0.1/textileerpdb";
-    private String DB_USER = "root";
-    private String DB_PASS = "123";
-  /*  private static SessionFactory factory;
+    
+    private static SessionFactory factory;
     private static Session session;
-    private List<User> users;*/
+    private List<User> users;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
-    }    
-
-    @FXML
-    private void handleLoginAction(ActionEvent event) {
-        String username = userNameField.getText();
-        String password = passwordField.getText();
-        
-        HashMD5 encPass = new HashMD5(password);
-      /*  factory = HibernateSingleton.getSessionFactory();
+        factory = HibernateSingleton.getSessionFactory();
         session = factory.openSession();
         users = new ArrayList<>();
         
         Transaction transaction = session.beginTransaction();
         try{
-//            Criteria criteria = session.createCriteria(User.class);
-//            criteria.add(Restrictions.eq("user_id", username));
-//            
-//            User user = (User) criteria.uniqueResult();
             users = session.createCriteria(User.class).list();
             transaction.commit();
             
-            for (int i = 0; i < users.size(); i++){
-                User user = users.get(i);
-                if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
-                    if(userTypeCode == user.getUserType()){
-                        loginConf = 1;
-                        loginFailMessage.setText("Login Successful");
-                    }
-                    else{
-                        loginFailMessage.setText("Sorry! You don't have access to this");
-                    }
-                }
-                else{
-                    loginFailMessage.setText("Sorry! Username or Password didn't match");
-                }
-            }
+            
         }catch(Exception e){
-            System.out.println(e);
-//            transaction.rollback();
+            transaction.rollback();
         }
-        session.close();*/
-       
-        try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            Statement statement = connection.createStatement();
-            
-            String query = "SELECT * FROM tbl_users;";
-            ResultSet users = statement.executeQuery(query);
-            
-            while(users.next()){
-                int get_sl = users.getInt("sl");
-                String get_user = users.getString("user_id");
-                String get_pass = users.getString("password");
-                int get_user_type = users.getInt("user_type");
-                int get_is_blocked = users.getInt("isBlocked");
-                String getAddedBy = users.getString("addedBy");
-                String getLastUpdatedBy = users.getString("lastUpdatedBy");
-                User user = new User(get_sl, get_user, get_pass, get_user_type, get_is_blocked, getAddedBy, getLastUpdatedBy);
-                if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword())){
-                    if(userTypeCode == user.getUserType() && user.getIsBlocked() == 0){
-                        loginConf = 1;
-                        loginFailMessage.setText("Login Successful");
-                        break;
-                    }
-                    else if(userTypeCode == user.getUserType() && user.getIsBlocked() == 1){
-                        loginFailMessage.setText("Sorry! You are currently blocked by an Admin");
-                    }
-                    else{
-                        loginFailMessage.setText("Sorry! You don't have access to this");
-                    }
-                }
-                else{
-                    loginFailMessage.setText("Sorry! Username or Password didn't match");
-                }
+        session.close();
+        
+    }    
+
+    @FXML
+    private void handleLoginAction(ActionEvent event) {
+        loginFailMessage.setText("");
+        
+        String username = userNameField.getText();
+        String password = passwordField.getText();
+        
+        HashMD5 encPass = new HashMD5(password);
+        for (int i = 0; i < users.size(); i++){
+            User user = users.get(i);
+            if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword()) && userTypeCode == user.getUserType() && user.getIsBlocked() == 0){
+                loginConf = 1;
+                break;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginPanelUIController.class.getName()).log(Level.SEVERE, null, ex);
+            else if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword()) && userTypeCode != user.getUserType()){
+                loginConf = 2;
+                break;
+            }
+            else if(username.equals(user.getEmployeeId()) && encPass.getHash().equals(user.getPassword()) && userTypeCode == user.getUserType() && user.getIsBlocked() == 1){
+                loginConf = 3;
+                break;
+            }
+            else{
+                loginConf = 4;
+            }
         }
+       
         if(loginConf == 1){
             try {
-            FXMLLoader loader = new FXMLLoader();
-          //  System.out.println(userType);
-            loader.setLocation(getClass().getResource(userType + "PanelUI.fxml"));
-            loader.load();
-            Parent root = loader.getRoot();
-            Scene scene = new Scene(root);
-            
-            TextileERP.getMainStage().setScene(scene);
-            if(userType.equals("Admin")){
-                AdminPanelUIController adminPanel = loader.getController();
-                adminPanel.setEmployeeId(username);
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource(userType + "PanelUI.fxml"));
+                loader.load();
+                Parent root = loader.getRoot();
+                Scene scene = new Scene(root);
+
+                TextileERP.getMainStage().setScene(scene);
+                if(userType.equals("Admin")){
+                    AdminPanelUIController adminPanel = loader.getController();
+                    adminPanel.setEmployeeId(username);
+                }
+                else if(userType.equals("HR")){
+                    HRPanelUIController hrPanel = loader.getController();
+                    hrPanel.setEmployeeId(username);
+                }
+                else if(userType.equals("Merchandiser")){
+                    MerchandiserPanelUIController merchandiserPanel = loader.getController();
+                    merchandiserPanel.setMerchandiserId(username);
+                }
+                else if(userType.equals("IE")){
+                    IEPanelUIController iePanel = loader.getController();
+                    iePanel.setIeId(username);
+                }
+                else if(userType.equals("QM")){
+                    QMPanelUIController qmPanel = loader.getController();
+                    qmPanel.setQmId(username);
+                }
+                else if(userType.equals("Planning")){
+                    PlanningPanelUIController planningPanel = loader.getController();
+                    planningPanel.setPlannerId(username);
+                }
+                else if(userType.equals("Production")){
+                    ProductionPanelUIController productionPanel = loader.getController();
+                    productionPanel.setProductionId(username);
+                }
+                else if(userType.equals("Store")){
+                    StorePanelUIController storePanel = loader.getController();
+                    storePanel.setStoreManagerId(username);
+                }
+                TextileERP.getMainStage().show();
+            } catch (IOException ex) {
+                Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else if(userType.equals("HR")){
-                HRPanelUIController hrPanel = loader.getController();
-                hrPanel.setEmployeeId(username);
-            }
-            else if(userType.equals("Merchandiser")){
-                MerchandiserPanelUIController merchandiserPanel = loader.getController();
-                merchandiserPanel.setMerchandiserId(username);
-            }
-            else if(userType.equals("IE")){
-                IEPanelUIController iePanel = loader.getController();
-                iePanel.setIeId(username);
-            }
-            else if(userType.equals("QM")){
-                QMPanelUIController qmPanel = loader.getController();
-                qmPanel.setQmId(username);
-            }
-            else if(userType.equals("Planning")){
-                PlanningPanelUIController planningPanel = loader.getController();
-                planningPanel.setPlannerId(username);
-            }
-            else if(userType.equals("Production")){
-                ProductionPanelUIController productionPanel = loader.getController();
-                productionPanel.setProductionId(username);
-            }
-            else if(userType.equals("Store")){
-                StorePanelUIController storePanel = loader.getController();
-                storePanel.setStoreManagerId(username);
-            }
-            TextileERP.getMainStage().show();
-        } catch (IOException ex) {
-            Logger.getLogger(HomePageUIController.class.getName()).log(Level.SEVERE, null, ex);
+            loginConf = 0;
         }
+        else if(loginConf == 2){
+            loginFailMessage.setText("Sorry! You don't have access to this");
+        }
+        else if(loginConf == 3){
+            loginFailMessage.setText("Sorry! You are currently blocked. Contact with administrator");
+        }
+        else if(loginConf == 4){
+            loginFailMessage.setText("Sorry! Username or Password didn't match");
         }
     }
 
